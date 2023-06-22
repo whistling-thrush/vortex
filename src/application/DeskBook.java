@@ -7,8 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class DeskBook extends JFrame {
-
-	private JPanel contentPane;
+	
+	private LoginScreen loginScreen;
 
 	/**
 	 * Launch the application.
@@ -31,11 +31,14 @@ public class DeskBook extends JFrame {
 	 */
 	public DeskBook() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 544, 381);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
+		loginScreen = new LoginScreen();
+		setupFrame();
+		loginScreen.setBorder(new EmptyBorder(5, 5, 5, 5));
+	}
+	
+	private void setupFrame() {
+		setContentPane(loginScreen);
+		setBounds(400, 250, 1000, 600);
 	}
 
 }
