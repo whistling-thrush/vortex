@@ -13,7 +13,7 @@ public class LoginScreen extends JPanel {
 	}
 	
 	private void setupPanel() {
-		setBackground(new Color(242, 132, 255));
+		setBackground(new Color(255, 255, 255));
 	}
 
 }
