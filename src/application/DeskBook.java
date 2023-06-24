@@ -33,7 +33,7 @@ public class DeskBook extends JFrame {
 	 */
 	public DeskBook() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		loginScreen = new LoginScreen();
+		loginScreen = new LoginScreen(this);
 		setupFrame();
 		loginScreen.setBorder(new EmptyBorder(5, 5, 5, 5));
 	}
@@ -41,6 +41,10 @@ public class DeskBook extends JFrame {
 	private void setupFrame() {
 		setContentPane(loginScreen);
 		setBounds(300, 200, 1000, 600);
+	}
+	
+	public void smt() {
+		System.out.println("Panel changed");
 	}
 
 }

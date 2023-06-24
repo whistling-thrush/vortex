@@ -2,12 +2,13 @@ package application;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LoginScreen extends JPanel {
 	
-	public DeskBook frame;
+	public DeskBook deskBook;
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -16,8 +17,8 @@ public class LoginScreen extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public LoginScreen() {
-		frame = (DeskBook) SwingUtilities.getAncestorOfClass(DeskBook.class, this);
+	public LoginScreen(DeskBook deskBook) {
+		this.deskBook = deskBook;
 		setupPanel();
 	}
 	
@@ -25,8 +26,16 @@ public class LoginScreen extends JPanel {
 		setBackground(new Color(202, 202, 202));
 		setLayout(null);
 		button = new JButton();
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				deskBook.smt();
+			}
+		});
 		button.setBounds(238, 165, 75, 29);
 		this.add(button);
 	}
+	
+	
 
 }
