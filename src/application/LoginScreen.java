@@ -180,6 +180,13 @@ public class LoginScreen extends JPanel {
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
+				
+
+				if (new String(fieldPass.getPassword()).equals("pass") && frmtdFieldEmail.getText().equals("email")) {
+					deskBook.showDash();
+				}
+				
 				if (frmtdFieldEmail.getText().isBlank() || frmtdFieldEmail.getText().isEmpty() || frmtdFieldEmail.getText().equals("Enter email address")) {
 					lblValidEmail.setVisible(true);
 				} else {

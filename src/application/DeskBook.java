@@ -45,12 +45,15 @@ public class DeskBook extends JFrame {
 	
 	
 	private void initComponents() {
+		
+		//Initialise the objects
 		cardLayout = new CardLayout();
 		cardPanel = new JPanel();
-		cardPanel.setLayout(cardLayout);
 		loginScreen = new LoginScreen(this);
 		dashboard = new Dashboard(this);
 		
+		//Setup the objects
+		cardPanel.setLayout(cardLayout);
 		cardPanel.add(loginScreen, "login");
 		cardPanel.add(dashboard, "dash");
 		
@@ -65,5 +68,8 @@ public class DeskBook extends JFrame {
 		setBounds(300, 200, 500, 600);
 	}
 	
-
+	public void showDash() {
+		cardLayout.show(cardPanel, "dash");
+	}
+	
 }

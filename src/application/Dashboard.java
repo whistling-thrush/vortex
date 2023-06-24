@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.GridLayout;
 
 public class Dashboard extends JPanel {
 
@@ -16,12 +17,16 @@ public class Dashboard extends JPanel {
 	 */
 	public Dashboard(DeskBook deskBook) {
 		this.deskBook = deskBook;
+		setLayout(null);
+		
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.setBounds(116, 110, 218, 79);
+		add(btnNewButton);
 		setupPanel();
 	}
 	
 	private void setupPanel() {
-		JButton btnNewButton = new JButton("Show Login Screen");
-		add(btnNewButton);
+		
 	}
 
 }
