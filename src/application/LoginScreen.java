@@ -8,11 +8,10 @@ import java.awt.event.MouseEvent;
 
 public class LoginScreen extends JPanel {
 	
-	public DeskBook deskBook;
+	private static final long serialVersionUID = -7247538218506533985L;
 	
-	
-	private static final long serialVersionUID = 1L;
-	JButton button;
+	private DeskBook deskBook;
+	JButton btnShowDash;
 
 	/**
 	 * Create the panel.
@@ -24,16 +23,16 @@ public class LoginScreen extends JPanel {
 	
 	private void setupPanel() {
 		setBackground(new Color(202, 202, 202));
-		setLayout(null);
-		button = new JButton();
-		button.addMouseListener(new MouseAdapter() {
+		btnShowDash = new JButton();
+		btnShowDash.setText("Show Dash");
+		btnShowDash.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				deskBook.smt();
+				deskBook.showDash();
 			}
 		});
-		button.setBounds(238, 165, 75, 29);
-		this.add(button);
+		btnShowDash.setBounds(462, 285, 75, 29);
+		this.add(btnShowDash);
 	}
 	
 	

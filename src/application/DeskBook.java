@@ -1,14 +1,20 @@
 package application;
 
+import java.awt.CardLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JPanel;
 
 public class DeskBook extends JFrame {
 	
-	private static final long serialVersionUID = 1L;
-	private static LoginScreen loginScreen;
+	private static final long serialVersionUID = -5620007751101260104L;
+	
+	private CardLayout cardLayout;
+	private JPanel cardPanel;
+	private LoginScreen loginScreen;
+	private Dashboard dashboard;
+	
 
 	/**
 	 * Launch the application.
@@ -32,19 +38,39 @@ public class DeskBook extends JFrame {
 	 * Create the frame.
 	 */
 	public DeskBook() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		loginScreen = new LoginScreen(this);
+		initComponents();
 		setupFrame();
-		loginScreen.setBorder(new EmptyBorder(5, 5, 5, 5));
 	}
 	
+	
+	private void initComponents() {
+		cardLayout = new CardLayout();
+		cardPanel = new JPanel();
+		cardPanel.setLayout(cardLayout);
+		loginScreen = new LoginScreen(this);
+		dashboard = new Dashboard(this);
+		
+		cardPanel.add(loginScreen, "login");
+		cardPanel.add(dashboard, "dash");
+		
+	}
+
+
 	private void setupFrame() {
-		setContentPane(loginScreen);
+		setTitle("Desk Book");
+		setResizable(false);
+		setContentPane(cardPanel);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 200, 1000, 600);
 	}
 	
-	public void smt() {
-		System.out.println("Panel changed");
+	public void showLogin() {
+		cardLayout.show(cardPanel, "login");
 	}
+	
+	public void showDash() {
+		cardLayout.show(cardPanel, "dash");
+	}
+	
 
 }
