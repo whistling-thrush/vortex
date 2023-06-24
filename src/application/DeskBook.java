@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -57,19 +58,11 @@ public class DeskBook extends JFrame {
 
 
 	private void setupFrame() {
-		setTitle("Desk Book");
-		setResizable(false);
+		setMinimumSize(new Dimension(500, 600));
 		setContentPane(cardPanel);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(300, 200, 1000, 600);
-	}
-	
-	public void showLogin() {
 		cardLayout.show(cardPanel, "login");
-	}
-	
-	public void showDash() {
-		cardLayout.show(cardPanel, "dash");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(300, 200, 500, 600);
 	}
 	
 

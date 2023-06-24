@@ -21,12 +21,6 @@ public class Dashboard extends JPanel {
 	
 	private void setupPanel() {
 		JButton btnNewButton = new JButton("Show Login Screen");
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				deskBook.showLogin();
-			}
-		});
 		add(btnNewButton);
 	}
 
