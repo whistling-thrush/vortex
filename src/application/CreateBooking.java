@@ -9,7 +9,7 @@ public class CreateBooking extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CreateBooking() {
+	public CreateBooking(DeskBook deskBook) {
 
 	}
 

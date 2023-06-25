@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 
+import javax.sound.midi.Soundbank;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -15,6 +16,8 @@ public class DeskBook extends JFrame {
 	private JPanel cardPanel;
 	private LoginScreen loginScreen;
 	private Dashboard dashboard;
+	private CreateBooking createBooking;
+	private BookingHistory bookingHistory;
 	
 
 	/**
@@ -61,15 +64,17 @@ public class DeskBook extends JFrame {
 
 
 	private void setupFrame() {
-		setMinimumSize(new Dimension(500, 600));
+		setMinimumSize(loginScreen.dimension);
 		setContentPane(cardPanel);
 		cardLayout.show(cardPanel, "login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(300, 200, 500, 600);
+		setBounds(300, 200, loginScreen.dimension.width, loginScreen.dimension.height);
 	}
 	
 	public void showDash() {
 		cardLayout.show(cardPanel, "dash");
+		setMinimumSize(dashboard.dimension);
+		setBounds(200, 200, dashboard.dimension.width, dashboard.dimension.height);
 	}
 	
 }

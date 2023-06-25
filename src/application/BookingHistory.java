@@ -9,7 +9,7 @@ public class BookingHistory extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public BookingHistory() {
+	public BookingHistory(DeskBook deskBook) {
 
 	}
 

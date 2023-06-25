@@ -11,6 +11,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class LoginScreen extends JPanel {
+	
+	public Dimension dimension = new Dimension(500, 600);
 	
 	private static final long serialVersionUID = -7247538218506533985L;
 	
@@ -55,11 +58,12 @@ public class LoginScreen extends JPanel {
 			}
 		});
 		this.deskBook = deskBook;
-		this.setBounds(0, 0, 500, 600);
+		setSize(dimension);
 		setupPanel();
 	}
 	
 	private void setupPanel() {
+		
 		layoutLogin = new SpringLayout();
 		this.setLayout(layoutLogin);
 		
