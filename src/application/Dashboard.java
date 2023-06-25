@@ -2,9 +2,10 @@ package application;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.GridLayout;
+import javax.swing.JToolBar;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 public class Dashboard extends JPanel {
 
@@ -19,14 +20,17 @@ public class Dashboard extends JPanel {
 		this.deskBook = deskBook;
 		setLayout(null);
 		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(116, 110, 218, 79);
-		add(btnNewButton);
+		JLabel lblNewLabel = new JLabel("Welcome, ...!");
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(198, 22, 424, 63);
+		add(lblNewLabel);
 		setupPanel();
 	}
 	
 	private void setupPanel() {
 		
+		setBounds(0, 0, 820, 446);
+		
 	}
-
 }
