@@ -1,10 +1,8 @@
 package application;
 
 import java.awt.CardLayout;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 
-import javax.sound.midi.Soundbank;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -24,7 +22,7 @@ public class DeskBook extends JFrame {
 	 * Launch the application.
 	 */
 	
-	public static void main(String[] args) {
+	public static void InitialiseFrame() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
