@@ -17,7 +17,7 @@ public class DatabaseManager {
 			Connection connection = DriverManager.getConnection(url, username, password);
 			
 			Statement statement = connection.createStatement();
-			String query = new String(Files.readAllBytes(Paths.get("src/application/test.sql")), StandardCharsets.UTF_8);
+			String query = new String(Files.readAllBytes(Paths.get("src/queries/test.sql")), StandardCharsets.UTF_8);
 			System.out.println(query);
 			
 		} catch (SQLException e) {
