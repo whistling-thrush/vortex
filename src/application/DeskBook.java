@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class DeskBook extends JFrame {
 	
@@ -40,6 +42,12 @@ public class DeskBook extends JFrame {
 	 * Create the frame.
 	 */
 	public DeskBook() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				DatabaseManager.closeConnection();
+			}
+		});
 		initComponents();
 		setupFrame();
 	}

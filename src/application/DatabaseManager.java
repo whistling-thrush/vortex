@@ -18,21 +18,18 @@ public class DatabaseManager {
 		try {
 			connection = DriverManager.getConnection(url, username, password);
 			
-			String query = new String(Files.readAllBytes(Paths.get("src/queries/login_validation.sql")), StandardCharsets.UTF_8);
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, "noelanidijkstra@hotmail.ca");
-			statement.setString(2, "wbC34Rn39SO5e");
-			ResultSet resultSet = statement.executeQuery();
-			
-			System.out.println(resultSet.next());
-			
-			resultSet.close();
-			statement.close();
-			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 			
+	}
+	
+	public static void closeConnection() {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static boolean sql_loginSearch(String email, String pass) {
@@ -43,9 +40,12 @@ public class DatabaseManager {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, email);
 			statement.setString(2, pass);
-			ResultSet resultSet = statement.executeQuery(query);
+			ResultSet resultSet = statement.executeQuery();
 			
 			response = resultSet.next();
+			
+			resultSet.close();
+			statement.close();
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
