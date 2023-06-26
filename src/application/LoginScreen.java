@@ -222,20 +222,24 @@ public class LoginScreen extends JPanel {
 	}
 	
 	private void loginRequested() {
-		if (new String(fieldPass.getPassword()).equals("pass") && frmtdFieldEmail.getText().equals("email")) {
-			deskBook.showDash();
-		}
 		
-		if (frmtdFieldEmail.getText().isBlank() || frmtdFieldEmail.getText().isEmpty() || frmtdFieldEmail.getText().equals("Enter email address")) {
+		String pass = new String(fieldPass.getPassword());
+		String email = new String(frmtdFieldEmail.getText());
+		
+		if (email.isBlank() || email.isEmpty() || email.equals("Enter email address")) {
 			lblValidEmail.setVisible(true);
 		} else {
 			lblValidEmail.setVisible(false);
 		}
 		
-		if (fieldPass.getPassword().length == 0) {
+		if (pass.toCharArray().length == 0) {
 			lblValidPass.setVisible(true);
 		} else {
 			lblValidPass.setVisible(false);
+		}
+		
+		if (DatabaseManager.sql_loginSearch(email, pass)) {
+			deskBook.showDash();
 		}
 	}
 	

@@ -8,36 +8,49 @@ import java.sql.*;
 
 public class DatabaseManager {
 	
+	public static Connection connection;
+	
 	public static void initialiseDBMS() throws IOException {
 		String url = "jdbc:mysql://localhost:3306/desk_book";
 		String username = "MyUsername";
 		String password = "MyPassword";
 		
 		try {
-			Connection connection = DriverManager.getConnection(url, username, password);
+			connection = DriverManager.getConnection(url, username, password);
 			
-			Statement statement = connection.createStatement();
+			String query = new String(Files.readAllBytes(Paths.get("src/queries/login_validation.sql")), StandardCharsets.UTF_8);
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, "noelanidijkstra@hotmail.ca");
+			statement.setString(2, "wbC34Rn39SO5e");
+			ResultSet resultSet = statement.executeQuery();
 			
-			//Use correct database
-			String correctDatabase = "USE desk_book";
-			statement.execute(correctDatabase);
-			
-			String query = new String(Files.readAllBytes(Paths.get("src/queries/test.sql")), StandardCharsets.UTF_8);
-			ResultSet resultSet = statement.executeQuery(query);
-			
-			while (resultSet.next()) {
-				String empName = resultSet.getString("name");
-				String email = resultSet.getString("email");
-				System.out.println(empName + " " + email);
-			}
+			System.out.println(resultSet.next());
 			
 			resultSet.close();
 			statement.close();
 			connection.close();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+			
+	}
+	
+	public static boolean sql_loginSearch(String email, String pass) {
+		boolean response = false;
+		
+		try {
+			String query = new String(Files.readAllBytes(Paths.get("src/queries/login_validation.sql")), StandardCharsets.UTF_8);
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, email);
+			statement.setString(2, pass);
+			ResultSet resultSet = statement.executeQuery(query);
+			
+			response = resultSet.next();
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return response;
 	}
 	
 }
