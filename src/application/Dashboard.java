@@ -51,7 +51,7 @@ public class Dashboard extends JPanel {
 				deskBook.showCreate();
 			}
 		});
-		btnCreateBooking.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		btnCreateBooking.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		btnCreateBooking.setBounds(188, 94, 145, 29);
 		add(btnCreateBooking);
 		
@@ -62,7 +62,7 @@ public class Dashboard extends JPanel {
 				deskBook.showHistory();
 			}
 		});
-		btnSeeHistory.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		btnSeeHistory.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		btnSeeHistory.setBounds(467, 94, 145, 29);
 		add(btnSeeHistory);
 		

@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
-import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import java.awt.Color;
@@ -32,7 +31,6 @@ public class LoginScreen extends JPanel {
 	//Component declarations
 	private DeskBook deskBook;
 	private JPasswordField fieldPass;
-	private SpringLayout layoutLogin;
 	private JLabel lblLogin;
 	private JLabel lblEmail;
 	private JFormattedTextField frmtdFieldEmail;
@@ -55,32 +53,25 @@ public class LoginScreen extends JPanel {
 	}
 	
 	private void setupPanel() {
-		
-		layoutLogin = new SpringLayout();
-		this.setLayout(layoutLogin);
+		setLayout(null);
 		
 		lblLogin = new JLabel("Log in.");
-		layoutLogin.putConstraint(SpringLayout.SOUTH, lblLogin, 105, SpringLayout.NORTH, this);
-		layoutLogin.putConstraint(SpringLayout.EAST, lblLogin, 189, SpringLayout.WEST, this);
-		lblLogin.setLocation(185, 35);
-		layoutLogin.putConstraint(SpringLayout.NORTH, lblLogin, 35, SpringLayout.NORTH, this);
-		layoutLogin.putConstraint(SpringLayout.WEST, lblLogin, 60, SpringLayout.WEST, this);
+		lblLogin.setSize(129, 70);
+		lblLogin.setLocation(60, 59);
 		lblLogin.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
 		lblLogin.setHorizontalAlignment(SwingConstants.LEFT);
 		this.add(lblLogin);
 		
 		lblEmail = new JLabel("Email");
-		layoutLogin.putConstraint(SpringLayout.WEST, lblEmail, 60, SpringLayout.WEST, this);
-		lblEmail.setLocation(233, 115);
-		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEmail.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		lblEmail.setSize(68, 16);
+		lblEmail.setLocation(60, 141);
 		this.add(lblEmail);
 		
 		frmtdFieldEmail = new JFormattedTextField();
-		layoutLogin.putConstraint(SpringLayout.NORTH, frmtdFieldEmail, 141, SpringLayout.NORTH, this);
-		layoutLogin.putConstraint(SpringLayout.WEST, frmtdFieldEmail, 60, SpringLayout.WEST, this);
-		layoutLogin.putConstraint(SpringLayout.EAST, frmtdFieldEmail, -53, SpringLayout.EAST, this);
-		layoutLogin.putConstraint(SpringLayout.SOUTH, lblEmail, -6, SpringLayout.NORTH, frmtdFieldEmail);
-		frmtdFieldEmail.setLocation(56, 145);
+		frmtdFieldEmail.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		frmtdFieldEmail.setSize(387, 42);
+		frmtdFieldEmail.setLocation(60, 165);
 		frmtdFieldEmail.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -104,24 +95,23 @@ public class LoginScreen extends JPanel {
 		this.add(frmtdFieldEmail);
 		
 		lblValidEmail = new JLabel("Enter valid email address!");
-		layoutLogin.putConstraint(SpringLayout.NORTH, lblValidEmail, 0, SpringLayout.NORTH, lblEmail);
-		layoutLogin.putConstraint(SpringLayout.WEST, lblValidEmail, 153, SpringLayout.EAST, lblEmail);
-		layoutLogin.putConstraint(SpringLayout.EAST, lblValidEmail, 0, SpringLayout.EAST, frmtdFieldEmail);
-		lblValidEmail.setLocation(150, 119);
+		lblValidEmail.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		lblValidEmail.setSize(200, 16);
+		lblValidEmail.setLocation(247, 143);
 		lblValidEmail.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblValidEmail.setForeground(Color.RED);
 		this.add(lblValidEmail);
 		lblValidEmail.setVisible(false);
 		
 		lblPass = new JLabel("Password");
-		layoutLogin.putConstraint(SpringLayout.NORTH, lblPass, 217, SpringLayout.NORTH, this);
-		layoutLogin.putConstraint(SpringLayout.WEST, lblPass, 60, SpringLayout.WEST, this);
-		layoutLogin.putConstraint(SpringLayout.SOUTH, frmtdFieldEmail, -34, SpringLayout.NORTH, lblPass);
-		lblPass.setLocation(220, 197);
-		lblPass.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		lblPass.setSize(74, 16);
+		lblPass.setLocation(60, 241);
 		this.add(lblPass);
 		
 		fieldPass = new JPasswordField();
+		fieldPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		fieldPass.setSize(387, 42);
 		fieldPass.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -130,28 +120,23 @@ public class LoginScreen extends JPanel {
 				}
 			}
 		});
-		layoutLogin.putConstraint(SpringLayout.NORTH, fieldPass, 239, SpringLayout.NORTH, this);
-		layoutLogin.putConstraint(SpringLayout.WEST, fieldPass, 60, SpringLayout.WEST, this);
-		layoutLogin.putConstraint(SpringLayout.EAST, fieldPass, -53, SpringLayout.EAST, this);
-		layoutLogin.putConstraint(SpringLayout.SOUTH, lblPass, -6, SpringLayout.NORTH, fieldPass);
-		fieldPass.setLocation(56, 227);
+		fieldPass.setLocation(60, 263);
 		fieldPass.setToolTipText("Enter your password");
 		this.add(fieldPass);
 		
 		lblValidPass = new JLabel("Enter valid password!");
-		layoutLogin.putConstraint(SpringLayout.NORTH, lblValidPass, 0, SpringLayout.NORTH, lblPass);
-		layoutLogin.putConstraint(SpringLayout.WEST, lblValidPass, 247, SpringLayout.WEST, this);
-		layoutLogin.putConstraint(SpringLayout.EAST, lblValidPass, 0, SpringLayout.EAST, frmtdFieldEmail);
-		lblValidPass.setLocation(150, 201);
+		lblValidPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		lblValidPass.setSize(200, 16);
+		lblValidPass.setLocation(247, 241);
 		lblValidPass.setForeground(Color.RED);
 		lblValidPass.setHorizontalAlignment(SwingConstants.RIGHT);
 		this.add(lblValidPass);
 		lblValidPass.setVisible(false);
 		
 		chkBxShowPass = new JCheckBox("Show password");
-		layoutLogin.putConstraint(SpringLayout.WEST, chkBxShowPass, 60, SpringLayout.WEST, this);
-		layoutLogin.putConstraint(SpringLayout.SOUTH, fieldPass, -24, SpringLayout.NORTH, chkBxShowPass);
-		chkBxShowPass.setLocation(185, 287);
+		chkBxShowPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		chkBxShowPass.setSize(148, 23);
+		chkBxShowPass.setLocation(60, 329);
 		chkBxShowPass.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -162,51 +147,41 @@ public class LoginScreen extends JPanel {
 				}
 			}
 		});
-		chkBxShowPass.setHorizontalAlignment(SwingConstants.CENTER);
 		chkBxShowPass.setToolTipText("Click to toggle show password");
 		this.add(chkBxShowPass);
 		
 		separator = new JSeparator();
-		layoutLogin.putConstraint(SpringLayout.NORTH, separator, 355, SpringLayout.NORTH, this);
-		layoutLogin.putConstraint(SpringLayout.WEST, separator, 60, SpringLayout.WEST, this);
-		layoutLogin.putConstraint(SpringLayout.EAST, separator, -53, SpringLayout.EAST, this);
-		layoutLogin.putConstraint(SpringLayout.SOUTH, chkBxShowPass, -27, SpringLayout.NORTH, separator);
-		separator.setLocation(56, 331);
+		separator.setSize(387, 15);
+		separator.setLocation(60, 379);
 		this.add(separator);
 		
 		btnForgotPass = new JButton("Forgot password?");
-		layoutLogin.putConstraint(SpringLayout.NORTH, btnForgotPass, 474, SpringLayout.NORTH, this);
-		layoutLogin.putConstraint(SpringLayout.WEST, btnForgotPass, 44, SpringLayout.WEST, this);
-		layoutLogin.putConstraint(SpringLayout.SOUTH, btnForgotPass, 497, SpringLayout.NORTH, this);
-		layoutLogin.putConstraint(SpringLayout.EAST, btnForgotPass, 198, SpringLayout.WEST, this);
-		btnForgotPass.setLocation(173, 447);
+		btnForgotPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		btnForgotPass.setSize(174, 23);
+		btnForgotPass.setLocation(44, 498);
 		btnForgotPass.setHorizontalAlignment(SwingConstants.LEADING);
 		btnForgotPass.setBorderPainted(false);
 		btnForgotPass.setBackground(SystemColor.window);
 		this.add(btnForgotPass);
 		
 		btnSignUp = new JButton("Sign up");
+		btnSignUp.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		btnSignUp.setSize(104, 29);
 		btnSignUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				deskBook.showSignup();
 			}
 		});
-		layoutLogin.putConstraint(SpringLayout.NORTH, btnSignUp, 471, SpringLayout.NORTH, this);
-		layoutLogin.putConstraint(SpringLayout.EAST, btnSignUp, -39, SpringLayout.EAST, this);
 		btnSignUp.setHorizontalAlignment(SwingConstants.TRAILING);
-		btnSignUp.setLocation(204, 446);
+		btnSignUp.setLocation(357, 495);
 		btnSignUp.setBorderPainted(false);
 		btnSignUp.setBackground(SystemColor.window);
 		this.add(btnSignUp);
 		
 		btnLogin = new JButton("Log in");
-		layoutLogin.putConstraint(SpringLayout.WEST, btnLogin, 60, SpringLayout.WEST, this);
-		layoutLogin.putConstraint(SpringLayout.EAST, btnLogin, -53, SpringLayout.EAST, this);
-		layoutLogin.putConstraint(SpringLayout.SOUTH, separator, -26, SpringLayout.NORTH, btnLogin);
-		layoutLogin.putConstraint(SpringLayout.NORTH, btnLogin, 396, SpringLayout.NORTH, this);
-		layoutLogin.putConstraint(SpringLayout.SOUTH, btnLogin, -33, SpringLayout.NORTH, btnSignUp);
-		btnLogin.setLocation(56, 358);
+		btnLogin.setSize(387, 42);
+		btnLogin.setLocation(60, 420);
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
