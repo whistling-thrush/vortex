@@ -22,7 +22,7 @@ public class DeskBook extends JFrame {
 	 * Launch the application.
 	 */
 	
-	public static void InitialiseFrame() {
+	public static void initialiseFrame() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
