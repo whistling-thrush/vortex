@@ -54,11 +54,15 @@ public class DeskBook extends JFrame {
 		cardPanel = new JPanel();
 		loginScreen = new LoginScreen(this);
 		dashboard = new Dashboard(this);
+		createBooking = new CreateBooking(this);
+		bookingHistory = new BookingHistory(this);
 		
 		//Setup the objects
 		cardPanel.setLayout(cardLayout);
 		cardPanel.add(loginScreen, "login");
 		cardPanel.add(dashboard, "dash");
+		cardPanel.add(createBooking, "create");
+		cardPanel.add(bookingHistory, "history");
 		
 	}
 
@@ -75,6 +79,14 @@ public class DeskBook extends JFrame {
 		cardLayout.show(cardPanel, "dash");
 		setMinimumSize(dashboard.dimension);
 		setBounds(200, 200, dashboard.dimension.width, dashboard.dimension.height);
+	}
+	
+	public void showCreate() {
+		cardLayout.show(cardPanel, "create");
+	}
+	
+	public void showHistory() {
+		cardLayout.show(cardPanel, "history");
 	}
 	
 }

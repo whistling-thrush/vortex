@@ -49,14 +49,6 @@ public class LoginScreen extends JPanel {
 	 * Create the panel.
 	 */
 	public LoginScreen(DeskBook deskBook) {
-		addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					loginRequested();
-				}
-			}
-		});
 		this.deskBook = deskBook;
 		setSize(dimension);
 		setupPanel();
@@ -130,6 +122,14 @@ public class LoginScreen extends JPanel {
 		this.add(lblPass);
 		
 		fieldPass = new JPasswordField();
+		fieldPass.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					loginRequested();
+				}
+			}
+		});
 		layoutLogin.putConstraint(SpringLayout.NORTH, fieldPass, 239, SpringLayout.NORTH, this);
 		layoutLogin.putConstraint(SpringLayout.WEST, fieldPass, 60, SpringLayout.WEST, this);
 		layoutLogin.putConstraint(SpringLayout.EAST, fieldPass, -53, SpringLayout.EAST, this);
@@ -205,6 +205,14 @@ public class LoginScreen extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				loginRequested();
+			}
+		});
+		btnLogin.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					loginRequested();
+				}
 			}
 		});
 		btnLogin.setToolTipText("Click to log in to your account");
