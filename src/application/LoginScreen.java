@@ -186,6 +186,12 @@ public class LoginScreen extends JPanel {
 		this.add(btnForgotPass);
 		
 		btnSignUp = new JButton("Sign up");
+		btnSignUp.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				deskBook.showSignup();
+			}
+		});
 		layoutLogin.putConstraint(SpringLayout.NORTH, btnSignUp, 471, SpringLayout.NORTH, this);
 		layoutLogin.putConstraint(SpringLayout.EAST, btnSignUp, -39, SpringLayout.EAST, this);
 		btnSignUp.setHorizontalAlignment(SwingConstants.TRAILING);

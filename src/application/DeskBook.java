@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import com.mysql.cj.conf.url.SingleConnectionUrl;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -18,6 +21,7 @@ public class DeskBook extends JFrame {
 	private Dashboard dashboard;
 	private CreateBooking createBooking;
 	private BookingHistory bookingHistory;
+	private SignUp signUp;
 	
 
 	/**
@@ -62,6 +66,8 @@ public class DeskBook extends JFrame {
 		dashboard = new Dashboard(this);
 		createBooking = new CreateBooking(this);
 		bookingHistory = new BookingHistory(this);
+		signUp = new SignUp(this);
+		
 		
 		//Setup the objects
 		cardPanel.setLayout(cardLayout);
@@ -69,6 +75,7 @@ public class DeskBook extends JFrame {
 		cardPanel.add(dashboard, "dash");
 		cardPanel.add(createBooking, "create");
 		cardPanel.add(bookingHistory, "history");
+		cardPanel.add(signUp, "signup");
 		
 	}
 
@@ -84,7 +91,13 @@ public class DeskBook extends JFrame {
 	public void showDash() {
 		cardLayout.show(cardPanel, "dash");
 		setMinimumSize(dashboard.dimension);
-		setBounds(200, 200, dashboard.dimension.width, dashboard.dimension.height);
+		setSize(dashboard.dimension);
+	}
+	
+	public void showSignup() {
+		cardLayout.show(cardPanel, "signup");
+		setMinimumSize(signUp.dimension);
+		setSize(signUp.dimension);
 	}
 	
 	public void showCreate() {
