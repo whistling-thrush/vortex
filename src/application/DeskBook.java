@@ -108,4 +108,10 @@ public class DeskBook extends JFrame {
 		cardLayout.show(cardPanel, "history");
 	}
 	
+	public void showLogin() {
+		setMinimumSize(loginScreen.dimension);
+		setSize(loginScreen.dimension);
+		cardLayout.show(cardPanel, "login");
+	}
+	
 }

@@ -1,10 +1,13 @@
 package application;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
+
+import javax.security.auth.callback.Callback;
 
 public class DatabaseManager {
 	
@@ -51,6 +54,31 @@ public class DatabaseManager {
 		}
 		
 		return response;
+	}
+	
+	public static void requestSignup(String name, String email, String pass) {
+		try {
+			String query = new String(Files.readAllBytes(Paths.get("src/queries/signup_validation.sql")), StandardCharsets.UTF_8);
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, name);
+			statement.setString(2, email);
+			statement.setString(3, pass);
+			ResultSet resultSet = statement.executeQuery();
+			
+			if (resultSet.next()) {
+				return;
+			} else {
+				String addInfo = new String(Files.readAllBytes(Paths.get("src/queries/add_info.sql")), StandardCharsets.UTF_8);
+				PreparedStatement addInfoStatement = connection.prepareStatement(addInfo);
+				addInfoStatement.setString(1, name);
+				addInfoStatement.setString(2, email);
+				addInfoStatement.setString(3, pass);
+				addInfoStatement.execute();
+			}
+			
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

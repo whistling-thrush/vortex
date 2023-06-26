@@ -68,6 +68,24 @@ public class SignUp extends JPanel {
 		frmtdFieldName.setForeground(Color.LIGHT_GRAY);
 		frmtdFieldName.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		frmtdFieldName.setBounds(60, 166, 387, 42);
+		frmtdFieldName.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (frmtdFieldName.getText().equals("Enter name")) {
+					frmtdFieldName.setText("");
+					frmtdFieldName.setForeground(new Color(0,0,0));
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (frmtdFieldName.getText().equals("")) {
+					frmtdFieldName.setText("Enter name");
+					frmtdFieldName.setForeground(Color.LIGHT_GRAY);
+				}
+			}
+		});
+		frmtdFieldName.setForeground(Color.LIGHT_GRAY);
+		frmtdFieldName.setSelectionColor(new Color(165, 205, 225));
 		add(frmtdFieldName);
 		
 		lblEmail = new JLabel("Email");
@@ -154,6 +172,7 @@ public class SignUp extends JPanel {
 	}
 	
 	private void signupRequested() {
-		return;
+		DatabaseManager.requestSignup(frmtdFieldName.getText(), frmtdFieldEmail.getText(), new String(fieldPass.getPassword()));
+		deskBook.showLogin();
 	}
 }
