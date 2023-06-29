@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 public class LoginScreen extends JPanel {
 	
 	public Dimension dimension = new Dimension(500, 600);
+	public static int currentEmployee;
 	
 	private static final long serialVersionUID = -7247538218506533985L;
 	
@@ -60,13 +61,13 @@ public class LoginScreen extends JPanel {
 		lblLogin.setLocation(60, 59);
 		lblLogin.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
 		lblLogin.setHorizontalAlignment(SwingConstants.LEFT);
-		this.add(lblLogin);
+		add(lblLogin);
 		
 		lblEmail = new JLabel("Email");
 		lblEmail.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		lblEmail.setSize(68, 16);
 		lblEmail.setLocation(60, 141);
-		this.add(lblEmail);
+		add(lblEmail);
 		
 		frmtdFieldEmail = new JFormattedTextField();
 		frmtdFieldEmail.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -92,7 +93,7 @@ public class LoginScreen extends JPanel {
 		frmtdFieldEmail.setSelectionColor(new Color(165, 205, 225));
 		frmtdFieldEmail.setText("Enter email address");
 		frmtdFieldEmail.setToolTipText("Enter your email");
-		this.add(frmtdFieldEmail);
+		add(frmtdFieldEmail);
 		
 		lblValidEmail = new JLabel("Enter valid email address!");
 		lblValidEmail.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -100,14 +101,14 @@ public class LoginScreen extends JPanel {
 		lblValidEmail.setLocation(247, 143);
 		lblValidEmail.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblValidEmail.setForeground(Color.RED);
-		this.add(lblValidEmail);
+		add(lblValidEmail);
 		lblValidEmail.setVisible(false);
 		
 		lblPass = new JLabel("Password");
 		lblPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		lblPass.setSize(74, 16);
 		lblPass.setLocation(60, 241);
-		this.add(lblPass);
+		add(lblPass);
 		
 		fieldPass = new JPasswordField();
 		fieldPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -122,7 +123,7 @@ public class LoginScreen extends JPanel {
 		});
 		fieldPass.setLocation(60, 263);
 		fieldPass.setToolTipText("Enter your password");
-		this.add(fieldPass);
+		add(fieldPass);
 		
 		lblValidPass = new JLabel("Enter valid password!");
 		lblValidPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -130,7 +131,7 @@ public class LoginScreen extends JPanel {
 		lblValidPass.setLocation(247, 241);
 		lblValidPass.setForeground(Color.RED);
 		lblValidPass.setHorizontalAlignment(SwingConstants.RIGHT);
-		this.add(lblValidPass);
+		add(lblValidPass);
 		lblValidPass.setVisible(false);
 		
 		chkBxShowPass = new JCheckBox("Show password");
@@ -148,12 +149,12 @@ public class LoginScreen extends JPanel {
 			}
 		});
 		chkBxShowPass.setToolTipText("Click to toggle show password");
-		this.add(chkBxShowPass);
+		add(chkBxShowPass);
 		
 		separator = new JSeparator();
 		separator.setSize(387, 15);
 		separator.setLocation(60, 379);
-		this.add(separator);
+		add(separator);
 		
 		btnForgotPass = new JButton("Forgot password?");
 		btnForgotPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -162,7 +163,7 @@ public class LoginScreen extends JPanel {
 		btnForgotPass.setHorizontalAlignment(SwingConstants.LEADING);
 		btnForgotPass.setBorderPainted(false);
 		btnForgotPass.setBackground(SystemColor.window);
-		this.add(btnForgotPass);
+		add(btnForgotPass);
 		
 		btnSignUp = new JButton("Sign up");
 		btnSignUp.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -177,7 +178,7 @@ public class LoginScreen extends JPanel {
 		btnSignUp.setLocation(357, 495);
 		btnSignUp.setBorderPainted(false);
 		btnSignUp.setBackground(SystemColor.window);
-		this.add(btnSignUp);
+		add(btnSignUp);
 		
 		btnLogin = new JButton("Log in");
 		btnLogin.setSize(387, 42);
@@ -199,7 +200,7 @@ public class LoginScreen extends JPanel {
 		btnLogin.setToolTipText("Click to log in to your account");
 		btnLogin.setBackground(new Color(255, 255, 255));
 		btnLogin.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		this.add(btnLogin);
+		add(btnLogin);
 	}
 	
 	private void loginRequested() {

@@ -6,8 +6,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.mysql.cj.conf.url.SingleConnectionUrl;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -49,7 +47,7 @@ public class DeskBook extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				DatabaseManager.closeConnection();
+				DatabaseManager.sql_closeConnection();
 			}
 		});
 		initComponents();

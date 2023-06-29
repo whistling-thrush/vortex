@@ -1,13 +1,11 @@
 package application;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
-
-import javax.security.auth.callback.Callback;
+import java.time.LocalTime;
 
 public class DatabaseManager {
 	
@@ -27,7 +25,7 @@ public class DatabaseManager {
 			
 	}
 	
-	public static void closeConnection() {
+	public static void sql_closeConnection() {
 		try {
 			connection.close();
 		} catch (SQLException e) {
@@ -46,6 +44,7 @@ public class DatabaseManager {
 			ResultSet resultSet = statement.executeQuery();
 			
 			response = resultSet.next();
+			LoginScreen.currentEmployee = resultSet.getInt("emp_id");
 			
 			resultSet.close();
 			statement.close();
@@ -56,14 +55,14 @@ public class DatabaseManager {
 		return response;
 	}
 	
-	public static void requestSignup(String name, String email, String pass) {
+	public static void sql_requestSignup(String name, String email, String pass) {
 		try {
 			String query = new String(Files.readAllBytes(Paths.get("src/queries/signup_validation.sql")), StandardCharsets.UTF_8);
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, name);
-			statement.setString(2, email);
-			statement.setString(3, pass);
-			ResultSet resultSet = statement.executeQuery();
+			PreparedStatement validationStatement = connection.prepareStatement(query);
+			validationStatement.setString(1, name);
+			validationStatement.setString(2, email);
+			validationStatement.setString(3, pass);
+			ResultSet resultSet = validationStatement.executeQuery();
 			
 			if (resultSet.next()) {
 				return;
@@ -74,9 +73,33 @@ public class DatabaseManager {
 				addInfoStatement.setString(2, email);
 				addInfoStatement.setString(3, pass);
 				addInfoStatement.execute();
+				
+				addInfoStatement.close();
 			}
 			
+			validationStatement.close();
+			resultSet.close();
+			
 		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void sql_createBooking(int empID, int desk, String date, String startTime, String endTime, int duration) {
+		try {
+			String query = new String(Files.readAllBytes(Paths.get("src/queries/create_booking.sql")), StandardCharsets.UTF_8);
+			PreparedStatement creationStatement = connection.prepareStatement(query);
+			creationStatement.setInt(1, empID);
+			creationStatement.setInt(2, desk);
+			creationStatement.setString(3, date);
+			creationStatement.setString(4, startTime);
+			creationStatement.setString(5, endTime);
+			creationStatement.setFloat(6, duration);
+			creationStatement.execute();
+			
+			creationStatement.close();
+			
+		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		}
 	}

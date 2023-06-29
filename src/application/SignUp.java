@@ -5,7 +5,6 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
@@ -92,7 +91,7 @@ public class SignUp extends JPanel {
 		lblEmail.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		lblEmail.setSize(63, 24);
 		lblEmail.setLocation(60, 231);
-		this.add(lblEmail);
+		add(lblEmail);
 		
 		frmtdFieldEmail = new JFormattedTextField();
 		frmtdFieldEmail.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -118,13 +117,13 @@ public class SignUp extends JPanel {
 		frmtdFieldEmail.setSelectionColor(new Color(165, 205, 225));
 		frmtdFieldEmail.setText("Enter email address");
 		frmtdFieldEmail.setToolTipText("Enter your email");
-		this.add(frmtdFieldEmail);
+		add(frmtdFieldEmail);
 		
 		lblPass = new JLabel("Password");
 		lblPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		lblPass.setSize(74, 16);
 		lblPass.setLocation(60, 329);
-		this.add(lblPass);
+		add(lblPass);
 		
 		fieldPass = new JPasswordField();
 		fieldPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -139,7 +138,7 @@ public class SignUp extends JPanel {
 		});
 		fieldPass.setLocation(60, 351);
 		fieldPass.setToolTipText("Enter your password");
-		this.add(fieldPass);
+		add(fieldPass);
 		
 		chkBxShowPass = new JCheckBox("Show password");
 		chkBxShowPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -156,7 +155,7 @@ public class SignUp extends JPanel {
 			}
 		});
 		chkBxShowPass.setToolTipText("Click to toggle show password");
-		this.add(chkBxShowPass);
+		add(chkBxShowPass);
 		
 		btnSignup = new JButton("Sign up");
 		btnSignup.addMouseListener(new MouseAdapter() {
@@ -167,12 +166,12 @@ public class SignUp extends JPanel {
 		});
 		btnSignup.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		btnSignup.setBounds(159, 488, 181, 45);
-		this.add(btnSignup);
+		add(btnSignup);
 		
 	}
 	
 	private void signupRequested() {
-		DatabaseManager.requestSignup(frmtdFieldName.getText(), frmtdFieldEmail.getText(), new String(fieldPass.getPassword()));
+		DatabaseManager.sql_requestSignup(frmtdFieldName.getText(), frmtdFieldEmail.getText(), new String(fieldPass.getPassword()));
 		deskBook.showLogin();
 	}
 }
