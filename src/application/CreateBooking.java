@@ -1,26 +1,35 @@
 package application;
 
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.temporal.Temporal;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
-import javax.swing.JButton;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.time.Duration;
-import java.time.LocalTime;
+import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
 
 public class CreateBooking extends JPanel {
 
 	private static final long serialVersionUID = 7998788512651030012L;
+	
+	//Variable declarations
+	private long duration;
+	private LocalTime minTime;
+	private LocalTime maxTime;
 	
 	//Component declarations
 	private JLabel lblNewBooking;
@@ -36,6 +45,7 @@ public class CreateBooking extends JPanel {
 	private JSpinner deskPicker;
 	private JButton btnCreate;
 	private JButton btnGoBack;
+	private JCheckBox chkbxAllDay;
 
 	/**
 	 * Create the panel.
@@ -58,7 +68,7 @@ public class CreateBooking extends JPanel {
 		settingsDate = new DatePickerSettings();
 		settingsDate.setFormatForDatesCommonEra("yyyy-MM-dd");
 		datePicker = new DatePicker(settingsDate);
-		datePicker.setBounds(60, 191, 360, 30);
+		datePicker.setBounds(60, 191, 398, 30);
 		add(datePicker);
 		
 		lblChooseTime = new JLabel("Choose timing (start and end)");
@@ -66,8 +76,17 @@ public class CreateBooking extends JPanel {
 		lblChooseTime.setBounds(60, 266, 205, 16);
 		add(lblChooseTime);
 		
+		chkbxAllDay = new JCheckBox("All-day");
+		chkbxAllDay.setHorizontalAlignment(SwingConstants.TRAILING);
+		chkbxAllDay.setBounds(368, 263, 90, 23);
+		add(chkbxAllDay);
+		
 		settingsTime = new TimePickerSettings();
-		settingsTime.initialTime = LocalTime.now();
+		settingsTime.setInitialTimeToNow();
+		settingsTime.setAllowEmptyTimes(false);
+		minTime = LocalTime.of(7, 0);
+		maxTime = LocalTime.of(22, 0);
+		settingsTime.generatePotentialMenuTimes(TimeIncrement.ThirtyMinutes, minTime, maxTime);
 		settingsTime.setFormatForDisplayTime("hh:mm a");
 		settingsTime.setFormatForMenuTimes("hh:mm a");
 		
@@ -81,12 +100,12 @@ public class CreateBooking extends JPanel {
 		
 		lblChooseDesk = new JLabel("Choose desk number (from 1 to 50)");
 		lblChooseDesk.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblChooseDesk.setBounds(60, 357, 261, 16);
+		lblChooseDesk.setBounds(60, 367, 261, 16);
 		add(lblChooseDesk);
 		
 		model = new SpinnerNumberModel(1, 1, 50, 1);
 		deskPicker = new JSpinner(model);
-		deskPicker.setBounds(60, 385, 109, 30);
+		deskPicker.setBounds(60, 395, 109, 30);
 		add(deskPicker);
 		
 		btnCreate = new JButton("Create booking");
@@ -94,17 +113,18 @@ public class CreateBooking extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				validateBooking();
-				int duration = (int) Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();
+//				int duration = (int) Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();
+				duration = chkbxAllDay.isSelected() ? Duration.between(minTime, maxTime).toMinutes() : Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();
 				DatabaseManager.sql_createBooking(LoginScreen.currentEmployee,
 						(int) deskPicker.getValue(),
 						datePicker.getText(),
 						timePickerFrom.getText(),
 						timePickerTo.getText(),
-						duration);
+						(int) duration);
 			}
 		});
 		btnCreate.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		btnCreate.setBounds(246, 465, 174, 36);
+		btnCreate.setBounds(284, 465, 174, 36);
 		add(btnCreate);
 		
 		btnGoBack = new JButton("Go back");
