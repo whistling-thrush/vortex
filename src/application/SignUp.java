@@ -43,6 +43,7 @@ public class SignUp extends JPanel {
 	public SignUp(DeskBook deskBook) {
 		this.deskBook = deskBook;
 		setLayout(null);
+		setSize(dimension);
 		setupPanel();
 	}
 	

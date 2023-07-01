@@ -31,6 +31,7 @@ public class DeskBook extends JFrame {
 			public void run() {
 				try {
 					DeskBook frame = new DeskBook();
+					frame.pack();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -100,6 +101,8 @@ public class DeskBook extends JFrame {
 	
 	public void showCreate() {
 		cardLayout.show(cardPanel, "create");
+		setMinimumSize(createBooking.dimension);
+		setSize(createBooking.dimension);
 	}
 	
 	public void showHistory() {
@@ -109,6 +112,7 @@ public class DeskBook extends JFrame {
 	public void showLogin() {
 		setMinimumSize(loginScreen.dimension);
 		setSize(loginScreen.dimension);
+		loginScreen.reset();
 		cardLayout.show(cardPanel, "login");
 	}
 	

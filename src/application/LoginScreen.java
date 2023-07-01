@@ -229,5 +229,10 @@ public class LoginScreen extends JPanel {
 			dashboard.changeWelcomeText(currentEmployeeName);
 		}
 	}
-	
+
+	public void reset() {
+		fieldPass.setText("");
+		frmtdFieldEmail.setText("Enter email address");
+		frmtdFieldEmail.setForeground(Color.LIGHT_GRAY);
+	}
 }

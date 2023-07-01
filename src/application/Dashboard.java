@@ -25,6 +25,7 @@ public class Dashboard extends JPanel {
 	private JButton btnCreateBooking;
 	private JButton btnSeeHistory;
 	private JScrollPane scrllPaneUpcomingBookings;
+	private JButton btnLogOut;
 	
 
 	/**
@@ -67,8 +68,19 @@ public class Dashboard extends JPanel {
 		add(btnSeeHistory);
 		
 		scrllPaneUpcomingBookings = new JScrollPane();
-		scrllPaneUpcomingBookings.setBounds(30, 169, 740, 387);
+		scrllPaneUpcomingBookings.setBounds(30, 144, 740, 360);
 		add(scrllPaneUpcomingBookings);
+		
+		btnLogOut = new JButton("Log out");
+		btnLogOut.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				logout();
+			}
+		});
+		btnLogOut.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		btnLogOut.setBounds(635, 532, 135, 29);
+		add(btnLogOut);
 		setupPanel();
 	}
 	
@@ -76,7 +88,12 @@ public class Dashboard extends JPanel {
 		setSize(dimension);
 	}
 	
+	private void logout() {
+		deskBook.showLogin();
+	}
+	
 	public void changeWelcomeText (String name) {
 		lblWelcome.setText("Welcome, " + name + "!");
 	}
+
 }

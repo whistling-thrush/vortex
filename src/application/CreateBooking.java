@@ -1,5 +1,6 @@
 package application;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,11 +28,13 @@ public class CreateBooking extends JPanel {
 	private static final long serialVersionUID = 7998788512651030012L;
 	
 	//Variable declarations
+	public Dimension dimension = new Dimension(500, 600);
 	private long duration;
 	private LocalTime minTime;
 	private LocalTime maxTime;
 	
 	//Component declarations
+	private DeskBook deskBook;
 	private JLabel lblNewBooking;
 	private JLabel lblChooseDate;
 	private DatePickerSettings settingsDate;
@@ -51,8 +54,13 @@ public class CreateBooking extends JPanel {
 	 * Create the panel.
 	 */
 	public CreateBooking(DeskBook deskBook) {
+		this.deskBook = deskBook;
 		setLayout(null);
-		
+		setSize(dimension);
+		setupPanel();
+	}
+	
+	private void setupPanel () {
 		lblNewBooking = new JLabel("Create new booking");
 		lblNewBooking.setSize(261, 70);
 		lblNewBooking.setLocation(60, 59);
