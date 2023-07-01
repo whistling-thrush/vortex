@@ -24,13 +24,16 @@ import java.awt.event.KeyEvent;
 
 public class LoginScreen extends JPanel {
 	
-	public Dimension dimension = new Dimension(500, 600);
-	public static int currentEmployee;
-	
 	private static final long serialVersionUID = -7247538218506533985L;
+	
+	//Variable declarations
+	public Dimension dimension = new Dimension(500, 600);
+	public static int currentEmployeeID;
+	public static String currentEmployeeName;
 	
 	//Component declarations
 	private DeskBook deskBook;
+	private Dashboard dashboard;
 	private JPasswordField fieldPass;
 	private JLabel lblLogin;
 	private JLabel lblEmail;
@@ -47,8 +50,9 @@ public class LoginScreen extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public LoginScreen(DeskBook deskBook) {
+	public LoginScreen(DeskBook deskBook, Dashboard dashboard) {
 		this.deskBook = deskBook;
+		this.dashboard = dashboard;
 		setSize(dimension);
 		setupPanel();
 	}
@@ -222,6 +226,7 @@ public class LoginScreen extends JPanel {
 		
 		if (DatabaseManager.sql_loginSearch(email, pass)) {
 			deskBook.showDash();
+			dashboard.changeWelcomeText(currentEmployeeName);
 		}
 	}
 	

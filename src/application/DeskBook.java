@@ -60,8 +60,8 @@ public class DeskBook extends JFrame {
 		//Initialise the objects
 		cardLayout = new CardLayout();
 		cardPanel = new JPanel();
-		loginScreen = new LoginScreen(this);
 		dashboard = new Dashboard(this);
+		loginScreen = new LoginScreen(this, dashboard);
 		createBooking = new CreateBooking(this);
 		bookingHistory = new BookingHistory(this);
 		signUp = new SignUp(this);

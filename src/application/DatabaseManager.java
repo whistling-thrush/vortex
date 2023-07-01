@@ -5,11 +5,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
-import java.time.LocalTime;
+
+import javax.sound.midi.Soundbank;
 
 public class DatabaseManager {
 	
-	public static Connection connection;
+	//Variable declarations
+	public static Connection connection;	
 	
 	public static void initialiseDBMS() throws IOException {
 		String url = "jdbc:mysql://localhost:3306/desk_book";
@@ -44,7 +46,8 @@ public class DatabaseManager {
 			ResultSet resultSet = statement.executeQuery();
 			
 			response = resultSet.next();
-			LoginScreen.currentEmployee = resultSet.getInt("emp_id");
+			LoginScreen.currentEmployeeID = resultSet.getInt("emp_id");
+			LoginScreen.currentEmployeeName = (String) resultSet.getString("name");
 			
 			resultSet.close();
 			statement.close();
@@ -103,5 +106,6 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 	}
+
 	
 }

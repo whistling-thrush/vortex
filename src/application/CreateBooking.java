@@ -113,9 +113,8 @@ public class CreateBooking extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				validateBooking();
-//				int duration = (int) Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();
 				duration = chkbxAllDay.isSelected() ? Duration.between(minTime, maxTime).toMinutes() : Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();
-				DatabaseManager.sql_createBooking(LoginScreen.currentEmployee,
+				DatabaseManager.sql_createBooking(LoginScreen.currentEmployeeID,
 						(int) deskPicker.getValue(),
 						datePicker.getText(),
 						timePickerFrom.getText(),

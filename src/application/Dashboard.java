@@ -34,7 +34,7 @@ public class Dashboard extends JPanel {
 		this.deskBook = deskBook;
 		setLayout(null);
 		
-		lblWelcome = new JLabel("Welcome, ...!");
+		lblWelcome = new JLabel("");
 		lblWelcome.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
 		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
 		lblWelcome.setBounds(188, 6, 424, 63);
@@ -74,5 +74,9 @@ public class Dashboard extends JPanel {
 	
 	private void setupPanel() {
 		setSize(dimension);
+	}
+	
+	public void changeWelcomeText (String name) {
+		lblWelcome.setText("Welcome, " + name + "!");
 	}
 }
