@@ -1,17 +1,15 @@
 package application;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 public class Main {
 
-	public static void main(String[] args) throws IOException, SQLException {
+	public static void main(String[] args) {
+		
+		//Initialise database manager
+		DatabaseManager.initialiseDBMS();
 		
 		//Initialise frame
 		DeskBook.initialiseFrame();
 		
-		//Initialise database manager
-		DatabaseManager.initialiseDBMS();
 	}
 
 }

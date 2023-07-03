@@ -5,22 +5,20 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
-
-import javax.sound.midi.Soundbank;
+import java.util.ArrayList;
 
 public class DatabaseManager {
 	
 	//Variable declarations
 	public static Connection connection;	
 	
-	public static void initialiseDBMS() throws IOException {
+	public static void initialiseDBMS() {
 		String url = "jdbc:mysql://localhost:3306/desk_book";
 		String username = "MyUsername";
 		String password = "MyPassword";
 		
 		try {
 			connection = DriverManager.getConnection(url, username, password);
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -107,5 +105,35 @@ public class DatabaseManager {
 		}
 	}
 
-	
+	public static ArrayList<Booking> sql_bookingList() {
+		final int empID = LoginScreen.currentEmployeeID;
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		
+		try {
+			String query = new String(Files.readAllBytes(Paths.get("src/queries/upcoming_bookings.sql")), StandardCharsets.UTF_8);
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, empID);
+			
+			ResultSet resultSet = statement.executeQuery();
+			
+			while (resultSet.next()) {
+				int bookID = resultSet.getInt("book_id");
+				int desk = resultSet.getInt("desk");
+				String date = resultSet.getString("date");
+				String startTime = resultSet.getString("time_start");
+				String endTime = resultSet.getString("time_end");
+				int duration = resultSet.getInt("duration");
+				
+				bookings.add(new Booking(bookID, empID, desk, date, startTime, endTime, duration));
+			}
+			
+			resultSet.close();
+			statement.close();
+			
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return bookings;
+	}
 }

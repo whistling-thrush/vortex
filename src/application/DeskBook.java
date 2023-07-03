@@ -91,6 +91,8 @@ public class DeskBook extends JFrame {
 		cardLayout.show(cardPanel, "dash");
 		setMinimumSize(dashboard.dimension);
 		setSize(dashboard.dimension);
+		dashboard.clearBookings();
+		dashboard.getUpcomingBookings();
 	}
 	
 	public void showSignup() {

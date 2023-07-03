@@ -15,7 +15,6 @@ import javax.swing.JCheckBox;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.time.temporal.Temporal;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
