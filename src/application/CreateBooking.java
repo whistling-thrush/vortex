@@ -120,13 +120,24 @@ public class CreateBooking extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				validateBooking();
-				duration = chkbxAllDay.isSelected() ? Duration.between(minTime, maxTime).toMinutes() : Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();
-				DatabaseManager.sql_createBooking(LoginScreen.currentEmployeeID,
-						(int) deskPicker.getValue(),
-						datePicker.getText(),
-						timePickerFrom.getText(),
-						timePickerTo.getText(),
-						(int) duration);
+				
+				if (chkbxAllDay.isSelected()) {
+					duration = Duration.between(minTime, maxTime).toMinutes();
+					DatabaseManager.sql_createBooking(LoginScreen.currentEmployeeID,
+							(int) deskPicker.getValue(),
+							datePicker.getText(),
+							minTime.toString(),
+							maxTime.toString(),
+							(int) duration);
+				} else {
+					duration = Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();
+					DatabaseManager.sql_createBooking(LoginScreen.currentEmployeeID,
+							(int) deskPicker.getValue(),
+							datePicker.getText(),
+							timePickerFrom.getText(),
+							timePickerTo.getText(),
+							(int) duration);
+				}
 			}
 		});
 		btnCreate.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
