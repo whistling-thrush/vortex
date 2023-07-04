@@ -34,12 +34,13 @@ public class LoginScreen extends JPanel {
 	//Component declarations
 	private DeskBook deskBook;
 	private Dashboard dashboard;
-	private JPasswordField fieldPass;
+	private JLabel lblValidEmailPass;
 	private JLabel lblLogin;
 	private JLabel lblEmail;
 	private JFormattedTextField frmtdFieldEmail;
 	private JLabel lblValidEmail;
 	private JLabel lblPass;
+	private JPasswordField fieldPass;
 	private JLabel lblValidPass;
 	private JCheckBox chkBxShowPass;
 	private JSeparator separator;
@@ -59,6 +60,14 @@ public class LoginScreen extends JPanel {
 	
 	private void setupPanel() {
 		setLayout(null);
+		
+		lblValidEmailPass = new JLabel("Incorrect email and/or password ");
+		lblValidEmailPass.setForeground(new Color(255, 0, 0));
+		lblValidEmailPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		lblValidEmailPass.setHorizontalAlignment(SwingConstants.CENTER);
+		lblValidEmailPass.setBounds(132, 41, 236, 23);
+		add(lblValidEmailPass);
+		lblValidEmailPass.setVisible(false);
 		
 		lblLogin = new JLabel("Log in.");
 		lblLogin.setSize(129, 70);
@@ -209,24 +218,29 @@ public class LoginScreen extends JPanel {
 	
 	private void loginRequested() {
 		
+		lblValidEmail.setVisible(false);
+		lblValidPass.setVisible(false);
+		lblValidEmailPass.setVisible(false);
+		
 		String pass = new String(fieldPass.getPassword());
 		String email = new String(frmtdFieldEmail.getText());
 		
 		if (email.isBlank() || email.isEmpty() || email.equals("Enter email address")) {
 			lblValidEmail.setVisible(true);
-		} else {
-			lblValidEmail.setVisible(false);
 		}
 		
-		if (pass.toCharArray().length == 0) {
+		if (pass.isBlank() || pass.isEmpty()) {
 			lblValidPass.setVisible(true);
-		} else {
-			lblValidPass.setVisible(false);
 		}
 		
 		if (DatabaseManager.sql_loginSearch(email, pass)) {
+			lblValidEmail.setVisible(false);
+			lblValidPass.setVisible(false);
+			lblValidEmailPass.setVisible(false);
 			deskBook.showDash();
 			dashboard.changeWelcomeText(currentEmployeeName);
+		} else {
+			lblValidEmailPass.setVisible(true);
 		}
 	}
 
@@ -234,5 +248,13 @@ public class LoginScreen extends JPanel {
 		fieldPass.setText("");
 		frmtdFieldEmail.setText("Enter email address");
 		frmtdFieldEmail.setForeground(Color.LIGHT_GRAY);
+	}
+	
+	public void invalidEmail() {
+		
+	}
+	
+	public void invalidPass() {
+		
 	}
 }
