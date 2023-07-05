@@ -128,7 +128,7 @@ public class Dashboard extends JPanel {
 
 	public void getUpcomingBookings() {
 		
-		bookings = DatabaseManager.sql_bookingList();
+		bookings = DatabaseManager.sql_upcomingBookings();
 		
 		for (int i = 0; i < bookings.size(); i++) {
 			

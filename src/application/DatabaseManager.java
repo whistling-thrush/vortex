@@ -5,6 +5,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class DatabaseManager {
@@ -87,24 +90,35 @@ public class DatabaseManager {
 	
 	public static void sql_createBooking(int empID, int desk, String date, String startTime, String endTime, int duration) {
 		try {
-			String query = new String(Files.readAllBytes(Paths.get("src/queries/create_booking.sql")), StandardCharsets.UTF_8);
-			PreparedStatement creationStatement = connection.prepareStatement(query);
-			creationStatement.setInt(1, empID);
-			creationStatement.setInt(2, desk);
-			creationStatement.setString(3, date);
-			creationStatement.setString(4, startTime);
-			creationStatement.setString(5, endTime);
-			creationStatement.setFloat(6, duration);
-			creationStatement.execute();
 			
-			creationStatement.close();
+			java.util.Date _date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+			System.out.println(_date.toString());
+			java.util.Date today = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
+			System.out.println(today.toString());
 			
-		} catch (IOException | SQLException e) {
+			if (_date.after(today)) {
+				//Some error message
+			} else {
+				
+				String query = new String(Files.readAllBytes(Paths.get("src/queries/create_booking.sql")), StandardCharsets.UTF_8);
+				PreparedStatement creationStatement = connection.prepareStatement(query);
+				creationStatement.setInt(1, empID);
+				creationStatement.setInt(2, desk);
+				creationStatement.setString(3, date);
+				creationStatement.setString(4, startTime);
+				creationStatement.setString(5, endTime);
+				creationStatement.setFloat(6, duration);
+				creationStatement.execute();
+				
+				creationStatement.close();
+			}
+			
+		} catch (ParseException | SQLException | IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static ArrayList<Booking> sql_bookingList() {
+	public static ArrayList<Booking> sql_upcomingBookings() {
 		final int empID = LoginScreen.currentEmployeeID;
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		
@@ -116,6 +130,7 @@ public class DatabaseManager {
 			ResultSet resultSet = statement.executeQuery();
 			
 			while (resultSet.next()) {
+				
 				int bookID = resultSet.getInt("book_id");
 				int desk = resultSet.getInt("desk");
 				String date = resultSet.getString("date");
@@ -124,6 +139,7 @@ public class DatabaseManager {
 				int duration = resultSet.getInt("duration");
 				
 				bookings.add(new Booking(bookID, empID, desk, date, startTime, endTime, duration));
+				
 			}
 			
 			resultSet.close();
@@ -134,5 +150,12 @@ public class DatabaseManager {
 		}
 		
 		return bookings;
+	}
+
+	public static ArrayList<Booking> sql_bookingHistory() {
+		
+		ArrayList<Booking> bookingHistory = new ArrayList<Booking>();
+		return bookingHistory;
+		
 	}
 }
