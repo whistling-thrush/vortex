@@ -34,14 +34,15 @@ public class Dashboard extends JPanel {
 	private JLabel lblUpcomingBookings;
 	private JPanel bookingStack;
 	private JPanel bookingDetails;
-	private ArrayList<Booking> bookings;
 	private JButton btnLogOut;
 	
+	//Variable declarations
+	private ArrayList<Booking> bookings;
 
 	public Dashboard(DeskBook deskBook) {
 		this.deskBook = deskBook;
 		setLayout(null);
-		setSize(dimension);
+		setSize(new Dimension(800, 600));
 		setupPanel();
 	}
 	
@@ -111,12 +112,20 @@ public class Dashboard extends JPanel {
 	private JPanel createBookingPanel(Booking booking) {
 		bookingDetails = new JPanel();
 		bookingDetails.setPreferredSize(new Dimension(720, 50));
+		bookingDetails.setMaximumSize(new Dimension(720, 50));
 		bookingDetails.setBackground(new Color(230, 230, 230));
 		bookingDetails.setLayout(new BorderLayout());
 		
 		JLabel lblDetails = new JLabel();
 		lblDetails.setBounds(50, 20, 0, 0);
-		lblDetails.setText("Desk: " + booking.getDesk() + "     From: " + booking.getTimeStart() + "   To: " + booking.getTimeEnd());
+		lblDetails.setText("Desk: " 
+				+ booking.getDesk() 
+				+ "     From: " 
+				+ booking.getTimeStart() 
+				+ "     To: " 
+				+ booking.getTimeEnd()
+				+ "     On: "
+				+ booking.getDate());
 		bookingDetails.add(lblDetails);
 		
 		return bookingDetails;

@@ -109,6 +109,10 @@ public class DeskBook extends JFrame {
 	
 	public void showHistory() {
 		cardLayout.show(cardPanel, "history");
+		setMinimumSize(bookingHistory.dimension);
+		setSize(bookingHistory.dimension);
+		bookingHistory.clearBookings();
+		bookingHistory.getBookingHistory();
 	}
 	
 	public void showLogin() {

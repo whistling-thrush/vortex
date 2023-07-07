@@ -15,6 +15,7 @@ import javax.swing.JCheckBox;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -126,8 +127,8 @@ public class CreateBooking extends JPanel {
 					DatabaseManager.sql_createBooking(LoginScreen.currentEmployeeID,
 							(int) deskPicker.getValue(),
 							datePicker.getText(),
-							minTime.toString(),
-							maxTime.toString(),
+							minTime.format(DateTimeFormatter.ofPattern("hh:mm a")).toString(),
+							maxTime.format(DateTimeFormatter.ofPattern("hh:mm a")).toString(),
 							(int) duration);
 				} else {
 					duration = Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();

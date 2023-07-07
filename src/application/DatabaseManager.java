@@ -123,10 +123,10 @@ public class DatabaseManager {
 
 	public static ArrayList<Booking> sql_upcomingBookings() {
 		final int empID = LoginScreen.currentEmployeeID;
-		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		ArrayList<Booking> upcomingBookings = new ArrayList<Booking>();
 		
 		try {
-			String query = new String(Files.readAllBytes(Paths.get("src/queries/upcoming_bookings.sql")), StandardCharsets.UTF_8);
+			String query = new String(Files.readAllBytes(Paths.get("src/queries/get_bookings.sql")), StandardCharsets.UTF_8);
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, empID);
 			
@@ -145,7 +145,7 @@ public class DatabaseManager {
 					String endTime = resultSet.getString("time_end");
 					int duration = resultSet.getInt("duration");
 					
-					bookings.add(new Booking(bookID, empID, desk, date, startTime, endTime, duration));
+					upcomingBookings.add(new Booking(bookID, empID, desk, date, startTime, endTime, duration));
 				}
 				
 			}
@@ -157,12 +157,47 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 		
-		return bookings;
+		return upcomingBookings;
 	}
 
 	public static ArrayList<Booking> sql_bookingHistory() {
 		
+		final int empID = LoginScreen.currentEmployeeID;
+		
 		ArrayList<Booking> bookingHistory = new ArrayList<Booking>();
+		
+		try {
+			String query = new String(Files.readAllBytes(Paths.get("src/queries/get_bookings.sql")), StandardCharsets.UTF_8);
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, empID);
+			
+			ResultSet resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				
+				Date _date = new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("date"));
+				Date today = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
+				
+				if (_date.before(today)) {
+					int bookID = resultSet.getInt("book_id");
+					int desk = resultSet.getInt("desk");
+					String date = resultSet.getString("date");
+					String startTime = resultSet.getString("time_start");
+					String endTime = resultSet.getString("time_end");
+					int duration = resultSet.getInt("duration");
+					
+					bookingHistory.add(new Booking(bookID, empID, desk, date, startTime, endTime, duration));
+				}
+				
+			}
+			
+			resultSet.close();
+			statement.close();
+			
+		} catch (IOException | SQLException | ParseException e) {
+			e.printStackTrace();
+		}
+		
 		return bookingHistory;
 		
 	}
