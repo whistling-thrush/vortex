@@ -141,7 +141,7 @@ public class Dashboard extends JPanel {
 			}
 		}
 	}
-	
+
 	public void clearBookings() {
 		bookingStack.removeAll();
 	}

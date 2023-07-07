@@ -131,11 +131,11 @@ public class DatabaseManager {
 			statement.setInt(1, empID);
 			
 			ResultSet resultSet = statement.executeQuery();
-			
-			Date _date = new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("date"));
-			Date today = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
-			
+
 			while (resultSet.next()) {
+				
+				Date _date = new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("date"));
+				Date today = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
 				
 				if (_date.after(today)) {
 					int bookID = resultSet.getInt("book_id");

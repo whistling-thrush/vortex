@@ -61,7 +61,7 @@ public class CreateBooking extends JPanel {
 	
 	private void setupPanel () {
 		lblNewBooking = new JLabel("Create new booking");
-		lblNewBooking.setSize(261, 70);
+		lblNewBooking.setSize(260, 70);
 		lblNewBooking.setLocation(60, 59);
 		lblNewBooking.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
 		lblNewBooking.setHorizontalAlignment(SwingConstants.LEFT);
@@ -138,6 +138,8 @@ public class CreateBooking extends JPanel {
 							timePickerTo.getText(),
 							(int) duration);
 				}
+				
+				deskBook.showDash();
 			}
 		});
 		btnCreate.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
