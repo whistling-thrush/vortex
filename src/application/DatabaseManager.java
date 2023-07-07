@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DatabaseManager {
 	
@@ -91,12 +96,10 @@ public class DatabaseManager {
 	public static void sql_createBooking(int empID, int desk, String date, String startTime, String endTime, int duration) {
 		try {
 			
-			java.util.Date _date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-			System.out.println(_date.toString());
-			java.util.Date today = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
-			System.out.println(today.toString());
+			Date _date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+			Date today = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
 			
-			if (_date.after(today)) {
+			if (_date.before(today)) {
 				//Some error message
 			} else {
 				
@@ -129,23 +132,28 @@ public class DatabaseManager {
 			
 			ResultSet resultSet = statement.executeQuery();
 			
+			Date _date = new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("date"));
+			Date today = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
+			
 			while (resultSet.next()) {
 				
-				int bookID = resultSet.getInt("book_id");
-				int desk = resultSet.getInt("desk");
-				String date = resultSet.getString("date");
-				String startTime = resultSet.getString("time_start");
-				String endTime = resultSet.getString("time_end");
-				int duration = resultSet.getInt("duration");
-				
-				bookings.add(new Booking(bookID, empID, desk, date, startTime, endTime, duration));
+				if (_date.after(today)) {
+					int bookID = resultSet.getInt("book_id");
+					int desk = resultSet.getInt("desk");
+					String date = resultSet.getString("date");
+					String startTime = resultSet.getString("time_start");
+					String endTime = resultSet.getString("time_end");
+					int duration = resultSet.getInt("duration");
+					
+					bookings.add(new Booking(bookID, empID, desk, date, startTime, endTime, duration));
+				}
 				
 			}
 			
 			resultSet.close();
 			statement.close();
 			
-		} catch (IOException | SQLException e) {
+		} catch (IOException | SQLException | ParseException e) {
 			e.printStackTrace();
 		}
 		
