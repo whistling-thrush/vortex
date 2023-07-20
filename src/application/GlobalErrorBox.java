@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -11,6 +12,8 @@ import javax.swing.JPanel;
 public class GlobalErrorBox extends JDialog {
 	
     private static final long serialVersionUID = -8654124532333345806L;
+    
+    private Dimension dimension;
 
 	public GlobalErrorBox(DeskBook deskBook, String message) {
         super(deskBook, "Error", true);
@@ -21,8 +24,12 @@ public class GlobalErrorBox extends JDialog {
         JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
         contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        dimension = new Dimension(250, 150);
 
         JLabel messageLabel = new JLabel(message);
+        messageLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
         JButton okButton = new JButton("OK");
         okButton.addActionListener(e -> dispose());
 
@@ -34,6 +41,7 @@ public class GlobalErrorBox extends JDialog {
 
         setContentPane(contentPane);
         pack();
+        setResizable(false);
         setLocationRelativeTo(getParent());
     }
 

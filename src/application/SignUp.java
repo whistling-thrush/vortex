@@ -172,9 +172,7 @@ public class SignUp extends JPanel {
 	}
 	
 	private void signupRequested() {
-//		DatabaseManager.sql_requestSignup(frmtdFieldName.getText(), frmtdFieldEmail.getText(), new String(fieldPass.getPassword()));
-//		deskBook.showLogin();
-		
-		GlobalErrorBox.showError(deskBook, "Some error");
+		DatabaseManager.sql_requestSignup(frmtdFieldName.getText(), frmtdFieldEmail.getText(), new String(fieldPass.getPassword()));
+		deskBook.showLogin();
 	}
 }

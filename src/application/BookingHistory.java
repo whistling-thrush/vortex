@@ -99,7 +99,6 @@ public class BookingHistory extends JPanel {
 	public void getBookingHistory() {
 		
 		bookings = DatabaseManager.sql_bookingHistory();
-		System.out.println(bookings.get(0).getDate());
 		
 		for (int i = 0; i < bookings.size(); i++) {
 			
