@@ -99,10 +99,7 @@ public class DatabaseManager {
 			Date _date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 			Date today = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
 			
-			if (_date.before(today)) {
-				//Some error message
-			} else {
-				
+			if (_date.after(today)) {
 				String query = new String(Files.readAllBytes(Paths.get("src/queries/create_booking.sql")), StandardCharsets.UTF_8);
 				PreparedStatement creationStatement = connection.prepareStatement(query);
 				creationStatement.setInt(1, empID);
@@ -114,6 +111,10 @@ public class DatabaseManager {
 				creationStatement.execute();
 				
 				creationStatement.close();
+				
+				System.out.println("Booking created: " + empID + desk + date + startTime + endTime + duration);
+			} else {
+				//Some error message				
 			}
 			
 		} catch (ParseException | SQLException | IOException e) {
@@ -139,7 +140,7 @@ public class DatabaseManager {
 				
 				if (_date.after(today)) {
 					int bookID = resultSet.getInt("book_id");
-					int desk = resultSet.getInt("desk");
+					int desk = resultSet.getInt("desk_id");
 					String date = resultSet.getString("date");
 					String startTime = resultSet.getString("time_start");
 					String endTime = resultSet.getString("time_end");
@@ -180,7 +181,7 @@ public class DatabaseManager {
 				
 				if (_date.before(today)) {
 					int bookID = resultSet.getInt("book_id");
-					int desk = resultSet.getInt("desk");
+					int desk = resultSet.getInt("desk_id");
 					String date = resultSet.getString("date");
 					String startTime = resultSet.getString("time_start");
 					String endTime = resultSet.getString("time_end");

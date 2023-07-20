@@ -132,7 +132,8 @@ public class CreateBooking extends JPanel {
 							(int) duration);
 				} else {
 					duration = Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();
-					DatabaseManager.sql_createBooking(LoginScreen.currentEmployeeID,
+					DatabaseManager.sql_createBooking(
+							LoginScreen.currentEmployeeID,
 							(int) deskPicker.getValue(),
 							datePicker.getText(),
 							timePickerFrom.getText(),

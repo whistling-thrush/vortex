@@ -116,5 +116,4 @@ public class BookingHistory extends JPanel {
 	public void clearBookings() {
 		bookingStack.removeAll();
 	}
-	
 }
