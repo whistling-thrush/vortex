@@ -49,6 +49,7 @@ public class CreateBooking extends JPanel {
 	private JButton btnCreate;
 	private JButton btnGoBack;
 	private JCheckBox chkbxAllDay;
+	private JButton btnFloorplan;
 
 	/**
 	 * Create the panel.
@@ -158,6 +159,16 @@ public class CreateBooking extends JPanel {
 		btnGoBack.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		btnGoBack.setBounds(60, 465, 174, 36);
 		add(btnGoBack);
+		
+		btnFloorplan = new JButton("Show floorplan");
+		btnFloorplan.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				deskBook.showFloorplan();
+			}
+		});
+		btnFloorplan.setBounds(172, 530, 156, 30);
+		add(btnFloorplan);
 	}
 
 	private void validateBooking() {
@@ -166,5 +177,4 @@ public class CreateBooking extends JPanel {
 			timePickerTo.setText(null);
 		}
 	}
-
 }

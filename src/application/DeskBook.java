@@ -20,6 +20,7 @@ public class DeskBook extends JFrame {
 	private CreateBooking createBooking;
 	private BookingHistory bookingHistory;
 	private SignUp signUp;
+	private Floorplan floorplan;
 	
 
 	/**
@@ -70,6 +71,7 @@ public class DeskBook extends JFrame {
 		createBooking = new CreateBooking(this);
 		bookingHistory = new BookingHistory(this);
 		signUp = new SignUp(this);
+		floorplan = new Floorplan();
 		
 		
 		//Setup the objects
@@ -79,6 +81,7 @@ public class DeskBook extends JFrame {
 		cardPanel.add(createBooking, "create");
 		cardPanel.add(bookingHistory, "history");
 		cardPanel.add(signUp, "signup");
+		cardPanel.add(floorplan, "floorplan");
 		
 	}
 
@@ -124,6 +127,12 @@ public class DeskBook extends JFrame {
 		setSize(loginScreen.dimension);
 		loginScreen.reset();
 		cardLayout.show(cardPanel, "login");
+	}
+	
+	public void showFloorplan() {
+		setMinimumSize(floorplan.dimension);
+		setSize(floorplan.dimension);
+		cardLayout.show(cardPanel, "floorplan");
 	}
 	
 }
