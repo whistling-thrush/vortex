@@ -7,7 +7,7 @@ public class Main {
 		//Initialise database manager
 		DatabaseManager.initialiseDBMS();
 		
-		//Initialise frame
+		//Initialise the frame
 		DeskBook.initialiseFrame();
 		
 	}

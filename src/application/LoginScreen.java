@@ -34,14 +34,11 @@ public class LoginScreen extends JPanel {
 	//Component declarations
 	private DeskBook deskBook;
 	private Dashboard dashboard;
-	private JLabel lblValidEmailPass;
 	private JLabel lblLogin;
 	private JLabel lblEmail;
 	private JFormattedTextField frmtdFieldEmail;
-	private JLabel lblValidEmail;
 	private JLabel lblPass;
 	private JPasswordField fieldPass;
-	private JLabel lblValidPass;
 	private JCheckBox chkBxShowPass;
 	private JSeparator separator;
 	private JButton btnForgotPass;
@@ -60,14 +57,6 @@ public class LoginScreen extends JPanel {
 	
 	private void setupPanel() {
 		setLayout(null);
-		
-		lblValidEmailPass = new JLabel("Incorrect email and/or password ");
-		lblValidEmailPass.setForeground(new Color(255, 0, 0));
-		lblValidEmailPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblValidEmailPass.setHorizontalAlignment(SwingConstants.CENTER);
-		lblValidEmailPass.setBounds(132, 41, 236, 23);
-		add(lblValidEmailPass);
-		lblValidEmailPass.setVisible(false);
 		
 		lblLogin = new JLabel("Log in.");
 		lblLogin.setSize(129, 70);
@@ -108,15 +97,6 @@ public class LoginScreen extends JPanel {
 		frmtdFieldEmail.setToolTipText("Enter your email");
 		add(frmtdFieldEmail);
 		
-		lblValidEmail = new JLabel("Enter valid email address!");
-		lblValidEmail.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblValidEmail.setSize(200, 16);
-		lblValidEmail.setLocation(247, 143);
-		lblValidEmail.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblValidEmail.setForeground(Color.RED);
-		add(lblValidEmail);
-		lblValidEmail.setVisible(false);
-		
 		lblPass = new JLabel("Password");
 		lblPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		lblPass.setSize(74, 16);
@@ -137,15 +117,6 @@ public class LoginScreen extends JPanel {
 		fieldPass.setLocation(60, 263);
 		fieldPass.setToolTipText("Enter your password");
 		add(fieldPass);
-		
-		lblValidPass = new JLabel("Enter valid password!");
-		lblValidPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblValidPass.setSize(200, 16);
-		lblValidPass.setLocation(247, 241);
-		lblValidPass.setForeground(Color.RED);
-		lblValidPass.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(lblValidPass);
-		lblValidPass.setVisible(false);
 		
 		chkBxShowPass = new JCheckBox("Show password");
 		chkBxShowPass.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -218,29 +189,22 @@ public class LoginScreen extends JPanel {
 	
 	private void loginRequested() {
 		
-		lblValidEmail.setVisible(false);
-		lblValidPass.setVisible(false);
-		lblValidEmailPass.setVisible(false);
-		
 		String pass = new String(fieldPass.getPassword());
 		String email = new String(frmtdFieldEmail.getText());
 		
 		if (email.isBlank() || email.isEmpty() || email.equals("Enter email address")) {
-			lblValidEmail.setVisible(true);
+			GlobalErrorBox.showError(deskBook, "Error: Invalid email or password");
 		}
 		
 		if (pass.isBlank() || pass.isEmpty()) {
-			lblValidPass.setVisible(true);
+			GlobalErrorBox.showError(deskBook, "Error: Invalid email or password");
 		}
 		
 		if (DatabaseManager.sql_loginSearch(email, pass)) {
-			lblValidEmail.setVisible(false);
-			lblValidPass.setVisible(false);
-			lblValidEmailPass.setVisible(false);
 			deskBook.showDash();
 			dashboard.changeWelcomeText(currentEmployeeName);
 		} else {
-			lblValidEmailPass.setVisible(true);
+			GlobalErrorBox.showError(deskBook, "Error: Invalid email or password");
 		}
 	}
 
@@ -250,11 +214,4 @@ public class LoginScreen extends JPanel {
 		frmtdFieldEmail.setForeground(Color.LIGHT_GRAY);
 	}
 	
-	public void invalidEmail() {
-		
-	}
-	
-	public void invalidPass() {
-		
-	}
 }

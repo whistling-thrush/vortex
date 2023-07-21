@@ -1,10 +1,10 @@
 package application;
 
 import java.awt.CardLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -27,7 +27,7 @@ public class DeskBook extends JFrame {
 	 */
 	
 	public static void initialiseFrame() {
-		EventQueue.invokeLater(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					DeskBook frame = new DeskBook();
@@ -45,19 +45,23 @@ public class DeskBook extends JFrame {
 	 * Create the frame.
 	 */
 	public DeskBook() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				DatabaseManager.sql_closeConnection();
-			}
-		});
-		initComponents();
-		setupFrame();
+		try {
+			addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					DatabaseManager.sql_closeConnection();
+				}
+			});
+			initComponents();
+			setupFrame();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
 	private void initComponents() {
-		
+
 		//Initialise the objects
 		cardLayout = new CardLayout();
 		cardPanel = new JPanel();
