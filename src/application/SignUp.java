@@ -161,7 +161,7 @@ public class SignUp extends JPanel {
 		btnSignup = new JButton("Sign up");
 		btnSignup.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				signupRequested();
 			}
 		});

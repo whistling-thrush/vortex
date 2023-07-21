@@ -154,7 +154,7 @@ public class LoginScreen extends JPanel {
 		btnSignUp.setSize(104, 29);
 		btnSignUp.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				deskBook.showSignup();
 			}
 		});
@@ -169,7 +169,7 @@ public class LoginScreen extends JPanel {
 		btnLogin.setLocation(60, 420);
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				loginRequested();
 			}
 		});

@@ -120,7 +120,7 @@ public class CreateBooking extends JPanel {
 		btnCreate = new JButton("Create booking");
 		btnCreate.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				validateBooking();
 				
 				if (chkbxAllDay.isSelected()) {
@@ -152,7 +152,7 @@ public class CreateBooking extends JPanel {
 		btnGoBack = new JButton("Go back");
 		btnGoBack.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				deskBook.showDash();
 			}
 		});
@@ -163,7 +163,7 @@ public class CreateBooking extends JPanel {
 		btnFloorplan = new JButton("Show floorplan");
 		btnFloorplan.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				deskBook.showFloorplan();
 			}
 		});

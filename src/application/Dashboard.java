@@ -61,7 +61,7 @@ public class Dashboard extends JPanel {
 		btnCreateBooking = new JButton("New booking");
 		btnCreateBooking.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				deskBook.showCreate();
 			}
 		});
@@ -72,7 +72,7 @@ public class Dashboard extends JPanel {
 		btnSeeHistory = new JButton("Booking history");
 		btnSeeHistory.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				deskBook.showHistory();
 			}
 		});
@@ -96,7 +96,7 @@ public class Dashboard extends JPanel {
 		btnLogOut = new JButton("Log out");
 		btnLogOut.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				logout();
 			}
 		});

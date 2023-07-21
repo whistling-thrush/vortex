@@ -65,7 +65,7 @@ public class BookingHistory extends JPanel {
 		btnGoBack.setBounds(30, 535, 134, 29);
 		btnGoBack.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				deskBook.showDash();
 			}
 		});
