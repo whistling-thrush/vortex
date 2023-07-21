@@ -1,6 +1,7 @@
 package application;
 
 import javax.swing.JPanel;
+import javax.xml.transform.Source;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,6 +19,7 @@ public class Floorplan extends JPanel {
 	//Variable declarations
 	private List<Rectangle> desks;
 	private Rectangle selectedDesk;
+	private Rectangle clickedDesk;
 	public Dimension dimension;
 
 	/**
@@ -41,23 +43,19 @@ public class Floorplan extends JPanel {
 		addDesk(200, 150, 100, 80);
 		
 		addMouseMotionListener(new MouseAdapter() {
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				deskClick(e.getX(), e.getY());
-			}
-			
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				deskHover(e.getX(), e.getY());
 			}
-			
-//			@Override
-//			public void mouseExited(MouseEvent e) {
-//				deskHoverExit();
-//			}
-			
 		});
+		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				deskClick(e.getX(), e.getY());
+			}
+		});
+
 	}
 
 	private void addDesk(int x, int y, int width, int height) {
@@ -67,7 +65,7 @@ public class Floorplan extends JPanel {
 	private void deskClick(int x, int y) {
 		for (Rectangle desk : desks) {
 			if (desk.contains(x, y)) {
-				selectedDesk = desk;
+				clickedDesk = desk;
 				repaint();
 				break;
 			}
@@ -87,13 +85,6 @@ public class Floorplan extends JPanel {
 		}
 	}
 	
-//	private void deskHoverExit() {
-//		for (Rectangle desk : desks) {
-//			selectedDesk = null;
-//			repaint();
-//		}
-//	}
-	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -101,7 +92,9 @@ public class Floorplan extends JPanel {
 		// Draw the desks
 		for (Rectangle desk : desks) {
 			
-			if (desk == selectedDesk) {
+			if (desk == clickedDesk && desk != selectedDesk) {
+				g.setColor(Color.blue);
+			} else if (desk == selectedDesk) {
 				g.setColor(Color.red);
 			} else {
 				g.setColor(Color.black);
