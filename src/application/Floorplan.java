@@ -40,18 +40,18 @@ public class Floorplan extends JPanel {
 		addDesk(50, 150, 100, 80);
 		addDesk(200, 150, 100, 80);
 		
-		addMouseListener(new MouseAdapter() {
+		addMouseMotionListener(new MouseAdapter() {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
 				deskClick(e.getX(), e.getY());
 			}
 			
-//			@Override
-//			public void mouseEntered(MouseEvent e) {
-//				deskHover(e.getX(), e.getY());
-//			}
-//			
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				deskHover(e.getX(), e.getY());
+			}
+			
 //			@Override
 //			public void mouseExited(MouseEvent e) {
 //				deskHoverExit();
@@ -69,9 +69,30 @@ public class Floorplan extends JPanel {
 			if (desk.contains(x, y)) {
 				selectedDesk = desk;
 				repaint();
+				break;
 			}
 		}
 	}
+	
+	private void deskHover(int x, int y) {
+		for (Rectangle desk : desks) {
+			if (desk.contains(x, y)) {
+				selectedDesk = desk;
+				repaint();
+				break;
+			} else {
+				selectedDesk = null;
+				repaint();
+			}
+		}
+	}
+	
+//	private void deskHoverExit() {
+//		for (Rectangle desk : desks) {
+//			selectedDesk = null;
+//			repaint();
+//		}
+//	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -81,11 +102,7 @@ public class Floorplan extends JPanel {
 		for (Rectangle desk : desks) {
 			
 			if (desk == selectedDesk) {
-				if (g.getColor() == Color.black) {
-					g.setColor(Color.red);
-				} else {
-					g.setColor(Color.red);
-				}
+				g.setColor(Color.red);
 			} else {
 				g.setColor(Color.black);
 			}

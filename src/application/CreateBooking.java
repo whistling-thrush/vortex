@@ -130,7 +130,8 @@ public class CreateBooking extends JPanel {
 							datePicker.getText(),
 							minTime.format(DateTimeFormatter.ofPattern("hh:mm a")).toString(),
 							maxTime.format(DateTimeFormatter.ofPattern("hh:mm a")).toString(),
-							(int) duration);
+							(int) duration,
+							deskBook);
 				} else {
 					duration = Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();
 					DatabaseManager.sql_createBooking(
@@ -139,7 +140,8 @@ public class CreateBooking extends JPanel {
 							datePicker.getText(),
 							timePickerFrom.getText(),
 							timePickerTo.getText(),
-							(int) duration);
+							(int) duration,
+							deskBook);
 				}
 				
 				deskBook.showDash();

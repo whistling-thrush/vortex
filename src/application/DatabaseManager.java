@@ -18,7 +18,7 @@ import java.util.Date;
 public class DatabaseManager {
 	
 	//Variable declarations
-	public static Connection connection;	
+	public static Connection connection;
 	
 	public static void initialiseDBMS() {
 		String url = "jdbc:mysql://localhost:3306/desk_book";
@@ -93,7 +93,7 @@ public class DatabaseManager {
 		}
 	}
 	
-	public static void sql_createBooking(int empID, int desk, String date, String startTime, String endTime, int duration) {
+	public static void sql_createBooking(int empID, int desk, String date, String startTime, String endTime, int duration, DeskBook deskBook) {
 		try {
 			
 			Date _date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
@@ -111,10 +111,8 @@ public class DatabaseManager {
 				creationStatement.execute();
 				
 				creationStatement.close();
-				
-				System.out.println("Booking created: " + empID + desk + date + startTime + endTime + duration);
 			} else {
-				//Some error message				
+				GlobalErrorBox.showError(deskBook, "Error: Please ensure selected date is after current date.");				
 			}
 			
 		} catch (ParseException | SQLException | IOException e) {

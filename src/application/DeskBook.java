@@ -26,6 +26,15 @@ public class DeskBook extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	public static void main(String[] args) {
+		
+		//Initialise database manager
+		DatabaseManager.initialiseDBMS();
+		
+		//Initialise the frame
+		initialiseFrame();
+		
+	}
 	
 	public static void initialiseFrame() {
 		SwingUtilities.invokeLater(new Runnable() {
