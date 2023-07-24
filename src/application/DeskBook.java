@@ -32,7 +32,7 @@ public class DeskBook extends JFrame {
 		DatabaseManager.initialiseDBMS();
 		
 		//Initialise the frame
-		initialiseFrame();
+		DeskBook.initialiseFrame();
 		
 	}
 	
@@ -141,6 +141,7 @@ public class DeskBook extends JFrame {
 	public void showFloorplan() {
 		setMinimumSize(floorplan.dimension);
 		setSize(floorplan.dimension);
+		floorplan.addFloorplan();
 		cardLayout.show(cardPanel, "floorplan");
 	}
 	
