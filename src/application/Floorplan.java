@@ -17,8 +17,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 public class Floorplan extends JPanel {
 	
@@ -36,6 +36,7 @@ public class Floorplan extends JPanel {
 	private Element deskSelected;
 	private ArrayList<Element> desks;
 	private boolean deskBookedBool;
+	private int maxFloor;
 	private JSVGCanvas svgCanvas;
 	private String chosenDeskColor = "#e2e460";
 	private String bookedDeskColor = "#e36e89";
@@ -57,6 +58,7 @@ public class Floorplan extends JPanel {
 	
 	private void setupPanel() {
 		
+		maxFloor = 4;
 		setLayout(new BorderLayout());
 		initButtonPanel();
 		
@@ -80,7 +82,8 @@ public class Floorplan extends JPanel {
 		lblChooseFloor.setBounds(52, 39, 96, 29);
 		buttonPanel.add(lblChooseFloor);
 		
-		spnnrFloorSelect = new JSpinner();
+		SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(1, 1, maxFloor, 1);
+		spnnrFloorSelect = new JSpinner(spinnerNumberModel);
 		spnnrFloorSelect.setBounds(47, 67, 105, 26);
 		buttonPanel.add(spnnrFloorSelect);
 		
