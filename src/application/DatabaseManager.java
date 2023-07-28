@@ -120,6 +120,22 @@ public class DatabaseManager {
 		}
 	}
 
+	public static void sql_deleteBooking(int bookID) {
+		
+		try {
+			
+			String query = new String(Files.readAllBytes(Paths.get("src/queries/delete_booking.sql")), StandardCharsets.UTF_8);
+			PreparedStatement deletionStatement = connection.prepareStatement(query);
+			deletionStatement.setInt(1, bookID);
+			deletionStatement.execute();
+			
+			deletionStatement.close();
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public static ArrayList<Booking> sql_upcomingBookings() {
 		final int empID = LoginScreen.currentEmployeeID;
 		ArrayList<Booking> upcomingBookings = new ArrayList<Booking>();

@@ -105,9 +105,11 @@ public class Dashboard extends JPanel {
 		add(btnLogOut);
 	}
 	
+	
 	private void logout() {
 		deskBook.showLogin();
 	}
+	
 	
 	private JPanel createBookingPanel(Booking booking) {
 		bookingDetails = new JPanel();
@@ -128,7 +130,45 @@ public class Dashboard extends JPanel {
 				+ booking.getDate());
 		bookingDetails.add(lblDetails);
 		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new BorderLayout());
+		
+		JButton btnCancelBooking = new JButton();
+		btnCancelBooking.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				cancelBooking(booking.getBookID());
+				//Very jugadu fix for now :)
+				deskBook.showCreate();
+				deskBook.showDash();
+			}
+		});
+		btnCancelBooking.setText("Cancel booking");
+		btnCancelBooking.setSize(new Dimension(30, 5));
+		buttonPanel.add(btnCancelBooking, BorderLayout.EAST);
+		
+		JButton btnChangeBooking = new JButton();
+		btnChangeBooking.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				changeBooking();
+			}
+		});
+		btnChangeBooking.setText("Change booking");
+		btnChangeBooking.setSize(new Dimension(30, 5));
+		buttonPanel.add(btnChangeBooking, BorderLayout.WEST);
+		
+		bookingDetails.add(buttonPanel, BorderLayout.EAST);
+		
 		return bookingDetails;
+	}
+	
+	private void cancelBooking(int bookID) {
+		DatabaseManager.sql_deleteBooking(bookID);
+	}
+	
+	private void changeBooking() {
+		
 	}
 	
 	public void changeWelcomeText (String name) {
@@ -141,6 +181,10 @@ public class Dashboard extends JPanel {
 		
 		for (int i = 0; i < bookings.size(); i++) {
 			
+			if (i == 0) {
+				bookingStack.add(Box.createRigidArea(new Dimension(0, 20)));
+			}
+			
 			bookingDetails = createBookingPanel(bookings.get(i));
 			bookingDetails.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
 			bookingStack.add(bookingDetails);
@@ -151,6 +195,7 @@ public class Dashboard extends JPanel {
 		}
 	}
 
+	
 	public void clearBookings() {
 		bookingStack.removeAll();
 	}
