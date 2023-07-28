@@ -25,12 +25,12 @@ public class GlobalErrorBox extends JDialog {
         JLabel messageLabel = new JLabel(message);
         messageLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
-        JButton okButton = new JButton("OK");
-        okButton.addActionListener(e -> dispose());
+        JButton btnOk = new JButton("OK");
+        btnOk.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.add(okButton);
-
+        buttonPanel.add(btnOk);
+        
         contentPane.add(messageLabel, BorderLayout.CENTER);
         contentPane.add(buttonPanel, BorderLayout.SOUTH);
 

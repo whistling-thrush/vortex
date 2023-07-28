@@ -22,6 +22,8 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CreateBooking extends JPanel {
 
@@ -43,13 +45,11 @@ public class CreateBooking extends JPanel {
 	private TimePickerSettings settingsTime;
 	private TimePicker timePickerFrom;
 	private TimePicker timePickerTo;
-	private JLabel lblChooseDesk;
-	private SpinnerNumberModel model;
-	private JSpinner deskPicker;
-	private JButton btnCreate;
+	private JButton btnFloorplan;
+	private JLabel lblDeskChosen;
 	private JButton btnGoBack;
 	private JCheckBox chkbxAllDay;
-	private JButton btnFloorplan;
+	private JButton btnCreate;
 
 	/**
 	 * Create the panel.
@@ -107,15 +107,35 @@ public class CreateBooking extends JPanel {
 		timePickerTo.setBounds(265, 294, 193, 30);
 		add(timePickerTo);
 		
-		lblChooseDesk = new JLabel("Choose desk number (from 1 to 50)");
-		lblChooseDesk.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblChooseDesk.setBounds(60, 367, 261, 16);
-		add(lblChooseDesk);
+		//Show floorplan button
+		btnFloorplan = new JButton("Show floorplan");
+		btnFloorplan.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				deskBook.showFloorplan();
+			}
+		});
+		btnFloorplan.setBounds(60, 390, 174, 36);
+		btnFloorplan.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		add(btnFloorplan);
 		
-		model = new SpinnerNumberModel(1, 1, 50, 1);
-		deskPicker = new JSpinner(model);
-		deskPicker.setBounds(60, 395, 109, 30);
-		add(deskPicker);
+		//Desk chosen label
+		lblDeskChosen = new JLabel();
+		lblDeskChosen.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		lblDeskChosen.setBounds(253, 401, 205, 16);
+		add(lblDeskChosen);
+		
+		//Go back button
+		btnGoBack = new JButton("Go back");
+		btnGoBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				deskBook.showDash();
+			}
+		});
+		btnGoBack.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		btnGoBack.setBounds(60, 465, 174, 36);
+		add(btnGoBack);
 		
 		btnCreate = new JButton("Create booking");
 		btnCreate.addMouseListener(new MouseAdapter() {
@@ -126,7 +146,7 @@ public class CreateBooking extends JPanel {
 				if (chkbxAllDay.isSelected()) {
 					duration = Duration.between(minTime, maxTime).toMinutes();
 					DatabaseManager.sql_createBooking(LoginScreen.currentEmployeeID,
-							(int) deskPicker.getValue(),
+							deskBook.getFloorplan().selectedDesk,
 							datePicker.getText(),
 							minTime.format(DateTimeFormatter.ofPattern("hh:mm a")).toString(),
 							maxTime.format(DateTimeFormatter.ofPattern("hh:mm a")).toString(),
@@ -136,7 +156,7 @@ public class CreateBooking extends JPanel {
 					duration = Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();
 					DatabaseManager.sql_createBooking(
 							LoginScreen.currentEmployeeID,
-							(int) deskPicker.getValue(),
+							deskBook.getFloorplan().selectedDesk,
 							datePicker.getText(),
 							timePickerFrom.getText(),
 							timePickerTo.getText(),
@@ -151,26 +171,6 @@ public class CreateBooking extends JPanel {
 		btnCreate.setBounds(284, 465, 174, 36);
 		add(btnCreate);
 		
-		btnGoBack = new JButton("Go back");
-		btnGoBack.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				deskBook.showDash();
-			}
-		});
-		btnGoBack.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		btnGoBack.setBounds(60, 465, 174, 36);
-		add(btnGoBack);
-		
-		btnFloorplan = new JButton("Show floorplan");
-		btnFloorplan.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				deskBook.showFloorplan();
-			}
-		});
-		btnFloorplan.setBounds(172, 530, 156, 30);
-		add(btnFloorplan);
 	}
 
 	private void validateBooking() {

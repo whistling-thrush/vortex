@@ -36,6 +36,7 @@ public class SignUp extends JPanel {
 	private JPasswordField fieldPass;
 	private JCheckBox chkBxShowPass;
 	private JButton btnSignup;
+	private JButton btnGoBack;
 	
 	/**
 	 * Create the panel.
@@ -166,8 +167,19 @@ public class SignUp extends JPanel {
 			}
 		});
 		btnSignup.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		btnSignup.setBounds(159, 488, 181, 45);
+		btnSignup.setBounds(266, 487, 181, 45);
 		add(btnSignup);
+		
+		btnGoBack = new JButton("Go back");
+		btnGoBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				deskBook.showLogin();
+			}
+		});
+		btnGoBack.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		btnGoBack.setBounds(60, 487, 181, 45);
+		add(btnGoBack);
 		
 	}
 	

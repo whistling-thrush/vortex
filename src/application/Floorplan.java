@@ -1,5 +1,6 @@
 package application;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.apache.batik.swing.JSVGCanvas;
@@ -10,33 +11,54 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
 import org.w3c.dom.events.EventTarget;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JSpinner;
 
 public class Floorplan extends JPanel {
 	
 	private static final long serialVersionUID = 6043243388012766414L;
 	
+	//Component declarations
+	private DeskBook deskBook;
+	private JLabel lblChooseFloor;
+	private JSpinner spnnrFloorSelect;
+	private JPanel buttonPanel;
+	private JButton btnConfirm;
+	private JButton btnGoBack;
+	
 	//Variable declarations
+	private Element deskSelected;
 	private ArrayList<Element> desks;
+	private boolean deskBookedBool;
 	private JSVGCanvas svgCanvas;
 	private String chosenDeskColor = "#e2e460";
 	private String bookedDeskColor = "#e36e89";
 	private String freeDeskColor = "#6eb8e3";
 	
 	public Dimension dimension;
+	public int selectedDesk;
+	public char selectedCluster;
+	public int selectedFloor;
 
 	/**
 	 * Create the panel.
 	 */
-	public Floorplan() {
-		dimension = new Dimension(765, 1020);
+	public Floorplan(DeskBook deskBook) {
+		this.deskBook = deskBook;
+		dimension = new Dimension(965, 1020);
 		setupPanel();
 	}
 	
 	private void setupPanel() {
-		setBackground(Color.WHITE);
+		
+		setLayout(new BorderLayout());
+		initButtonPanel();
 		
 		// Initialize the list of desks
 		desks = new ArrayList<>();
@@ -47,12 +69,51 @@ public class Floorplan extends JPanel {
 		svgCanvas.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
 
 	}
+	
+	private void initButtonPanel() {
+		buttonPanel = new JPanel();
+		buttonPanel.setPreferredSize(new Dimension(200, dimension.height));
+		add(buttonPanel, BorderLayout.EAST);
+		buttonPanel.setLayout(null);
+		
+		lblChooseFloor = new JLabel("Choose floor");
+		lblChooseFloor.setBounds(52, 39, 96, 29);
+		buttonPanel.add(lblChooseFloor);
+		
+		spnnrFloorSelect = new JSpinner();
+		spnnrFloorSelect.setBounds(47, 67, 105, 26);
+		buttonPanel.add(spnnrFloorSelect);
+		
+		btnConfirm = new JButton();
+		btnConfirm.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				selectedDesk += (((int) spnnrFloorSelect.getValue()) - 1) * 48;
+				deskBook.showCreate();
+			}
+		});
+		btnConfirm.setText("Confirm desk?");
+		btnConfirm.setBounds(33, 211, 134, 29);
+		buttonPanel.add(btnConfirm);
+		
+		btnGoBack = new JButton();
+		btnGoBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				deskSelected = null;
+				deskBook.showCreate();
+			}
+		});
+		btnGoBack.setText("Go back");
+		btnGoBack.setBounds(66, 252, 75, 29);
+		buttonPanel.add(btnGoBack);
+		
+	}
 
 	
 	public void addFloorplan() {
-
 		traverse(svgCanvas.getSVGDocument().getDocumentElement(), "Desk");
-		add(svgCanvas);
+		add(svgCanvas, BorderLayout.WEST);
 	}
 	
 	
@@ -60,18 +121,32 @@ public class Floorplan extends JPanel {
 	private void traverse(Element element, String substring) {
     	
     	if (element.getAttribute("id").startsWith(substring)) {
-    			desks.add(element);
+    		
+    		if (!element.equals(deskSelected)) {
+    			changeColourOfDesk(freeDeskColor, element);
+    		}
+    		
+    		desks.add(element);	
     			
-    			EventTarget target = (EventTarget) element;
+			deskBookedBool = checkIfBooked(element);
+			
+			if (deskBookedBool) {
+				changeColourOfDesk(bookedDeskColor, element);
+			} else {
+				EventTarget target = (EventTarget) element;
+				
+				target.addEventListener("click", new EventListener() {
+					public void handleEvent(Event evt) {
+						if (evt.getType().equals("click")) {
+							changeColourOfDesk(freeDeskColor, deskSelected);
+							changeColourOfDesk(chosenDeskColor, element);
+							deskSelected = element;
+							selectedDesk = Integer.parseInt(element.getAttribute("id").replace("Desk", ""));
+						}
+					}
+				}, false);
+			}
     			
-                target.addEventListener("click", new EventListener() {
-                    public void handleEvent(Event evt) {
-                        if(evt.getType().equals("click")){
-                        	changeColourOfDesk(chosenDeskColor, element);
-                         }
-                     }
-                    
-                 }, false);
     	} else {
 
     		NodeList children = element.getChildNodes();
@@ -91,34 +166,34 @@ public class Floorplan extends JPanel {
 	
 	private void changeColourOfDesk (String colour, Element desk) {
 		
-		NodeList deskChildren = desk.getChildNodes();
-		
-		for (int i = 0; i < deskChildren.getLength(); i++) {
-			try {
-				Element deskChild = (Element) deskChildren.item(i);
-				
-				if (deskChild.getAttribute("id").startsWith("Table") ||
-						deskChild.getAttribute("id").startsWith("Seat") || 
-						(deskChild.getAttribute("fill") != null &&
-						deskChild.getAttribute("fill-rule").equals("evenodd"))) {
-					deskChild.setAttribute("fill", colour);
-				} else if (deskChild.getLocalName() == "mask") {
-					continue;
-				} else {
-					changeColourOfDesk(colour, deskChild);
-				}
-			} catch (Exception e) {
-			}
+		if (desk == null) {
+			return;
+		} else {
 			
+			NodeList deskChildren = desk.getChildNodes();
+			
+			for (int i = 0; i < deskChildren.getLength(); i++) {
+				try {
+					Element deskChild = (Element) deskChildren.item(i);
+					
+					if (deskChild.getAttribute("id").startsWith("Table") ||
+							deskChild.getAttribute("id").startsWith("Seat") || 
+							(deskChild.getAttribute("fill") != null &&
+							deskChild.getAttribute("fill-rule").equals("evenodd"))) {
+						deskChild.setAttribute("fill", colour);
+					} else if (deskChild.getLocalName() == "mask") {
+						continue;
+					} else {
+						changeColourOfDesk(colour, deskChild);
+					}
+				} catch (Exception e) { 
+				}
+				
+			}
 		}
-		
-		//Change colour of table
-		
-		
-		//Change colour of seat
-		
-		
-		//Change colour of support
-		
+	}
+
+	private boolean checkIfBooked(Element element) {
+		return false;
 	}
 }

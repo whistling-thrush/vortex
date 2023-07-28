@@ -80,7 +80,7 @@ public class DeskBook extends JFrame {
 		createBooking = new CreateBooking(this);
 		bookingHistory = new BookingHistory(this);
 		signUp = new SignUp(this);
-		floorplan = new Floorplan();
+		floorplan = new Floorplan(this);
 		
 		
 		//Setup the objects
@@ -96,7 +96,7 @@ public class DeskBook extends JFrame {
 
 
 	private void setupFrame() {
-		setMinimumSize(loginScreen.dimension);
+		setPreferredSize(loginScreen.dimension);
 		setContentPane(cardPanel);
 		cardLayout.show(cardPanel, "login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -143,6 +143,10 @@ public class DeskBook extends JFrame {
 		setSize(floorplan.dimension);
 		floorplan.addFloorplan();
 		cardLayout.show(cardPanel, "floorplan");
+	}
+	
+	public Floorplan getFloorplan() {
+		return floorplan;
 	}
 	
 }
