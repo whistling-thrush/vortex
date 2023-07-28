@@ -36,7 +36,9 @@ public class Floorplan extends JPanel {
 	private Element deskSelected;
 	private ArrayList<Element> desks;
 	private boolean deskBookedBool;
+	private boolean showCreateBooking = true;
 	private int maxFloor;
+	private int bookID;
 	private JSVGCanvas svgCanvas;
 	private String chosenDeskColor = "#e2e460";
 	private String bookedDeskColor = "#e36e89";
@@ -92,7 +94,11 @@ public class Floorplan extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				selectedDesk += (((int) spnnrFloorSelect.getValue()) - 1) * 48;
-				deskBook.showCreate();
+				if (showCreateBooking) {	
+					deskBook.showCreate();
+				} else { 
+					deskBook.showChangeBooking(bookID); 
+				}
 			}
 		});
 		btnConfirm.setText("Confirm desk?");
@@ -104,7 +110,11 @@ public class Floorplan extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				deskSelected = null;
-				deskBook.showCreate();
+				if (showCreateBooking) {	
+					deskBook.showCreate();
+				} else { 
+					deskBook.showChangeBooking(bookID); 
+				}
 			}
 		});
 		btnGoBack.setText("Go back");
@@ -114,7 +124,9 @@ public class Floorplan extends JPanel {
 	}
 
 	
-	public void addFloorplan() {
+	public void addFloorplan(boolean showCreateBooking, int bookID) {
+		this.showCreateBooking = showCreateBooking;
+		this.bookID = bookID;
 		traverse(svgCanvas.getSVGDocument().getDocumentElement(), "Desk");
 		add(svgCanvas, BorderLayout.WEST);
 	}

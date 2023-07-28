@@ -27,25 +27,26 @@ public class CreateBooking extends JPanel {
 	
 	//Variable declarations
 	public Dimension dimension = new Dimension(500, 600);
-	private long duration;
-	private LocalTime minTime;
-	private LocalTime maxTime;
+	protected long duration;
+	protected LocalTime minTime;
+	protected LocalTime maxTime;
 	
 	//Component declarations
-	private DeskBook deskBook;
-	private JLabel lblNewBooking;
-	private JLabel lblChooseDate;
-	private DatePickerSettings settingsDate;
-	private DatePicker datePicker;
-	private JLabel lblChooseTime;
-	private TimePickerSettings settingsTime;
-	private TimePicker timePickerFrom;
-	private TimePicker timePickerTo;
-	private JButton btnFloorplan;
-	private JLabel lblDeskChosen;
-	private JButton btnGoBack;
-	private JCheckBox chkbxAllDay;
-	private JButton btnCreate;
+	protected DeskBook deskBook;
+	protected JLabel lblNewBooking;
+	protected JLabel lblChooseDate;
+	protected DatePickerSettings settingsDate;
+	protected DatePicker datePicker;
+	protected JLabel lblChooseTime;
+	protected TimePickerSettings settingsTime;
+	protected TimePicker timePickerFrom;
+	protected TimePicker timePickerTo;
+	protected JButton btnFloorplan;
+	protected JLabel lblDeskChosen;
+	protected JButton btnGoBack;
+	protected JCheckBox chkbxAllDay;
+	protected JButton btnCreate;
+	protected MouseAdapter mouseAdapterCreate;
 
 	/**
 	 * Create the panel.
@@ -108,7 +109,7 @@ public class CreateBooking extends JPanel {
 		btnFloorplan.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				deskBook.showFloorplan();
+				deskBook.showFloorplan(true);
 			}
 		});
 		btnFloorplan.setBounds(60, 390, 174, 36);
@@ -134,7 +135,7 @@ public class CreateBooking extends JPanel {
 		add(btnGoBack);
 		
 		btnCreate = new JButton("Create booking");
-		btnCreate.addMouseListener(new MouseAdapter() {
+		mouseAdapterCreate = new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				validateBooking();
@@ -162,14 +163,15 @@ public class CreateBooking extends JPanel {
 				
 				deskBook.showDash();
 			}
-		});
+		};
+		btnCreate.addMouseListener(mouseAdapterCreate);
 		btnCreate.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		btnCreate.setBounds(284, 465, 174, 36);
 		add(btnCreate);
 		
 	}
 
-	private void validateBooking() {
+	protected void validateBooking() {
 		if (timePickerFrom.getTime().isAfter(timePickerTo.getTime())) {
 			timePickerFrom.setText(null);
 			timePickerTo.setText(null);

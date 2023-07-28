@@ -13,6 +13,7 @@ public class DeskBook extends JFrame {
 	
 	private static final long serialVersionUID = -5620007751101260104L;
 	
+	//Component declarations
 	private CardLayout cardLayout;
 	private JPanel cardPanel;
 	private LoginScreen loginScreen;
@@ -21,6 +22,10 @@ public class DeskBook extends JFrame {
 	private BookingHistory bookingHistory;
 	private SignUp signUp;
 	private Floorplan floorplan;
+	private ChangeBooking changeBooking;
+	
+	//Variable declarations
+	private int bookID;
 	
 
 	/**
@@ -81,6 +86,7 @@ public class DeskBook extends JFrame {
 		bookingHistory = new BookingHistory(this);
 		signUp = new SignUp(this);
 		floorplan = new Floorplan(this);
+		changeBooking = new ChangeBooking(this);
 		
 		
 		//Setup the objects
@@ -91,6 +97,7 @@ public class DeskBook extends JFrame {
 		cardPanel.add(bookingHistory, "history");
 		cardPanel.add(signUp, "signup");
 		cardPanel.add(floorplan, "floorplan");
+		cardPanel.add(changeBooking, "changeBooking");
 		
 	}
 
@@ -138,15 +145,23 @@ public class DeskBook extends JFrame {
 		cardLayout.show(cardPanel, "login");
 	}
 	
-	public void showFloorplan() {
+	public void showFloorplan(boolean showCreateBooking) {
 		setMinimumSize(floorplan.dimension);
 		setSize(floorplan.dimension);
-		floorplan.addFloorplan();
+		floorplan.addFloorplan(showCreateBooking, bookID);
 		cardLayout.show(cardPanel, "floorplan");
 	}
 	
 	public Floorplan getFloorplan() {
 		return floorplan;
+	}
+	
+	public void showChangeBooking(int bookID) {
+		this.bookID = bookID;
+		setMinimumSize(changeBooking.dimension);
+		setSize(changeBooking.dimension);
+		changeBooking.setBookID(bookID);
+		cardLayout.show(cardPanel, "changeBooking");
 	}
 	
 }

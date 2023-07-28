@@ -136,6 +136,28 @@ public class DatabaseManager {
 		
 	}
 	
+	public static void sql_changeBooking (int bookID, int _deskNum, String _date, String _timeStart, String _timeEnd, int _duration) {
+		
+		try {
+			
+			String query = new String(Files.readAllBytes(Paths.get("src/queries/change_booking.sql")), StandardCharsets.UTF_8);
+			PreparedStatement changeStatement = connection.prepareStatement(query);
+			changeStatement.setInt(1, _deskNum);
+			changeStatement.setString(2, _date);
+			changeStatement.setString(3, _timeStart);
+			changeStatement.setString(4, _timeEnd);
+			changeStatement.setInt(5, _duration);
+			changeStatement.setInt(6, bookID);
+			changeStatement.execute();
+			
+			changeStatement.close();
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 	public static ArrayList<Booking> sql_upcomingBookings() {
 		final int empID = LoginScreen.currentEmployeeID;
 		ArrayList<Booking> upcomingBookings = new ArrayList<Booking>();

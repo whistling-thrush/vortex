@@ -151,7 +151,7 @@ public class Dashboard extends JPanel {
 		btnChangeBooking.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				changeBooking();
+				changeBooking(booking.getBookID());
 			}
 		});
 		btnChangeBooking.setText("Change booking");
@@ -167,8 +167,8 @@ public class Dashboard extends JPanel {
 		DatabaseManager.sql_deleteBooking(bookID);
 	}
 	
-	private void changeBooking() {
-		
+	private void changeBooking(int bookID) {
+		deskBook.showChangeBooking(bookID);
 	}
 	
 	public void changeWelcomeText (String name) {
