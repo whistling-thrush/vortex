@@ -1,0 +1,6 @@
+.DS_Store
+batik-1.16/
+bin/
+.settings/
+.project
+.classpath
