@@ -148,6 +148,7 @@ public class DeskBook extends JFrame {
 	public void showFloorplan(boolean showCreateBooking) {
 		setMinimumSize(floorplan.dimension);
 		setSize(floorplan.dimension);
+		floorplan.resetFloorplan();
 		floorplan.addFloorplan(showCreateBooking, bookID);
 		cardLayout.show(cardPanel, "floorplan");
 	}

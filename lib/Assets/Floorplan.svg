@@ -1,7 +1,7 @@
-<svg width="765" height="1020" viewBox="0 0 765 1020" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="765" height="1020" viewBox="0 0 765 1020" fill="none" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
 <rect width="765" height="1020" fill="#1E1E1E"/>
 <g id="Frame 1">
-<rect width="765" height="1020" fill="white"/>
+<rect width="765" height="1020" fill="white" />
 <g id="Cluster_H">
 <path id="Divider_horizontal" d="M425 880H730.5" stroke="#AFAFAF" stroke-width="0.5"/>
 <path id="Divider_left" d="M532 819L532 935" stroke="#AFAFAF" stroke-width="0.5"/>
@@ -17,11 +17,11 @@
 <path d="M662 956H661V957H662V956ZM680 956V957H681V956H680ZM684 934C681.239 934 679 936.239 679 939H681C681 937.343 682.343 936 684 936V934ZM689 939C689 936.239 686.761 934 684 934V936C685.657 936 687 937.343 687 939H689ZM689 960V939H687V960H689ZM684 965C686.761 965 689 962.761 689 960H687C687 961.657 685.657 963 684 963V965ZM658 965H684V963H658V965ZM653 960C653 962.761 655.239 965 658 965V963C656.343 963 655 961.657 655 960H653ZM655 960V939H653V960H655ZM655 939C655 937.343 656.343 936 658 936V934C655.239 934 653 936.239 653 939H655ZM658 936C659.657 936 661 937.343 661 939H663C663 936.239 660.761 934 658 934V936ZM661 939V956H663V939H661ZM680 955H662V957H680V955ZM679 939V956H681V939H679Z" fill="black" mask="url(#path-5-inside-1_0_1)"/>
 </g>
 </g>
-<rect id="Table" x="640.5" y="903.5" width="62" height="28" fill="#6EB9E3" stroke="black"/>
+<rect id="Table" x="640.5" y="903.5" width="62" height="28" fill="#6EB9E3" stroke="black" />
 </g>
 <g id="Desk47">
 <g id="Chair_2">
-<rect id="Seat_2" x="568.5" y="942.5" width="19" height="15" fill="#6EB9E3" stroke="black"/>
+<rect id="Seat_2" x="568.5" y="942.5" width="19" height="15" fill="#6EB9E3" stroke="black" />
 <g id="Support_2">
 <mask id="path-9-inside-2_0_1" fill="white">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M587 939C587 936.791 588.791 935 591 935C593.209 935 595 936.791 595 939V960C595 962.209 593.209 964 591 964H565C562.791 964 561 962.209 561 960V939C561 936.791 562.791 935 565 935C567.209 935 569 936.791 569 939V956H587V939Z"/>

@@ -177,4 +177,8 @@ public class CreateBooking extends JPanel {
 			timePickerTo.setText(null);
 		}
 	}
+	
+	public void resetCreateBooking() {
+		 
+	}
 }

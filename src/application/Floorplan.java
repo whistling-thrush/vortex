@@ -33,7 +33,7 @@ public class Floorplan extends JPanel {
 	private JButton btnGoBack;
 	
 	//Variable declarations
-	private Element deskSelected;
+	private Element deskSelectedElement;
 	private ArrayList<Element> desks;
 	private boolean deskBookedBool;
 	private boolean showCreateBooking = true;
@@ -46,8 +46,6 @@ public class Floorplan extends JPanel {
 	
 	public Dimension dimension;
 	public int selectedDesk;
-	public char selectedCluster;
-	public int selectedFloor;
 
 	/**
 	 * Create the panel.
@@ -109,7 +107,7 @@ public class Floorplan extends JPanel {
 		btnGoBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				deskSelected = null;
+				deskSelectedElement = null;
 				if (showCreateBooking) {	
 					deskBook.showCreate();
 				} else { 
@@ -137,7 +135,7 @@ public class Floorplan extends JPanel {
     	
     	if (element.getAttribute("id").startsWith(substring)) {
     		
-    		if (!element.equals(deskSelected)) {
+    		if (!element.equals(deskSelectedElement)) {
     			changeColourOfDesk(freeDeskColor, element);
     		}
     		
@@ -153,9 +151,9 @@ public class Floorplan extends JPanel {
 				target.addEventListener("click", new EventListener() {
 					public void handleEvent(Event evt) {
 						if (evt.getType().equals("click")) {
-							changeColourOfDesk(freeDeskColor, deskSelected);
+							changeColourOfDesk(freeDeskColor, deskSelectedElement);
 							changeColourOfDesk(chosenDeskColor, element);
-							deskSelected = element;
+							deskSelectedElement = element;
 							selectedDesk = Integer.parseInt(element.getAttribute("id").replace("Desk", ""));
 						}
 					}
@@ -210,5 +208,12 @@ public class Floorplan extends JPanel {
 
 	private boolean checkIfBooked(Element element) {
 		return false;
+	}
+	
+	public void resetFloorplan() {
+		selectedDesk = 0;
+		if (deskSelectedElement != null) {
+			changeColourOfDesk(freeDeskColor, deskSelectedElement);
+		}
 	}
 }

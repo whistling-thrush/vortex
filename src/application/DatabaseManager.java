@@ -58,6 +58,7 @@ public class DatabaseManager {
 			resultSet.close();
 			statement.close();
 		} catch (SQLException | IOException e) {
+			e.printStackTrace();
 		}
 		
 		return response;

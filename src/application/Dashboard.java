@@ -139,7 +139,7 @@ public class Dashboard extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				cancelBooking(booking.getBookID());
 				//Very jugadu fix for now :)
-				deskBook.showCreate();
+				deskBook.showDash();
 				deskBook.showDash();
 			}
 		});
