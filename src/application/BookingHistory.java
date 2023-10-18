@@ -35,9 +35,7 @@ public class BookingHistory extends JPanel {
 	//Variable declarations
 	private ArrayList<Booking> bookings;
 
-	/**
-	 * Create the panel.
-	 */
+	//Constructor method
 	public BookingHistory(DeskBook deskBook) {
 		this.deskBook = deskBook;
 		setLayout(null);
@@ -46,19 +44,22 @@ public class BookingHistory extends JPanel {
 	
 	private void setupPanel() {
 		
+		//Panel title
 		lblBookingHistory = new JLabel("Booking history");
 		lblBookingHistory.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
 		lblBookingHistory.setBounds(58, 72, 264, 29);
 		add(lblBookingHistory);
 		
+		//Scroll Pane for viewing bookings
 		scrllPaneBookingHistory = new JScrollPane();
 		scrllPaneBookingHistory.setBounds(30, 144, 740, 360);
 		scrllPaneBookingHistory.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		add(scrllPaneBookingHistory);
-		bookingStack = new JPanel();
+		bookingStack = new JPanel(); //Panel on the scroll pane
         bookingStack.setLayout(new BoxLayout(bookingStack, BoxLayout.Y_AXIS));
         scrllPaneBookingHistory.setViewportView(bookingStack);
 		
+		//Button to go back to the dash
 		btnGoBack = new JButton();
 		btnGoBack.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		btnGoBack.setText("Go back");
@@ -72,6 +73,7 @@ public class BookingHistory extends JPanel {
 		add(btnGoBack);
 	}
 	
+	//Creates a new panel for every past booking
 	private JPanel createBookingPanel(Booking booking) {
 		
 		bookingDetails = new JPanel();
@@ -80,6 +82,7 @@ public class BookingHistory extends JPanel {
 		bookingDetails.setBackground(new Color(230, 230, 230));
 		bookingDetails.setLayout(new BorderLayout());
 		
+		//Text of booking card
 		JLabel lblDetails = new JLabel();
 		lblDetails.setBounds(50, 20, 0, 0);
 		lblDetails.setText("Desk: " 
@@ -96,6 +99,7 @@ public class BookingHistory extends JPanel {
 		
 	}
 
+	//Called from DeskBook - gets booking history
 	public void getBookingHistory() {
 		
 		bookings = DatabaseManager.sql_bookingHistory();
@@ -104,14 +108,16 @@ public class BookingHistory extends JPanel {
 			
 			bookingDetails = createBookingPanel(bookings.get(i));
 			bookingDetails.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
-			bookingStack.add(bookingDetails);
+			bookingStack.add(bookingDetails); //Adds the booking card to bookingStack
             
+			//Creates vertical space for all cards except the last one
 			if (i < bookings.size() - 1) {
 				bookingStack.add(Box.createRigidArea(new Dimension(0, 20)));
 			}
 		}
 	}
 	
+	//Called from DeskBook - removes all booking cards
 	public void clearBookings() {
 		bookingStack.removeAll();
 	}

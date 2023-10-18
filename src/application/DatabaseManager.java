@@ -9,9 +9,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -30,7 +32,32 @@ public class DatabaseManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		DeskBook.bookings = sql_getAllBookings();
 			
+	}
+
+	private static ArrayList<Booking> sql_getAllBookings() {
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
+
+		try {
+			String query = new String(Files.readAllBytes(Paths.get("src/queries/get_all_bookings.sql")), StandardCharsets.UTF_8);
+			//String query = "SELECT * FROM booking;";
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
+
+			while (resultSet.next()) {
+				//Gets next booking and adds it to the ArrayList
+				bookings.add(new Booking(resultSet.getInt("book_id"), resultSet.getInt("emp_id"), resultSet.getInt("desk_id"), resultSet.getString("date"), resultSet.getString("time_start"), resultSet.getString("time_end"), resultSet.getInt("duration")));
+			}
+			
+			resultSet.close();
+			statement.close();
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return bookings;
 	}
 	
 	public static void sql_closeConnection() {
@@ -239,4 +266,27 @@ public class DatabaseManager {
 		return bookingHistory;
 		
 	}
+
+	//Checks if a booking already exists
+	public static boolean sql_checkBookingExistance(Booking booking) {
+		boolean bookingExists = false;
+
+		for (Booking existingBooking : DeskBook.bookings) {
+			//Checks if it is on the same day and for the same desk
+			if ((booking.getDate().equals(existingBooking.getDate())) && (booking.getDesk() == existingBooking.getDesk())) {
+				LocalTime existingBookingStart = LocalTime.parse(existingBooking.getTimeStart());
+				LocalTime existingBookingEnd = LocalTime.parse(existingBooking.getTimeEnd());
+				LocalTime bookingStart = LocalTime.parse(booking.getTimeStart());
+				
+				//Checks if a booking exists at that time
+				if ((bookingStart.compareTo(existingBookingEnd) < 0 && bookingStart.compareTo(existingBookingStart) > 0)) {
+					bookingExists = true;
+					break;
+				}
+			}
+		}
+		
+		return bookingExists;
+	}
+
 }

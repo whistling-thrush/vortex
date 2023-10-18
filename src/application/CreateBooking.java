@@ -110,6 +110,7 @@ public class CreateBooking extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				deskBook.showFloorplan(true);
+				setupFloorplan();
 			}
 		});
 		btnFloorplan.setBounds(60, 390, 174, 36);
@@ -138,28 +139,21 @@ public class CreateBooking extends JPanel {
 		mouseAdapterCreate = new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				validateBooking();
-				
+				Booking booking;
 				if (chkbxAllDay.isSelected()) {
-					duration = Duration.between(minTime, maxTime).toMinutes();
-					DatabaseManager.sql_createBooking(LoginScreen.currentEmployeeID,
-							deskBook.getFloorplan().selectedDesk,
-							datePicker.getText(),
-							minTime.format(DateTimeFormatter.ofPattern("hh:mm a")).toString(),
-							maxTime.format(DateTimeFormatter.ofPattern("hh:mm a")).toString(),
-							(int) duration,
-							deskBook);
+					booking = new Booking(0, LoginScreen.currentEmployeeID, deskBook.getFloorplan().selectedDesk, datePicker.getText(), minTime.format(DateTimeFormatter.ofPattern("HH:mm")).toString(), maxTime.format(DateTimeFormatter.ofPattern("HH:mm")).toString(), (int) Duration.between(minTime, maxTime).toMinutes());
 				} else {
-					duration = Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes();
-					DatabaseManager.sql_createBooking(
-							LoginScreen.currentEmployeeID,
-							deskBook.getFloorplan().selectedDesk,
-							datePicker.getText(),
-							timePickerFrom.getText(),
-							timePickerTo.getText(),
-							(int) duration,
-							deskBook);
+					timePickerFrom.getText();
+					booking = new Booking(0, LoginScreen.currentEmployeeID, deskBook.getFloorplan().selectedDesk, datePicker.getText(), timePickerFrom.getTime().format(DateTimeFormatter.ofPattern("HH:mm")), timePickerTo.getTime().format(DateTimeFormatter.ofPattern("HH:mm")), (int) Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes());
 				}
+				
+				if (validateBooking(booking)) {
+					DatabaseManager.sql_createBooking(booking.getEmpID(), booking.getDesk(), booking.getDate(), booking.getTimeStart(), booking.getTimeEnd(), booking.getDuration(), deskBook);
+				} else {
+					GlobalErrorBox.showError(deskBook, "Error: Booking not valid for these timings (change timings)");
+				}
+				
+				DeskBook.bookings.add(booking);
 				
 				deskBook.showDash();
 			}
@@ -171,13 +165,33 @@ public class CreateBooking extends JPanel {
 		
 	}
 
-	protected void validateBooking() {
-		if (timePickerFrom.getTime().isAfter(timePickerTo.getTime())) {
-			timePickerFrom.setText(null);
-			timePickerTo.setText(null);
+	protected boolean validateBooking(Booking booking) {
+		boolean flag = true;
+		
+		//Validates booking and checks if the booking passed in the function already exists
+		if (DatabaseManager.sql_checkBookingExistance(booking)) {
+			flag = false;
 		}
+
+		return flag;
+	}
+
+	public void setupFloorplan() {
+		boolean chkbxAllDaySelected = chkbxAllDay.isSelected();
+		String date = datePicker.getText();
+		String timeStart, timeEnd;
+		if (chkbxAllDaySelected) {
+			timeStart = minTime.format(DateTimeFormatter.ofPattern("HH:mm")).toString();
+			timeEnd = maxTime.format(DateTimeFormatter.ofPattern("HH:mm")).toString();
+		} else {
+			timeStart = timePickerFrom.getTime().format(DateTimeFormatter.ofPattern("HH:mm")).toString();
+			timeEnd = timePickerTo.getTime().format(DateTimeFormatter.ofPattern("HH:mm")).toString();
+		}
+
+		deskBook.getFloorplan().blockBookedDesks(chkbxAllDaySelected, date, timeStart, timeEnd);
 	}
 	
+	//Resets the Create Booking Panel
 	public void resetCreateBooking() {
 		 
 	}

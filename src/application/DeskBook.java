@@ -8,10 +8,12 @@ import javax.swing.SwingUtilities;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 public class DeskBook extends JFrame {
 	
 	private static final long serialVersionUID = -5620007751101260104L;
+	public static ArrayList<Booking> bookings;
 	
 	//Component declarations
 	private CardLayout cardLayout;
@@ -85,8 +87,8 @@ public class DeskBook extends JFrame {
 		createBooking = new CreateBooking(this);
 		bookingHistory = new BookingHistory(this);
 		signUp = new SignUp(this);
-		floorplan = new Floorplan(this);
 		changeBooking = new ChangeBooking(this);
+		floorplan = new Floorplan(this, createBooking, changeBooking);
 		
 		
 		//Setup the objects

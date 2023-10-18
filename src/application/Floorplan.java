@@ -2,6 +2,12 @@ package application;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.batik.swing.JSVGCanvas;
 import org.w3c.dom.Element;
@@ -15,10 +21,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import java.time.LocalTime;
 import java.util.ArrayList;
-import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 
 public class Floorplan extends JPanel {
 	
@@ -26,6 +31,8 @@ public class Floorplan extends JPanel {
 	
 	//Component declarations
 	private DeskBook deskBook;
+	private CreateBooking createBooking;
+	private ChangeBooking changeBooking;
 	private JLabel lblChooseFloor;
 	private JSpinner spnnrFloorSelect;
 	private JPanel buttonPanel;
@@ -35,7 +42,6 @@ public class Floorplan extends JPanel {
 	//Variable declarations
 	private Element deskSelectedElement;
 	private ArrayList<Element> desks;
-	private boolean deskBookedBool;
 	private boolean showCreateBooking = true;
 	private int maxFloor;
 	private int bookID;
@@ -50,7 +56,9 @@ public class Floorplan extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Floorplan(DeskBook deskBook) {
+	public Floorplan(DeskBook deskBook, CreateBooking createBooking, ChangeBooking changeBooking) {
+		this.createBooking = createBooking;
+		this.changeBooking = changeBooking;
 		this.deskBook = deskBook;
 		dimension = new Dimension(965, 1020);
 		setupPanel();
@@ -84,19 +92,41 @@ public class Floorplan extends JPanel {
 		
 		SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(1, 1, maxFloor, 1);
 		spnnrFloorSelect = new JSpinner(spinnerNumberModel);
+		spnnrFloorSelect.setEditor(new JSpinner.DefaultEditor(spnnrFloorSelect));
 		spnnrFloorSelect.setBounds(47, 67, 105, 26);
+		spnnrFloorSelect.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						resetFloorplan();
+						if (showCreateBooking) {	
+							createBooking.setupFloorplan();
+						} else { 
+							changeBooking.setupFloorplan();
+						}
+					}
+				});
+			}
+		});
 		buttonPanel.add(spnnrFloorSelect);
 		
 		btnConfirm = new JButton();
 		btnConfirm.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				selectedDesk += (((int) spnnrFloorSelect.getValue()) - 1) * 48;
-				if (showCreateBooking) {	
-					deskBook.showCreate();
-				} else { 
-					deskBook.showChangeBooking(bookID); 
-				}
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						selectedDesk += (((int) spnnrFloorSelect.getValue()) - 1) * 48;
+						if (showCreateBooking) {	
+							deskBook.showCreate();
+						} else { 
+							deskBook.showChangeBooking(bookID); 
+						}
+					}
+				});
 			}
 		});
 		btnConfirm.setText("Confirm desk?");
@@ -107,12 +137,17 @@ public class Floorplan extends JPanel {
 		btnGoBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				deskSelectedElement = null;
-				if (showCreateBooking) {	
-					deskBook.showCreate();
-				} else { 
-					deskBook.showChangeBooking(bookID); 
-				}
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						deskSelectedElement = null;
+						if (showCreateBooking) {	
+							deskBook.showCreate();
+						} else { 
+							deskBook.showChangeBooking(bookID); 
+						}
+					}
+				});
 			}
 		});
 		btnGoBack.setText("Go back");
@@ -140,25 +175,33 @@ public class Floorplan extends JPanel {
     		}
     		
     		desks.add(element);	
-    			
-			deskBookedBool = checkIfBooked(element);
 			
-			if (deskBookedBool) {
-				changeColourOfDesk(bookedDeskColor, element);
-			} else {
-				EventTarget target = (EventTarget) element;
-				
-				target.addEventListener("click", new EventListener() {
-					public void handleEvent(Event evt) {
-						if (evt.getType().equals("click")) {
-							changeColourOfDesk(freeDeskColor, deskSelectedElement);
-							changeColourOfDesk(chosenDeskColor, element);
-							deskSelectedElement = element;
-							selectedDesk = Integer.parseInt(element.getAttribute("id").replace("Desk", ""));
+			EventTarget target = (EventTarget) element;
+			
+			target.addEventListener("click", new EventListener() {
+				public void handleEvent(Event evt) {
+					
+					NodeList children = element.getChildNodes();
+					String colour = "";
+					int i = 0;
+					while ((colour != bookedDeskColor || colour != freeDeskColor || colour != chosenDeskColor) && i < children.getLength()) {
+						Node child = children.item(i);
+						try {
+							Element childElement = (Element) child;
+							colour = childElement.getAttribute("fill");
+						} catch (Exception e) {
 						}
+						i++;
 					}
-				}, false);
-			}
+
+					if (evt.getType().equals("click") && !colour.equals(bookedDeskColor)) {
+						changeColourOfDesk(freeDeskColor, deskSelectedElement);
+						changeColourOfDesk(chosenDeskColor, element);
+						deskSelectedElement = element;
+						selectedDesk = Integer.parseInt(element.getAttribute("id").replace("Desk", ""));
+					}
+				}
+			}, false);
     			
     	} else {
 
@@ -166,7 +209,6 @@ public class Floorplan extends JPanel {
     		
     		for (int i = 0; i < children.getLength(); i++) {
     			Node child = children.item(i);
-    			
     			try {
     				Element childElement = (Element) child;
     				traverse(childElement, substring);
@@ -206,14 +248,32 @@ public class Floorplan extends JPanel {
 		}
 	}
 
-	private boolean checkIfBooked(Element element) {
-		return false;
-	}
-	
 	public void resetFloorplan() {
 		selectedDesk = 0;
-		if (deskSelectedElement != null) {
-			changeColourOfDesk(freeDeskColor, deskSelectedElement);
+		for (Element desk : desks) {
+			changeColourOfDesk(freeDeskColor, desk);
+		}
+	}
+
+	public void blockBookedDesks(boolean chkbxAllDay, String date, String timeStart, String timeEnd) {
+		final ArrayList<Booking> bookings = DeskBook.bookings;		
+
+		for (Booking booking : bookings) {
+			//Checks if it is on the same day and for the same desk
+			if (date.equals(booking.getDate())) {
+				LocalTime bookingStart = LocalTime.parse(timeStart);
+				LocalTime bookingEnd = LocalTime.parse(timeEnd);
+				LocalTime existingBookingStart = LocalTime.parse(booking.getTimeStart());
+				LocalTime existingBookingEnd = LocalTime.parse(booking.getTimeEnd());
+				
+				//Checks if a booking exists at that time
+				if ((bookingStart.compareTo(existingBookingEnd) < 0 && bookingStart.compareTo(existingBookingStart) >= 0) ||
+				(bookingEnd.compareTo(existingBookingEnd) <= 0 && bookingEnd.compareTo(existingBookingStart) > 0) ||
+				(bookingStart.compareTo(existingBookingStart) <= 0 && bookingEnd.compareTo(existingBookingEnd) >= 0) &&
+				booking.getFloor() == (int)spnnrFloorSelect.getValue()) {
+					changeColourOfDesk(bookedDeskColor, desks.get(48 - booking.getDesk()));
+				}
+			}
 		}
 	}
 }

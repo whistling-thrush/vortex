@@ -48,6 +48,10 @@ public class Booking {
 	public final int getDuration() {
 		return duration;
 	}
+
+	public final int getFloor() {
+		return ((int)(desk / 48)) + 1;
+	}
 	
 	
 	
