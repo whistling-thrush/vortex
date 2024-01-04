@@ -30,7 +30,7 @@ public class Floorplan extends JPanel {
 	private static final long serialVersionUID = 6043243388012766414L;
 	
 	//Component declarations
-	private DeskBook deskBook;
+	private Vortex vortex;
 	private CreateBooking createBooking;
 	private ChangeBooking changeBooking;
 	private JLabel lblChooseFloor;
@@ -56,10 +56,10 @@ public class Floorplan extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Floorplan(DeskBook deskBook, CreateBooking createBooking, ChangeBooking changeBooking) {
+	public Floorplan(Vortex vortex, CreateBooking createBooking, ChangeBooking changeBooking) {
 		this.createBooking = createBooking;
 		this.changeBooking = changeBooking;
-		this.deskBook = deskBook;
+		this.vortex = vortex;
 		dimension = new Dimension(965, 1020);
 		setupPanel();
 	}
@@ -121,9 +121,9 @@ public class Floorplan extends JPanel {
 					public void run() {
 						selectedDesk += (((int) spnnrFloorSelect.getValue()) - 1) * 48;
 						if (showCreateBooking) {	
-							deskBook.showCreate();
+							vortex.showCreate();
 						} else { 
-							deskBook.showChangeBooking(bookID); 
+							vortex.showChangeBooking(bookID); 
 						}
 					}
 				});
@@ -142,9 +142,9 @@ public class Floorplan extends JPanel {
 					public void run() {
 						deskSelectedElement = null;
 						if (showCreateBooking) {	
-							deskBook.showCreate();
+							vortex.showCreate();
 						} else { 
-							deskBook.showChangeBooking(bookID); 
+							vortex.showChangeBooking(bookID); 
 						}
 					}
 				});
@@ -256,7 +256,7 @@ public class Floorplan extends JPanel {
 	}
 
 	public void blockBookedDesks(boolean chkbxAllDay, String date, String timeStart, String timeEnd) {
-		final ArrayList<Booking> bookings = DeskBook.bookings;		
+		final ArrayList<Booking> bookings = Vortex.bookings;		
 
 		for (Booking booking : bookings) {
 			//Checks if it is on the same day and for the same desk

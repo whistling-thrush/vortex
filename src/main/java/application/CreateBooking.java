@@ -32,7 +32,7 @@ public class CreateBooking extends JPanel {
 	protected LocalTime maxTime;
 	
 	//Component declarations
-	protected DeskBook deskBook;
+	protected Vortex vortex;
 	protected JLabel lblNewBooking;
 	protected JLabel lblChooseDate;
 	protected DatePickerSettings settingsDate;
@@ -51,8 +51,8 @@ public class CreateBooking extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CreateBooking(DeskBook deskBook) {
-		this.deskBook = deskBook;
+	public CreateBooking(Vortex vortex) {
+		this.vortex = vortex;
 		setLayout(null);
 		setSize(dimension);
 		setupPanel();
@@ -109,7 +109,7 @@ public class CreateBooking extends JPanel {
 		btnFloorplan.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				deskBook.showFloorplan(true);
+				vortex.showFloorplan(true);
 				setupFloorplan();
 			}
 		});
@@ -128,7 +128,7 @@ public class CreateBooking extends JPanel {
 		btnGoBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				deskBook.showDash();
+				vortex.showDash();
 			}
 		});
 		btnGoBack.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
@@ -141,21 +141,21 @@ public class CreateBooking extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				Booking booking;
 				if (chkbxAllDay.isSelected()) {
-					booking = new Booking(0, LoginScreen.currentEmployeeID, deskBook.getFloorplan().selectedDesk, datePicker.getText(), minTime.format(DateTimeFormatter.ofPattern("HH:mm")).toString(), maxTime.format(DateTimeFormatter.ofPattern("HH:mm")).toString(), (int) Duration.between(minTime, maxTime).toMinutes());
+					booking = new Booking(0, LoginScreen.currentEmployeeID, vortex.getFloorplan().selectedDesk, datePicker.getText(), minTime.format(DateTimeFormatter.ofPattern("HH:mm")).toString(), maxTime.format(DateTimeFormatter.ofPattern("HH:mm")).toString(), (int) Duration.between(minTime, maxTime).toMinutes());
 				} else {
 					timePickerFrom.getText();
-					booking = new Booking(0, LoginScreen.currentEmployeeID, deskBook.getFloorplan().selectedDesk, datePicker.getText(), timePickerFrom.getTime().format(DateTimeFormatter.ofPattern("HH:mm")), timePickerTo.getTime().format(DateTimeFormatter.ofPattern("HH:mm")), (int) Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes());
+					booking = new Booking(0, LoginScreen.currentEmployeeID, vortex.getFloorplan().selectedDesk, datePicker.getText(), timePickerFrom.getTime().format(DateTimeFormatter.ofPattern("HH:mm")), timePickerTo.getTime().format(DateTimeFormatter.ofPattern("HH:mm")), (int) Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes());
 				}
 				
 				if (validateBooking(booking)) {
-					DatabaseManager.sql_createBooking(booking.getEmpID(), booking.getDesk(), booking.getDate(), booking.getTimeStart(), booking.getTimeEnd(), booking.getDuration(), deskBook);
+					DatabaseManager.sql_createBooking(booking.getEmpID(), booking.getDesk(), booking.getDate(), booking.getTimeStart(), booking.getTimeEnd(), booking.getDuration(), vortex);
 				} else {
-					GlobalErrorBox.showError(deskBook, "Error: Booking not valid for these timings (change timings)");
+					GlobalErrorBox.showError(vortex, "Error: Booking not valid for these timings (change timings)");
 				}
 				
-				DeskBook.bookings.add(booking);
+				Vortex.bookings.add(booking);
 				
-				deskBook.showDash();
+				vortex.showDash();
 			}
 		};
 		btnCreate.addMouseListener(mouseAdapterCreate);
@@ -188,7 +188,7 @@ public class CreateBooking extends JPanel {
 			timeEnd = timePickerTo.getTime().format(DateTimeFormatter.ofPattern("HH:mm")).toString();
 		}
 
-		deskBook.getFloorplan().blockBookedDesks(chkbxAllDaySelected, date, timeStart, timeEnd);
+		vortex.getFloorplan().blockBookedDesks(chkbxAllDaySelected, date, timeStart, timeEnd);
 	}
 	
 	//Resets the Create Booking Panel

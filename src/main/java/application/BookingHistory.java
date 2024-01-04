@@ -25,7 +25,7 @@ public class BookingHistory extends JPanel {
 	public Dimension dimension = new Dimension(800, 600);
 	
 	//Component declarations
-	private DeskBook deskBook;
+	private Vortex vortex;
 	private JLabel lblBookingHistory;
 	private JButton btnGoBack;
 	private JScrollPane scrllPaneBookingHistory;
@@ -36,8 +36,8 @@ public class BookingHistory extends JPanel {
 	private ArrayList<Booking> bookings;
 
 	//Constructor method
-	public BookingHistory(DeskBook deskBook) {
-		this.deskBook = deskBook;
+	public BookingHistory(Vortex vortex) {
+		this.vortex = vortex;
 		setLayout(null);
 		setupPanel();
 	}
@@ -67,7 +67,7 @@ public class BookingHistory extends JPanel {
 		btnGoBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				deskBook.showDash();
+				vortex.showDash();
 			}
 		});
 		add(btnGoBack);
@@ -99,7 +99,7 @@ public class BookingHistory extends JPanel {
 		
 	}
 
-	//Called from DeskBook - gets booking history
+	//Called from Vortex - gets booking history
 	public void getBookingHistory() {
 		
 		bookings = DatabaseManager.sql_bookingHistory();
@@ -117,7 +117,7 @@ public class BookingHistory extends JPanel {
 		}
 	}
 	
-	//Called from DeskBook - removes all booking cards
+	//Called from Vortex - removes all booking cards
 	public void clearBookings() {
 		bookingStack.removeAll();
 	}

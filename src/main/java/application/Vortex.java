@@ -10,7 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class DeskBook extends JFrame {
+public class Vortex extends JFrame {
 	
 	private static final long serialVersionUID = -5620007751101260104L;
 	public static ArrayList<Booking> bookings;
@@ -40,7 +40,7 @@ public class DeskBook extends JFrame {
 		DatabaseManager.initialiseDBMS();
 		
 		//Initialise the frame
-		DeskBook.initialiseFrame();
+		Vortex.initialiseFrame();
 		
 	}
 	
@@ -48,7 +48,7 @@ public class DeskBook extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DeskBook frame = new DeskBook();
+					Vortex frame = new Vortex();
 					frame.pack();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -62,7 +62,7 @@ public class DeskBook extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DeskBook() {
+	public Vortex() {
 		try {
 			addWindowListener(new WindowAdapter() {
 				@Override

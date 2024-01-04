@@ -32,7 +32,7 @@ public class Dashboard extends JPanel {
 	private static final long serialVersionUID = 1936925262291800888L;
 	
 	//Component declarations
-	private DeskBook deskBook;
+	private Vortex vortex;
 	private JLabel lblWelcome;
 	private JSeparator separator;
 	private JButton btnCreateBooking;
@@ -47,8 +47,8 @@ public class Dashboard extends JPanel {
 	//Variable declarations
 	private Map<String, Object> objects;
 
-	public Dashboard(DeskBook deskBook) {
-		this.deskBook = deskBook;
+	public Dashboard(Vortex vortex) {
+		this.vortex = vortex;
 		setLayout(null);
 		setSize(new Dimension(800, 600));
 		setupPanel();
@@ -70,7 +70,7 @@ public class Dashboard extends JPanel {
 		btnCreateBooking.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				deskBook.showCreate();
+				vortex.showCreate();
 			}
 		});
 		btnCreateBooking.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -81,7 +81,7 @@ public class Dashboard extends JPanel {
 		btnSeeHistory.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				deskBook.showHistory();
+				vortex.showHistory();
 			}
 		});
 		btnSeeHistory.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -143,7 +143,7 @@ public class Dashboard extends JPanel {
 	
 	
 	private void logout() {
-		deskBook.showLogin();
+		vortex.showLogin();
 	}
 	
 	
@@ -175,8 +175,8 @@ public class Dashboard extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				cancelBooking(booking.getBookID());
 				//Very jugadu fix for now :)
-				deskBook.showDash();
-				deskBook.showDash();
+				vortex.showDash();
+				vortex.showDash();
 			}
 		});
 		btnCancelBooking.setText("Cancel booking");
@@ -204,7 +204,7 @@ public class Dashboard extends JPanel {
 	}
 	
 	private void changeBooking(int bookID) {
-		deskBook.showChangeBooking(bookID);
+		vortex.showChangeBooking(bookID);
 	}
 	
 	public void changeWelcomeText (String name) {

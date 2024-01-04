@@ -26,7 +26,7 @@ public class SignUp extends JPanel {
 	private static final long serialVersionUID = 3743443270482748913L;
 
 	//Component declarations
-	private DeskBook deskBook;
+	private Vortex vortex;
 	private JLabel lblSignup;
 	private JLabel lblName;
 	private JFormattedTextField frmtdFieldName;
@@ -41,8 +41,8 @@ public class SignUp extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public SignUp(DeskBook deskBook) {
-		this.deskBook = deskBook;
+	public SignUp(Vortex vortex) {
+		this.vortex = vortex;
 		setLayout(null);
 		setSize(dimension);
 		setupPanel();
@@ -174,7 +174,7 @@ public class SignUp extends JPanel {
 		btnGoBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				deskBook.showLogin();
+				vortex.showLogin();
 			}
 		});
 		btnGoBack.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
@@ -185,6 +185,6 @@ public class SignUp extends JPanel {
 	
 	private void signupRequested() {
 		DatabaseManager.sql_requestSignup(frmtdFieldName.getText(), frmtdFieldEmail.getText(), new String(fieldPass.getPassword()));
-		deskBook.showLogin();
+		vortex.showLogin();
 	}
 }

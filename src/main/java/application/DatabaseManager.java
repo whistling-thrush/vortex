@@ -41,7 +41,7 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 
-		DeskBook.bookings = sql_getAllBookings();
+		Vortex.bookings = sql_getAllBookings();
 			
 	}
 
@@ -129,7 +129,7 @@ public class DatabaseManager {
 		}
 	}
 	
-	public static void sql_createBooking(int empID, int desk, String date, String startTime, String endTime, int duration, DeskBook deskBook) {
+	public static void sql_createBooking(int empID, int desk, String date, String startTime, String endTime, int duration, Vortex vortex) {
 		try {
 			
 			Date _date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
@@ -148,7 +148,7 @@ public class DatabaseManager {
 				
 				creationStatement.close();
 			} else {
-				GlobalErrorBox.showError(deskBook, "Error: Please ensure selected date is after current date.");				
+				GlobalErrorBox.showError(vortex, "Error: Please ensure selected date is after current date.");				
 			}
 			
 		} catch (ParseException | SQLException | IOException e) {
@@ -288,7 +288,7 @@ public class DatabaseManager {
 	public static boolean sql_checkBookingExistance(Booking booking) {
 		boolean bookingExists = false;
 
-		for (Booking existingBooking : DeskBook.bookings) {
+		for (Booking existingBooking : Vortex.bookings) {
 			//Checks if it is on the same day and for the same desk
 			if ((booking.getDate().equals(existingBooking.getDate())) && (booking.getDesk() == existingBooking.getDesk())) {
 				LocalTime existingBookingStart = LocalTime.parse(existingBooking.getTimeStart());

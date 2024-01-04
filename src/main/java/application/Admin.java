@@ -31,7 +31,7 @@ public class Admin extends JPanel {
 	private static final long serialVersionUID = 1936925262291800888L;
 	
 	//Component declarations
-	private DeskBook deskBook;
+	private Vortex vortex;
 	private JLabel lblWelcome;
 	private JSeparator separator;
 	private JButton btnCreateBooking;
@@ -91,7 +91,7 @@ public class Admin extends JPanel {
 	
 	
 	private void logout() {
-		deskBook.showLogin();
+		vortex.showLogin();
 	}
 	
 	
@@ -123,8 +123,8 @@ public class Admin extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				cancelBooking(booking.getBookID());
 				//Very jugadu fix for now :)
-				deskBook.showDash();
-				deskBook.showDash();
+				vortex.showDash();
+				vortex.showDash();
 			}
 		});
 		btnCancelBooking.setText("Cancel booking");
@@ -152,7 +152,7 @@ public class Admin extends JPanel {
 	}
 	
 	private void changeBooking(int bookID) {
-		deskBook.showChangeBooking(bookID);
+		vortex.showChangeBooking(bookID);
 	}
 	
 	public void changeWelcomeText (String name) {

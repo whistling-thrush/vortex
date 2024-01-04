@@ -32,7 +32,7 @@ public class LoginScreen extends JPanel {
 	public static String currentEmployeeName;
 	
 	//Component declarations
-	private DeskBook deskBook;
+	private Vortex vortex;
 	private Dashboard dashboard;
 	private JLabel lblLogin;
 	private JLabel lblEmail;
@@ -48,8 +48,8 @@ public class LoginScreen extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public LoginScreen(DeskBook deskBook, Dashboard dashboard) {
-		this.deskBook = deskBook;
+	public LoginScreen(Vortex vortex, Dashboard dashboard) {
+		this.vortex = vortex;
 		this.dashboard = dashboard;
 		setSize(dimension);
 		setupPanel();
@@ -155,7 +155,7 @@ public class LoginScreen extends JPanel {
 		btnSignUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				deskBook.showSignup();
+				vortex.showSignup();
 			}
 		});
 		btnSignUp.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -193,18 +193,18 @@ public class LoginScreen extends JPanel {
 		String email = new String(frmtdFieldEmail.getText());
 		
 		if (email.isBlank() || email.isEmpty() || email.equals("Enter email address")) {
-			GlobalErrorBox.showError(deskBook, "Error: Invalid email or password");
+			GlobalErrorBox.showError(vortex, "Error: Invalid email or password");
 		}
 		
 		if (pass.isBlank() || pass.isEmpty()) {
-			GlobalErrorBox.showError(deskBook, "Error: Invalid email or password");
+			GlobalErrorBox.showError(vortex, "Error: Invalid email or password");
 		}
 		
 		if (DatabaseManager.sql_loginSearch(email, pass)) {
-			deskBook.showDash();
+			vortex.showDash();
 			dashboard.changeWelcomeText(currentEmployeeName);
 		} else {
-			GlobalErrorBox.showError(deskBook, "Error: Invalid email or password");
+			GlobalErrorBox.showError(vortex, "Error: Invalid email or password");
 		}
 	}
 

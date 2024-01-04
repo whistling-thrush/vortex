@@ -12,8 +12,8 @@ public class GlobalErrorBox extends JDialog {
 	
     private static final long serialVersionUID = -8654124532333345806L;
 
-	public GlobalErrorBox(DeskBook deskBook, String message) {
-        super(deskBook, "Error", true);
+	public GlobalErrorBox(Vortex vortex, String message) {
+        super(vortex, "Error", true);
         initComponents(message);
     }
 
@@ -40,8 +40,8 @@ public class GlobalErrorBox extends JDialog {
         setLocationRelativeTo(getParent());
     }
 
-    public static void showError(DeskBook deskBook, String message) {
-        GlobalErrorBox errorBox = new GlobalErrorBox(deskBook, message);
+    public static void showError(Vortex vortex, String message) {
+        GlobalErrorBox errorBox = new GlobalErrorBox(vortex, message);
         errorBox.setVisible(true);
     }
 }
