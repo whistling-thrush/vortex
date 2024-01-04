@@ -11,11 +11,10 @@ main/java/application/SignUp$5.class
 main/java/application/Dashboard$3.class
 main/java/application/LoginScreen$5.class
 main/java/application/CreateBooking.class
+main/java/application/Vortex$1.class
 main/java/application/SignUp$2.class
-main/java/application/DeskBook.class
 main/java/application/DatabaseManager.class
 main/java/application/LoginScreen$6.class
-main/java/application/DeskBook$2.class
 main/java/application/Booking.class
 main/java/application/ChangeBooking$1.class
 main/java/application/Dashboard$6.class
@@ -33,7 +32,6 @@ main/java/application/Dashboard$2.class
 main/java/application/Floorplan$2$1.class
 main/java/application/Dashboard$5.class
 main/java/application/LoginScreen$3.class
-main/java/application/DeskBook$1.class
 main/java/application/Floorplan$4.class
 main/java/application/Dashboard$8.class
 main/java/application/Dashboard$1.class
@@ -42,8 +40,10 @@ main/java/application/CreateBooking$3.class
 main/java/application/LoginScreen$1.class
 main/java/application/Admin$2.class
 main/java/application/CreateBooking$1.class
+main/java/application/Vortex.class
 main/java/application/Floorplan$2.class
 main/java/application/BookingHistory$1.class
+main/java/application/Vortex$2.class
 main/java/application/Dashboard$4.class
 main/java/application/SignUp.class
 main/java/application/SignUp$4.class

@@ -9,7 +9,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.apache.batik.bridge.UpdateManager;
 import org.apache.batik.swing.JSVGCanvas;
+import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
+import org.apache.batik.swing.gvt.GVTTreeRendererEvent;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -46,6 +49,7 @@ public class Floorplan extends JPanel {
 	private int maxFloor;
 	private int bookID;
 	private JSVGCanvas svgCanvas;
+	private UpdateManager um;
 	private String chosenDeskColor = "#e2e460";
 	private String bookedDeskColor = "#e36e89";
 	private String freeDeskColor = "#6eb8e3";
@@ -74,9 +78,10 @@ public class Floorplan extends JPanel {
 		desks = new ArrayList<>();
 	
 		svgCanvas = new JSVGCanvas();
+		svgCanvas.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
 		svgCanvas.setURI("src/main/resources/assets/Floorplan.svg");
 		svgCanvas.setSize(dimension);
-		svgCanvas.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
+		um = svgCanvas.getUpdateManager();
 
 	}
 	
@@ -100,12 +105,16 @@ public class Floorplan extends JPanel {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
+						// This runs on the Swing thread
 						resetFloorplan();
-						if (showCreateBooking) {	
+						if (showCreateBooking) {
 							createBooking.setupFloorplan();
 						} else {
 							changeBooking.setupFloorplan();
 						}
+						
+						// Force repaint of the SVG canvas
+						svgCanvas.repaint();
 					}
 				});
 			}
@@ -155,7 +164,6 @@ public class Floorplan extends JPanel {
 		buttonPanel.add(btnGoBack);
 		
 	}
-
 	
 	public void addFloorplan(boolean showCreateBooking, int bookID) {
 		this.showCreateBooking = showCreateBooking;
