@@ -1,21 +1,16 @@
 package main.java.application;
 
 import javax.swing.JPanel;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -41,7 +36,6 @@ public class Dashboard extends JPanel {
 	private JLabel lblUpcomingBookings;
 	private JTable bookingStack;
 	private DefaultTableModel model;
-	private JPanel bookingDetails;
 	private JButton btnLogOut;
 	
 	//Variable declarations
@@ -144,67 +138,6 @@ public class Dashboard extends JPanel {
 	
 	private void logout() {
 		vortex.showLogin();
-	}
-	
-	
-	private JPanel createBookingPanel(Booking booking) {
-		bookingDetails = new JPanel();
-		bookingDetails.setPreferredSize(new Dimension(720, 50));
-		bookingDetails.setMaximumSize(new Dimension(720, 50));
-		bookingDetails.setBackground(new Color(230, 230, 230));
-		bookingDetails.setLayout(new BorderLayout());
-		
-		JLabel lblDetails = new JLabel();
-		lblDetails.setBounds(50, 20, 0, 0);
-		lblDetails.setText("Desk: " 
-				+ booking.getDesk() 
-				+ "     From: " 
-				+ booking.getTimeStart() 
-				+ "     To: " 
-				+ booking.getTimeEnd()
-				+ "     On: "
-				+ booking.getDate());
-		bookingDetails.add(lblDetails);
-		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BorderLayout());
-		
-		JButton btnCancelBooking = new JButton();
-		btnCancelBooking.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				cancelBooking(booking.getBookID());
-				//Very jugadu fix for now :)
-				vortex.showDash();
-				vortex.showDash();
-			}
-		});
-		btnCancelBooking.setText("Cancel booking");
-		btnCancelBooking.setSize(new Dimension(30, 5));
-		buttonPanel.add(btnCancelBooking, BorderLayout.EAST);
-		
-		JButton btnChangeBooking = new JButton();
-		btnChangeBooking.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				changeBooking(booking.getBookID());
-			}
-		});
-		btnChangeBooking.setText("Change booking");
-		btnChangeBooking.setSize(new Dimension(30, 5));
-		buttonPanel.add(btnChangeBooking, BorderLayout.WEST);
-		
-		bookingDetails.add(buttonPanel, BorderLayout.EAST);
-		
-		return bookingDetails;
-	}
-	
-	private void cancelBooking(int bookID) {
-		DatabaseManager.sql_deleteBooking(bookID);
-	}
-	
-	private void changeBooking(int bookID) {
-		vortex.showChangeBooking(bookID);
 	}
 	
 	public void changeWelcomeText (String name) {

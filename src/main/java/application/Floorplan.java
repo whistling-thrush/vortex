@@ -24,7 +24,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -107,6 +106,7 @@ public class Floorplan extends JPanel {
 		spnnrFloorSelect.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
+				// Uses the UpdateManager Thread to update floorplan as soon as the value is changed
 				um.getUpdateRunnableQueue().invokeLater(new Runnable() {
 					@Override
 					public void run() {
@@ -116,7 +116,6 @@ public class Floorplan extends JPanel {
 						} else {
 							changeBooking.setupFloorplan();
 						}
-						svgCanvas.repaint(); // Force repaint after updating the SVG
 					}
 				});
 			}

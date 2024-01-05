@@ -1,7 +1,5 @@
 package main.java.application;
 
-import java.lang.reflect.Constructor;
-
 public class Tuple4<A, B, C, D> {
     private A first;
     private B second;
