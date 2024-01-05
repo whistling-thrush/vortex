@@ -190,10 +190,6 @@ public class CreateBooking extends JPanel {
 			timeEnd = timePickerTo.getTime().format(DateTimeFormatter.ofPattern("HH:mm")).toString();
 		}
 
-		// ArrayList<Object> list = new ArrayList<Object>({chkbxAllDaySelected, date, timeStart, timeEnd});
-
-		// return list;
-
 		vortex.getFloorplan().blockBookedDesks(chkbxAllDaySelected, date, timeStart, timeEnd);
 	}
 	

@@ -5,7 +5,6 @@ main/java/application/CreateBooking$2.class
 main/java/application/Admin$1.class
 main/java/application/Floorplan$3.class
 main/java/application/LoginScreen$2.class
-main/java/application/Floorplan$1$1.class
 main/java/application/Floorplan$3$1.class
 main/java/application/SignUp$5.class
 main/java/application/Dashboard$3.class
@@ -22,6 +21,7 @@ main/java/application/GlobalErrorBox.class
 main/java/application/Dashboard.class
 main/java/application/ChangeBooking.class
 main/java/application/Admin$3.class
+main/java/application/Tuple4.class
 main/java/application/LoginScreen.class
 main/java/application/Floorplan.class
 main/java/application/Floorplan$1.class
@@ -32,6 +32,7 @@ main/java/application/Dashboard$2.class
 main/java/application/Floorplan$2$1.class
 main/java/application/Dashboard$5.class
 main/java/application/LoginScreen$3.class
+main/java/application/Floorplan$4$1.class
 main/java/application/Floorplan$4.class
 main/java/application/Dashboard$8.class
 main/java/application/Dashboard$1.class
@@ -45,6 +46,7 @@ main/java/application/Floorplan$2.class
 main/java/application/BookingHistory$1.class
 main/java/application/Vortex$2.class
 main/java/application/Dashboard$4.class
+main/java/application/Floorplan$5.class
 main/java/application/SignUp.class
 main/java/application/SignUp$4.class
 main/java/application/LoginScreen$4.class

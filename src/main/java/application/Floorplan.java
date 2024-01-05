@@ -24,7 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -81,7 +81,12 @@ public class Floorplan extends JPanel {
 		svgCanvas.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
 		svgCanvas.setURI("src/main/resources/assets/Floorplan.svg");
 		svgCanvas.setSize(dimension);
-		um = svgCanvas.getUpdateManager();
+		svgCanvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
+            @Override
+            public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
+				um = svgCanvas.getUpdateManager();
+            }
+        });
 
 	}
 	
@@ -102,19 +107,16 @@ public class Floorplan extends JPanel {
 		spnnrFloorSelect.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
+				um.getUpdateRunnableQueue().invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						// This runs on the Swing thread
 						resetFloorplan();
 						if (showCreateBooking) {
 							createBooking.setupFloorplan();
 						} else {
 							changeBooking.setupFloorplan();
 						}
-						
-						// Force repaint of the SVG canvas
-						svgCanvas.repaint();
+						svgCanvas.repaint(); // Force repaint after updating the SVG
 					}
 				});
 			}
