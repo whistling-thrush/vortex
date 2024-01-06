@@ -17,6 +17,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.SystemColor;
+import javax.swing.SwingConstants;
 
 public class BookingHistory extends JPanel {
 
@@ -46,13 +48,14 @@ public class BookingHistory extends JPanel {
 		
 		//Panel title
 		lblBookingHistory = new JLabel("Booking history");
+		lblBookingHistory.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBookingHistory.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
-		lblBookingHistory.setBounds(58, 72, 264, 29);
+		lblBookingHistory.setBounds(274, 65, 264, 29);
 		add(lblBookingHistory);
 		
 		//Scroll Pane for viewing bookings
 		scrllPaneBookingHistory = new JScrollPane();
-		scrllPaneBookingHistory.setBounds(30, 144, 740, 360);
+		scrllPaneBookingHistory.setBounds(36, 144, 740, 360);
 		scrllPaneBookingHistory.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		add(scrllPaneBookingHistory);
 		bookingStack = new JPanel(); //Panel on the scroll pane
@@ -61,9 +64,11 @@ public class BookingHistory extends JPanel {
 		
 		//Button to go back to the dash
 		btnGoBack = new JButton();
+		btnGoBack.setBorderPainted(false);
+		btnGoBack.setBackground(SystemColor.window);
 		btnGoBack.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		btnGoBack.setText("Go back");
-		btnGoBack.setBounds(30, 535, 134, 29);
+		btnGoBack.setText("<");
+		btnGoBack.setBounds(29, 65, 134, 29);
 		btnGoBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {

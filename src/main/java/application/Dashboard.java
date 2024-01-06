@@ -46,7 +46,7 @@ public class Dashboard extends JPanel {
 	public Dashboard(Vortex vortex) {
 		this.vortex = vortex;
 		setLayout(null);
-		setSize(new Dimension(800, 600));
+		setSize(new Dimension(800, 620));
 		setupPanel();
 	}
 	
@@ -95,7 +95,7 @@ public class Dashboard extends JPanel {
         lblUpcomingBookings = new JLabel();
         lblUpcomingBookings.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblUpcomingBookings.setText("Upcoming Bookings");
-        lblUpcomingBookings.setBounds(308, 146, 166, 21);
+        lblUpcomingBookings.setBounds(317, 146, 166, 21);
         lblUpcomingBookings.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
         lblUpcomingBookings.setHorizontalAlignment(SwingConstants.CENTER);
         add(lblUpcomingBookings);

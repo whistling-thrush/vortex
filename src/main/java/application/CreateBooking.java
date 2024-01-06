@@ -2,6 +2,9 @@ package main.java.application;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -20,6 +23,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
+import java.awt.Color;
 
 public class CreateBooking extends JPanel {
 
@@ -37,7 +41,8 @@ public class CreateBooking extends JPanel {
 	protected JLabel lblChooseDate;
 	protected DatePickerSettings settingsDate;
 	protected DatePicker datePicker;
-	protected JLabel lblChooseTime;
+	protected JLabel lblChooseTimeFrom;
+	protected JLabel lblChooseTimeTo;
 	protected TimePickerSettings settingsTime;
 	protected TimePicker timePickerFrom;
 	protected TimePicker timePickerTo;
@@ -54,14 +59,14 @@ public class CreateBooking extends JPanel {
 	public CreateBooking(Vortex vortex) {
 		this.vortex = vortex;
 		setLayout(null);
-		setSize(dimension);
+		setSize(new Dimension(500, 550));
 		setupPanel();
 	}
 	
 	private void setupPanel () {
 		lblNewBooking = new JLabel("Create new booking");
 		lblNewBooking.setSize(260, 70);
-		lblNewBooking.setLocation(60, 59);
+		lblNewBooking.setLocation(120, 59);
 		lblNewBooking.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
 		lblNewBooking.setHorizontalAlignment(SwingConstants.LEFT);
 		add(lblNewBooking);
@@ -77,15 +82,10 @@ public class CreateBooking extends JPanel {
 		datePicker.setBounds(60, 191, 398, 30);
 		add(datePicker);
 		
-		lblChooseTime = new JLabel("Choose timing (start and end)");
-		lblChooseTime.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblChooseTime.setBounds(60, 266, 205, 16);
-		add(lblChooseTime);
-		
-		chkbxAllDay = new JCheckBox("All-day");
-		chkbxAllDay.setHorizontalAlignment(SwingConstants.TRAILING);
-		chkbxAllDay.setBounds(368, 263, 90, 23);
-		add(chkbxAllDay);
+		lblChooseTimeFrom = new JLabel("From:");
+		lblChooseTimeFrom.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		lblChooseTimeFrom.setBounds(60, 266, 48, 16);
+		add(lblChooseTimeFrom);
 		
 		settingsTime = new TimePickerSettings();
 		settingsTime.setInitialTimeToNow();
@@ -101,8 +101,21 @@ public class CreateBooking extends JPanel {
 		add(timePickerFrom);
 		
 		timePickerTo = new TimePicker(settingsTime);
-		timePickerTo.setBounds(265, 294, 193, 30);
+		timePickerTo.setBounds(60, 373, 193, 30);
 		add(timePickerTo);
+		
+		chkbxAllDay = new JCheckBox("All-day");
+		chkbxAllDay.setHorizontalAlignment(SwingConstants.TRAILING);
+		chkbxAllDay.setBounds(368, 263, 90, 23);
+		chkbxAllDay.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				timePickerFrom.setEnabled(e.getStateChange() != ItemEvent.SELECTED);
+				timePickerTo.setEnabled(e.getStateChange() != ItemEvent.SELECTED);
+			}
+		});
+		add(chkbxAllDay);
 		
 		//Show floorplan button
 		btnFloorplan = new JButton("Show floorplan");
@@ -113,18 +126,21 @@ public class CreateBooking extends JPanel {
 				setupFloorplan();
 			}
 		});
-		btnFloorplan.setBounds(60, 390, 174, 36);
+		btnFloorplan.setBounds(60, 482, 174, 36);
 		btnFloorplan.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		add(btnFloorplan);
 		
 		//Desk chosen label
 		lblDeskChosen = new JLabel();
+		lblDeskChosen.setBackground(new Color(255, 255, 255));
 		lblDeskChosen.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblDeskChosen.setBounds(253, 401, 205, 16);
+		lblDeskChosen.setBounds(305, 340, 174, 36);
 		add(lblDeskChosen);
 		
 		//Go back button
-		btnGoBack = new JButton("Go back");
+		btnGoBack = new JButton("<");
+		btnGoBack.setBorderPainted(false);
+		btnGoBack.setBackground(SystemColor.window);
 		btnGoBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -132,7 +148,7 @@ public class CreateBooking extends JPanel {
 			}
 		});
 		btnGoBack.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		btnGoBack.setBounds(60, 465, 174, 36);
+		btnGoBack.setBounds(6, 80, 107, 36);
 		add(btnGoBack);
 		
 		btnCreate = new JButton("Create booking");
@@ -160,8 +176,13 @@ public class CreateBooking extends JPanel {
 		};
 		btnCreate.addMouseListener(mouseAdapterCreate);
 		btnCreate.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		btnCreate.setBounds(284, 465, 174, 36);
+		btnCreate.setBounds(284, 482, 174, 36);
 		add(btnCreate);
+		
+		lblChooseTimeTo = new JLabel("To:");
+		lblChooseTimeTo.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		lblChooseTimeTo.setBounds(60, 345, 48, 16);
+		add(lblChooseTimeTo);
 		
 	}
 
