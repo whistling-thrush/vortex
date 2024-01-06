@@ -117,7 +117,6 @@ public class Vortex extends JFrame {
 		cardLayout.show(cardPanel, "dash");
 		setMinimumSize(dashboard.dimension);
 		setSize(dashboard.dimension);
-		dashboard.clearBookings();
 		dashboard.getUpcomingBookings();
 	}
 	

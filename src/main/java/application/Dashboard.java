@@ -4,9 +4,11 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+
+import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -34,7 +36,7 @@ public class Dashboard extends JPanel {
 	private JButton btnSeeHistory;
 	private JScrollPane scrllPaneUpcomingBookings;
 	private JLabel lblUpcomingBookings;
-	private JTable bookingStack;
+	private JXTable bookingStack;
 	private DefaultTableModel model;
 	private JButton btnLogOut;
 	
@@ -87,23 +89,7 @@ public class Dashboard extends JPanel {
 		scrllPaneUpcomingBookings.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		add(scrllPaneUpcomingBookings);
 		
-		bookingStack = new JTable();
-		// Create a ListSelectionListener to clear selection when clicking outside a row
-        bookingStack.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-//				if (bookingStack.getSelectedRow() == -1) {
-//					bookingStack.clearSelection();
-//                }
-////				// !e.getValueIsAdjusting() && 
-            }
-        });
-//        bookingStack.addMouseListener(new MouseAdapter() {
-//        	@Override
-//        	public void mouseClicked(MouseEvent e) {
-//        		if (e.)
-//        	}
-//		});
+		bookingStack = new JXTable();
         scrllPaneUpcomingBookings.setViewportView(bookingStack);
 		
         lblUpcomingBookings = new JLabel();
@@ -146,6 +132,19 @@ public class Dashboard extends JPanel {
 
 	public void getUpcomingBookings() {
 
+		bookingStack.setModel(new DefaultTableModel() {
+			
+			@Override
+			// Makes all cells un-changeable
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+			
+		});
+
+		bookingStack.setColumnControlVisible(true);
+        bookingStack.setColumnModel(new DefaultTableColumnModelExt());
+
 		model = (DefaultTableModel) bookingStack.getModel();
 		objects = DatabaseManager.sql_upcomingBookings();
 		
@@ -166,18 +165,9 @@ public class Dashboard extends JPanel {
 			
 			model.addRow(row);
 		}
+		
+		bookingStack.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
 	}
 
-
-	public void clearBookings() {
-		bookingStack.setModel(new DefaultTableModel() {
-			private static final long serialVersionUID = -4794154724274374730L;
-
-			@Override
-			// Makes all cells un-changeable
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		});
-	}
 }
