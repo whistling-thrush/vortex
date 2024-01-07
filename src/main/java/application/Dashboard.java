@@ -1,7 +1,11 @@
 package main.java.application;
 
 import javax.swing.JPanel;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
@@ -15,9 +19,14 @@ import javax.swing.JScrollPane;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dialog;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -34,6 +43,7 @@ public class Dashboard extends JPanel {
 	private JSeparator separator;
 	private JButton btnCreateBooking;
 	private JButton btnSeeHistory;
+	private JButton btnHamburgerPanel;
 	private JScrollPane scrllPaneUpcomingBookings;
 	private JLabel lblUpcomingBookings;
 	private JXTable bookingStack;
@@ -46,7 +56,7 @@ public class Dashboard extends JPanel {
 	public Dashboard(Vortex vortex) {
 		this.vortex = vortex;
 		setLayout(null);
-		setSize(new Dimension(800, 620));
+		setSize(new Dimension(800, 650));
 		setupPanel();
 	}
 	
@@ -84,8 +94,26 @@ public class Dashboard extends JPanel {
 		btnSeeHistory.setBounds(485, 94, 145, 29);
 		add(btnSeeHistory);
 		
+		btnHamburgerPanel = new JButton();
+		btnHamburgerPanel.setBorderPainted(false);
+		btnHamburgerPanel.setBackground(SystemColor.window);
+		btnHamburgerPanel.setBounds(23, 113, 40, 40);
+		add(btnHamburgerPanel);
+		
+        // Path to the PNG file
+        String pngFilePath = "src/main/resources/assets/bars-solid.png";
+        
+		btnHamburgerPanel.setIcon(new ImageIcon(pngFilePath));
+        btnHamburgerPanel.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		// Show the side panel when the button is clicked
+        		showSidePanel(vortex, btnHamburgerPanel);
+        	}
+        });
+		
 		scrllPaneUpcomingBookings = new JScrollPane();
-		scrllPaneUpcomingBookings.setBounds(30, 179, 740, 404);
+		scrllPaneUpcomingBookings.setBounds(30, 179, 740, 440);
 		scrllPaneUpcomingBookings.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		add(scrllPaneUpcomingBookings);
 		
@@ -119,8 +147,44 @@ public class Dashboard extends JPanel {
 				}
 			}
 		});
+		
 	}
-	
+
+    private static void showSidePanel(JFrame parentFrame, Component parentComponent) {
+        // Create a JDialog for the side panel
+        JDialog sidePanelDialog = new JDialog(parentFrame, "Side Panel", Dialog.ModalityType.APPLICATION_MODAL);
+        sidePanelDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        sidePanelDialog.setLayout(new BorderLayout());
+
+        // Create buttons for the side panel
+        JButton button1 = new JButton("Button 1");
+        JButton button2 = new JButton("Button 2");
+        JButton button3 = new JButton("Button 3");
+
+        // Add buttons to the side panel
+        JPanel sidePanelContent = new JPanel();
+        sidePanelContent.setLayout(new BoxLayout(sidePanelContent, BoxLayout.Y_AXIS));
+        sidePanelContent.add(button1);
+        sidePanelContent.add(button2);
+        sidePanelContent.add(button3);
+
+        sidePanelDialog.getContentPane().add(sidePanelContent, BorderLayout.CENTER);
+
+        // Set the side panel size and location
+        sidePanelDialog.setSize(200, 300);
+        sidePanelDialog.setLocationRelativeTo(parentComponent);
+
+        // Add a window listener to dispose of the side panel when it's closed
+        sidePanelDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                // You can perform additional actions when the side panel is closed
+            }
+        });
+
+        // Show the side panel
+        sidePanelDialog.setVisible(true);
+    }
 	
 	private void logout() {
 		vortex.showLogin();
@@ -134,6 +198,8 @@ public class Dashboard extends JPanel {
 
 		bookingStack.setModel(new DefaultTableModel() {
 			
+			private static final long serialVersionUID = 6471753810214881709L;
+
 			@Override
 			// Makes all cells un-changeable
 			public boolean isCellEditable(int row, int column) {
@@ -141,7 +207,6 @@ public class Dashboard extends JPanel {
 			}
 			
 		});
-
 		bookingStack.setColumnControlVisible(true);
         bookingStack.setColumnModel(new DefaultTableColumnModelExt());
 
@@ -169,5 +234,4 @@ public class Dashboard extends JPanel {
 		bookingStack.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 	}
-
 }

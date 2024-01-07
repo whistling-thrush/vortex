@@ -38,6 +38,7 @@ public class CreateBooking extends JPanel {
 	//Component declarations
 	protected Vortex vortex;
 	protected JLabel lblNewBooking;
+	protected JButton btnGoBack;
 	protected JLabel lblChooseDate;
 	protected DatePickerSettings settingsDate;
 	protected DatePicker datePicker;
@@ -48,7 +49,6 @@ public class CreateBooking extends JPanel {
 	protected TimePicker timePickerTo;
 	protected JButton btnFloorplan;
 	protected JLabel lblDeskChosen;
-	protected JButton btnGoBack;
 	protected JCheckBox chkbxAllDay;
 	protected JButton btnCreate;
 	protected MouseAdapter mouseAdapterCreate;
@@ -64,12 +64,27 @@ public class CreateBooking extends JPanel {
 	}
 	
 	private void setupPanel () {
+		
 		lblNewBooking = new JLabel("Create new booking");
 		lblNewBooking.setSize(260, 70);
 		lblNewBooking.setLocation(120, 59);
 		lblNewBooking.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
 		lblNewBooking.setHorizontalAlignment(SwingConstants.LEFT);
 		add(lblNewBooking);
+		
+		//Go back button
+		btnGoBack = new JButton("<");
+		btnGoBack.setBorderPainted(false);
+		btnGoBack.setBackground(SystemColor.window);
+		btnGoBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				vortex.showDash();
+			}
+		});
+		btnGoBack.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		btnGoBack.setBounds(6, 80, 107, 36);
+		add(btnGoBack);
 		
 		lblChooseDate = new JLabel("Choose date");
 		lblChooseDate.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
@@ -136,20 +151,6 @@ public class CreateBooking extends JPanel {
 		lblDeskChosen.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		lblDeskChosen.setBounds(305, 340, 174, 36);
 		add(lblDeskChosen);
-		
-		//Go back button
-		btnGoBack = new JButton("<");
-		btnGoBack.setBorderPainted(false);
-		btnGoBack.setBackground(SystemColor.window);
-		btnGoBack.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				vortex.showDash();
-			}
-		});
-		btnGoBack.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		btnGoBack.setBounds(6, 80, 107, 36);
-		add(btnGoBack);
 		
 		btnCreate = new JButton("Create booking");
 		mouseAdapterCreate = new MouseAdapter() {
