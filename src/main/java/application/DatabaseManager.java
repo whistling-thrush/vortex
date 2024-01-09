@@ -31,13 +31,14 @@ public class DatabaseManager {
 	public static Connection connection;
 	
 	public static void initialiseDBMS() {
-		String url = "jdbc:mysql://localhost:3306/desk_book";
-		String username = "MyUsername";
-		String password = "MyPassword";
+		String url = "jdbc:mysql://localhost:3306/deskbook";
+		String username = info.getUsername();
+		String password = info.getPassword();
 		
 		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection(url, username, password);
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 

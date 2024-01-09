@@ -6,3 +6,4 @@ bin/
 .classpath
 .vscode
 target/
+info.java
