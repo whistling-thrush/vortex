@@ -1,7 +1,6 @@
 package main.java.application;
 
 import javax.swing.JPanel;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -68,35 +67,13 @@ public class Dashboard extends JPanel {
 		add(lblWelcome);
 		
 		separator = new JSeparator();
-		separator.setBounds(99, 70, 602, 12);
+		separator.setBounds(99, 83, 602, 12);
 		add(separator);
-		
-		btnCreateBooking = new JButton("New booking");
-		btnCreateBooking.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				vortex.showCreate();
-			}
-		});
-		btnCreateBooking.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		btnCreateBooking.setBounds(170, 94, 145, 29);
-		add(btnCreateBooking);
-		
-		btnSeeHistory = new JButton("Booking history");
-		btnSeeHistory.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				vortex.showHistory();
-			}
-		});
-		btnSeeHistory.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		btnSeeHistory.setBounds(485, 94, 145, 29);
-		add(btnSeeHistory);
 		
 		btnHamburgerPanel = new JButton();
 		btnHamburgerPanel.setBorderPainted(false);
 		btnHamburgerPanel.setBackground(SystemColor.window);
-		btnHamburgerPanel.setBounds(23, 113, 40, 40);
+		btnHamburgerPanel.setBounds(30, 18, 40, 40);
 		add(btnHamburgerPanel);
 		
         // Path to the PNG file
@@ -112,7 +89,7 @@ public class Dashboard extends JPanel {
         });
 		
 		scrllPaneUpcomingBookings = new JScrollPane();
-		scrllPaneUpcomingBookings.setBounds(30, 179, 740, 440);
+		scrllPaneUpcomingBookings.setBounds(30, 144, 740, 467);
 		scrllPaneUpcomingBookings.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		add(scrllPaneUpcomingBookings);
 		
@@ -122,22 +99,12 @@ public class Dashboard extends JPanel {
         lblUpcomingBookings = new JLabel();
         lblUpcomingBookings.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblUpcomingBookings.setText("Upcoming Bookings");
-        lblUpcomingBookings.setBounds(317, 146, 166, 21);
+        lblUpcomingBookings.setBounds(317, 109, 166, 21);
         lblUpcomingBookings.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
         lblUpcomingBookings.setHorizontalAlignment(SwingConstants.CENTER);
         add(lblUpcomingBookings);
         
-		btnLogOut = new JButton("Log out");
-		btnLogOut.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				logout();
-			}
-		});
-		btnLogOut.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		btnLogOut.setBounds(30, 29, 83, 29);
-		add(btnLogOut);
-
+		
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -149,23 +116,48 @@ public class Dashboard extends JPanel {
 		
 	}
 
-    private static void showSidePanel(JFrame parentFrame, Component parentComponent) {
+    private void showSidePanel(JFrame parentFrame, Component parentComponent) {
         // Create a JDialog for the side panel
-        JDialog sidePanelDialog = new JDialog(parentFrame, "Side Panel", Dialog.ModalityType.APPLICATION_MODAL);
-        sidePanelDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        sidePanelDialog.setLayout(new BorderLayout());
-
-        // Create buttons for the side panel
-        JButton button1 = new JButton("Button 1");
-        JButton button2 = new JButton("Button 2");
-        JButton button3 = new JButton("Button 3");
-
-        // Add buttons to the side panel
+        JDialog sidePanelDialog = new JDialog(parentFrame, "Options", Dialog.ModalityType.APPLICATION_MODAL);
         JPanel sidePanelContent = new JPanel();
-        sidePanelContent.setLayout(new BoxLayout(sidePanelContent, BoxLayout.Y_AXIS));
-        sidePanelContent.add(button1);
-        sidePanelContent.add(button2);
-        sidePanelContent.add(button3);
+        sidePanelDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        sidePanelDialog.getContentPane().setLayout(new BorderLayout());
+        
+        btnCreateBooking = new JButton("New booking");
+		btnCreateBooking.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				vortex.showCreate();
+				sidePanelDialog.dispose();
+			}
+		});
+		btnCreateBooking.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		btnCreateBooking.setBounds(170, 94, 145, 29);
+		sidePanelContent.add(btnCreateBooking);
+		
+		btnSeeHistory = new JButton("Booking history");
+		btnSeeHistory.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				vortex.showHistory();
+				sidePanelDialog.dispose();
+			}
+		});
+		btnSeeHistory.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		btnSeeHistory.setBounds(485, 94, 145, 29);
+		sidePanelContent.add(btnSeeHistory);
+        
+        btnLogOut = new JButton("Log out");
+		btnLogOut.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				logout();
+				sidePanelDialog.dispose();
+			}
+		});
+		btnLogOut.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		btnLogOut.setBounds(30, 29, 83, 29);
+		sidePanelContent.add(btnLogOut);
 
         sidePanelDialog.getContentPane().add(sidePanelContent, BorderLayout.CENTER);
 

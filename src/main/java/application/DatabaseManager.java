@@ -69,7 +69,7 @@ public class DatabaseManager {
 				
 				map.put("bookings", bookings);
 				
-				String[] colNames = {"Desk number", "Date (yyyy-mm-dd)", "From", "To", "Duration"};
+				String[] colNames = {"Desk number", "Employee ID", "Date (yyyy-mm-dd)", "From", "To", "Duration"};
 				
 				map.put("colNames", colNames);
 			}
