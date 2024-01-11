@@ -3,28 +3,29 @@ package main.java.application;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+
 import java.awt.Font;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import javax.swing.JPanel;
-
 public class Admin extends JPanel {
+
+	/*
+	 * TODO:
+	 * 1. Add ability to delete any booking
+	 * 2. Add ability to delete any account
+	 * 3. Add ability to view most booked desk
+	 * 4. Add ability to view booking frequency on a weekly basis
+	 */
 
 	public Dimension dimension = new Dimension(800, 600);
 	
@@ -34,18 +35,16 @@ public class Admin extends JPanel {
 	private Vortex vortex;
 	private JLabel lblWelcome;
 	private JSeparator separator;
-	private JButton btnCreateBooking;
-	private JButton btnSeeHistory;
 	private JScrollPane scrllPaneUpcomingBookings;
-	private JLabel lblUpcomingBookings;
-	private JPanel bookingStack;
-	private JPanel bookingDetails;
-	private JButton btnLogOut;
+	private JXTable bookingStack;
+	private DefaultTableModel model;
 	
 	//Variable declarations
-	private Map<String, Object> bookings;
+	private Map<String, Object> objects;
+	private ArrayList<Booking> bookings;
 	
-	public Admin() {
+	public Admin(Vortex vortex) {
+		this.vortex = vortex;
 		setLayout(null);
 		setSize(new Dimension(800, 600));
 		setupPanel();
@@ -64,104 +63,54 @@ public class Admin extends JPanel {
 		add(separator);
 		
 		scrllPaneUpcomingBookings = new JScrollPane();
-		scrllPaneUpcomingBookings.setBounds(30, 144, 740, 360);
+		scrllPaneUpcomingBookings.setBounds(30, 116, 740, 440);
 		scrllPaneUpcomingBookings.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		
-		bookingStack = new JPanel();
-		bookingStack.setLayout(new BoxLayout(bookingStack, BoxLayout.Y_AXIS));
-		scrllPaneUpcomingBookings.setViewportView(bookingStack);
 		add(scrllPaneUpcomingBookings);
 		
-		lblUpcomingBookings = new JLabel("Upcoming bookings");
-		lblUpcomingBookings.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
-		lblUpcomingBookings.setHorizontalAlignment(SwingConstants.CENTER);
-		scrllPaneUpcomingBookings.setColumnHeaderView(lblUpcomingBookings);
+		bookingStack = new JXTable();
+        scrllPaneUpcomingBookings.setViewportView(bookingStack);
 		
-		btnLogOut = new JButton("Log out");
-		btnLogOut.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				logout();
-			}
-		});
-		btnLogOut.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		btnLogOut.setBounds(635, 532, 135, 29);
-		add(btnLogOut);
-	}
-	
-	
-	private void logout() {
-		vortex.showLogin();
-	}
-	
-	
-	private JPanel createBookingPanel(Booking booking) {
-		bookingDetails = new JPanel();
-		bookingDetails.setPreferredSize(new Dimension(720, 50));
-		bookingDetails.setMaximumSize(new Dimension(720, 50));
-		bookingDetails.setBackground(new Color(230, 230, 230));
-		bookingDetails.setLayout(new BorderLayout());
-		
-		JLabel lblDetails = new JLabel();
-		lblDetails.setBounds(50, 20, 0, 0);
-		lblDetails.setText("Desk: " 
-				+ booking.getDesk() 
-				+ "     From: " 
-				+ booking.getTimeStart() 
-				+ "     To: " 
-				+ booking.getTimeEnd()
-				+ "     On: "
-				+ booking.getDate());
-		bookingDetails.add(lblDetails);
-		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BorderLayout());
-		
-		JButton btnCancelBooking = new JButton();
-		btnCancelBooking.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				cancelBooking(booking.getBookID());
-				//Very jugadu fix for now :)
-				vortex.showDash();
-				vortex.showDash();
-			}
-		});
-		btnCancelBooking.setText("Cancel booking");
-		btnCancelBooking.setSize(new Dimension(30, 5));
-		buttonPanel.add(btnCancelBooking, BorderLayout.EAST);
-		
-		JButton btnChangeBooking = new JButton();
-		btnChangeBooking.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				changeBooking(booking.getBookID());
-			}
-		});
-		btnChangeBooking.setText("Change booking");
-		btnChangeBooking.setSize(new Dimension(30, 5));
-		buttonPanel.add(btnChangeBooking, BorderLayout.WEST);
-		
-		bookingDetails.add(buttonPanel, BorderLayout.EAST);
-		
-		return bookingDetails;
-	}
-	
-	private void cancelBooking(int bookID) {
-		DatabaseManager.sql_deleteBooking(bookID);
-	}
-	
-	private void changeBooking(int bookID) {
-		vortex.showChangeBooking(bookID);
-	}
-	
-	public void changeWelcomeText (String name) {
-		lblWelcome.setText("Welcome, " + name + "!");
 	}
 
-	public void getUpcomingBookings() {
+	public void getBookings() {
 		
-		bookings = DatabaseManager.sql_upcomingBookings();
+		
+		bookingStack.setModel(new DefaultTableModel() {
+			
+			private static final long serialVersionUID = 6471753810214881709L;
+
+			@Override
+			// Makes all cells un-changeable
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+			
+		});
+		bookingStack.setColumnControlVisible(true);
+        bookingStack.setColumnModel(new DefaultTableColumnModelExt());
+
+		model = (DefaultTableModel) bookingStack.getModel();
+		objects = DatabaseManager.sql_getAllBookings();
+		
+		String[] colNames = (String[]) objects.get("colNames");
+		@SuppressWarnings("unchecked")
+		ArrayList<Booking> bookings = (ArrayList<Booking>) objects.get("bookings");
+		
+		model.setColumnIdentifiers(colNames);
+		
+		for (Booking booking : bookings) {
+			String deskID = String.valueOf(booking.getDesk());
+			String date = booking.getDate();
+			String timeStart = booking.getTimeStart();
+			String timeEnd = booking.getTimeEnd();
+			String duration = String.valueOf(booking.getDuration());
+			
+			String[] row = {deskID, date, timeStart, timeEnd, duration};
+			
+			model.addRow(row);
+		}
+		
+		bookingStack.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		
 	}
 

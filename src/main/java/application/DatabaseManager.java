@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -30,6 +29,7 @@ public class DatabaseManager {
 	//Variable declarations
 	public static Connection connection;
 	
+	@SuppressWarnings("unchecked")
 	public static void initialiseDBMS() {
 		String url = "jdbc:mysql://localhost:3306/deskbook";
 		String username = info.getUsername();
@@ -42,31 +42,48 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 
-		Vortex.bookings = sql_getAllBookings();
+		Vortex.bookings = (ArrayList<Booking>) sql_getAllBookings().get("bookings");
 			
 	}
 
-	private static ArrayList<Booking> sql_getAllBookings() {
+	public static Map<String, Object> sql_getAllBookings() {
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		Map<String, Object> map = new HashMap<>();
 
 		try {
 			String query = new String(Files.readAllBytes(Paths.get("src/main/resources/queries/get_all_bookings.sql")), StandardCharsets.UTF_8);
-			//String query = "SELECT * FROM booking;";
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
 
 			while (resultSet.next()) {
-				//Gets next booking and adds it to the ArrayList
-				bookings.add(new Booking(resultSet.getInt("book_id"), resultSet.getInt("emp_id"), resultSet.getInt("desk_id"), resultSet.getString("date"), resultSet.getString("time_start"), resultSet.getString("time_end"), resultSet.getInt("duration")));
+				
+				int bookID = resultSet.getInt("book_id");
+				int empID = resultSet.getInt("emp_id");
+				int desk = resultSet.getInt("desk_id");
+				String date = resultSet.getString("date");
+				String startTime = resultSet.getString("time_start");
+				String endTime = resultSet.getString("time_end");
+				int duration = resultSet.getInt("duration");
+				
+				bookings.add(new Booking(bookID, empID, desk, date, startTime, endTime, duration));
+				
+				map.put("bookings", bookings);
+				
+				String[] colNames = {"Desk number", "Date (yyyy-mm-dd)", "From", "To", "Duration"};
+				
+				map.put("colNames", colNames);
 			}
+				
 			
 			resultSet.close();
 			statement.close();
+			
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
 		
-		return bookings;
+		return map;
+		
 	}
 	
 	public static void sql_closeConnection() {
@@ -206,7 +223,6 @@ public class DatabaseManager {
 			statement.setInt(1, empID);
 			
 			ResultSet resultSet = statement.executeQuery();
-			ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 
 			while (resultSet.next()) {
 				
@@ -229,7 +245,6 @@ public class DatabaseManager {
 			resultSet.close();
 			statement.close();
 
-			int numCols = resultSetMetaData.getColumnCount();
 			map.put("bookings", upcomingBookings);
 			
 			String[] colNames = {"Desk number", "Date (yyyy-mm-dd)", "From", "To", "Duration"};

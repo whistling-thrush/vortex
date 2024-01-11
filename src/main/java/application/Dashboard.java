@@ -33,7 +33,7 @@ import java.util.Map;
 
 public class Dashboard extends JPanel {
 	
-	public Dimension dimension = new Dimension(800, 600);
+	public Dimension dimension = new Dimension(800, 650);
 
 	private static final long serialVersionUID = 1936925262291800888L;
 	
@@ -56,7 +56,6 @@ public class Dashboard extends JPanel {
 	public Dashboard(Vortex vortex) {
 		this.vortex = vortex;
 		setLayout(null);
-		setSize(new Dimension(800, 650));
 		setupPanel();
 	}
 	
@@ -173,14 +172,6 @@ public class Dashboard extends JPanel {
         // Set the side panel size and location
         sidePanelDialog.setSize(200, 300);
         sidePanelDialog.setLocationRelativeTo(parentComponent);
-
-        // Add a window listener to dispose of the side panel when it's closed
-        sidePanelDialog.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                // You can perform additional actions when the side panel is closed
-            }
-        });
 
         // Show the side panel
         sidePanelDialog.setVisible(true);

@@ -26,6 +26,7 @@ public class Vortex extends JFrame {
 	private SignUp signUp;
 	private Floorplan floorplan;
 	private ChangeBooking changeBooking;
+	private Admin admin;
 	
 	//Variable declarations
 	private int bookID;
@@ -90,6 +91,7 @@ public class Vortex extends JFrame {
 		signUp = new SignUp(this);
 		changeBooking = new ChangeBooking(this);
 		floorplan = new Floorplan(this, createBooking, changeBooking);
+		admin = new Admin(this);
 		
 		
 		//Setup the objects
@@ -101,6 +103,7 @@ public class Vortex extends JFrame {
 		cardPanel.add(signUp, "signup");
 		cardPanel.add(floorplan, "floorplan");
 		cardPanel.add(changeBooking, "changeBooking");
+		cardPanel.add(admin, "admin");
 		
 	}
 
@@ -153,6 +156,13 @@ public class Vortex extends JFrame {
 		floorplan.resetFloorplan();
 		floorplan.addFloorplan(showCreateBooking, bookID);
 		cardLayout.show(cardPanel, "floorplan");
+	}
+	
+	public void showAdmin() {
+		setMinimumSize(admin.dimension);
+		setSize(admin.dimension);
+		admin.getBookings();
+		cardLayout.show(cardPanel, "admin");
 	}
 	
 	public Floorplan getFloorplan() {

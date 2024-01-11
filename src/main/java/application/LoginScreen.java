@@ -201,8 +201,12 @@ public class LoginScreen extends JPanel {
 		}
 		
 		if (DatabaseManager.sql_loginSearch(email, pass)) {
-			vortex.showDash();
-			dashboard.changeWelcomeText(currentEmployeeName);
+			if (currentEmployeeName.equals("Admin")) {
+				vortex.showAdmin();
+			} else {
+				vortex.showDash();
+				dashboard.changeWelcomeText(currentEmployeeName);
+			}
 		} else {
 			GlobalErrorBox.showError(vortex, "Error: Invalid email or password");
 		}
