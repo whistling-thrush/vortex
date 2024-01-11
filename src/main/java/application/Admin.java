@@ -4,19 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
-
-import javax.swing.JPanel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
-
-import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
-
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -24,12 +11,27 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JLayeredPane;
+
+import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+
 import java.util.ArrayList;
 import java.util.Map;
-import javax.swing.JLayeredPane;
 
 public class Admin extends JPanel {
 
@@ -46,6 +48,7 @@ public class Admin extends JPanel {
 	private static final long serialVersionUID = 1936925262291800888L;
 	
 	//Component declarations
+	private JPopupMenu contextMenu;
 	private Vortex vortex;
 	private JLabel lblWelcome;
 	private JLayeredPane layeredPane;
@@ -67,6 +70,15 @@ public class Admin extends JPanel {
 	}
 
 	private void setupPanel() {
+		
+        contextMenu = new JPopupMenu();
+        JMenuItem changeMenuItem = new JMenuItem("Change Booking");
+        JMenuItem deleteMenuItem = new JMenuItem("Delete Booking");
+        contextMenu.add(changeMenuItem);
+        contextMenu.add(deleteMenuItem);
+
+        // Add mouse listener for right-click events
+        addMouseListener(new BookingMouseListener());
 		
 		lblWelcome = new JLabel("Welcome, Admin!");
 		lblWelcome.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
@@ -109,6 +121,19 @@ public class Admin extends JPanel {
         scrllPaneUpcomingBookings.setViewportView(bookingStack);
 		
 	}
+	
+	private class BookingMouseListener extends MouseAdapter {
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (SwingUtilities.isRightMouseButton(e)) {
+                showContextMenu(e);
+            }
+        }
+    }
+
+    private void showContextMenu(MouseEvent e) {
+        contextMenu.show(this, e.getX(), e.getY());
+    }
 	
 	private void showSidePanel(JFrame parentFrame, Component parentComponent) {
         // Create a JDialog for the side panel
