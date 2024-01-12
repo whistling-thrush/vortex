@@ -39,9 +39,10 @@ public class Admin extends JPanel {
 	/*
 	 * TODO:
 	 * 1. Add ability to delete any booking √
-	 * 2. Add ability to delete any account
-	 * 3. Add ability to view most booked desk
-	 * 4. Add ability to view booking frequency on a weekly basis
+	 * 2. Add ability to change any booking
+	 * 3. Add ability to delete any account
+	 * 4. Add ability to view most booked desk
+	 * 5. Add ability to view booking frequency on a weekly basis
 	 */
 
 	public Dimension dimension = new Dimension(800, 600);
@@ -133,7 +134,8 @@ public class Admin extends JPanel {
         
         // Add mouse listener for right-click events
         bookingStack.addMouseListener(new BookingMouseListener());
-        deleteMenuItem.addActionListener(actionEvent -> deleteSelectedRows());
+        deleteMenuItem.addActionListener(ActionEvent -> deleteSelectedRows());
+        changeMenuItem.addActionListener(ActionEvent -> changeBooking());
 		
 	}
 	
@@ -147,9 +149,18 @@ public class Admin extends JPanel {
 		}
 	}
 	
+	// Opens the ChangeBooking panel for the selected row
+	private void changeBooking() {
+		int index = bookingStack.getSelectedRows().length;
+		if (index == 1) {
+			vortex.showChangeBooking(bookings.get(bookingStack.getSelectedRow()).getBookID(), true);
+		}
+	}
+	
 	private class BookingMouseListener extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
+        	
             if (SwingUtilities.isRightMouseButton(e)) {
             	Point point = e.getComponent().getLocationOnScreen();
             	int row = bookingStack.rowAtPoint(e.getPoint());

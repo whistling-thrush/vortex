@@ -5,12 +5,19 @@ import java.awt.event.MouseEvent;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 
+import javax.sound.midi.Soundbank;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 public class ChangeBooking extends CreateBooking {
 
 	private static final long serialVersionUID = -671413112921264569L;
 	
 	//Variable declarations
 	private int bookID = 0;
+	
+	public boolean goBackToAdmin = false;
 
 	//Constructor method
 	public ChangeBooking(Vortex vortex) {
@@ -43,10 +50,26 @@ public class ChangeBooking extends CreateBooking {
 					GlobalErrorBox.showError(vortex, "Error: Booking not valid for these timings (change timings)");
 				}
 
-				vortex.showDash();
+				if (goBackToAdmin) {
+					vortex.showAdmin();
+				} else {
+					vortex.showDash();
+				}
 			}
 		});
 	
+		btnGoBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				System.out.println(goBackToAdmin);
+				if (goBackToAdmin) {
+					vortex.showAdmin();
+				} else {
+					vortex.showDash();
+				}
+			}
+		});
+		
 		btnFloorplan.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {

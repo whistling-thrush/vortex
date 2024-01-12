@@ -169,11 +169,14 @@ public class Vortex extends JFrame {
 		return floorplan;
 	}
 	
-	public void showChangeBooking(int bookID) {
+	public void showChangeBooking(int bookID, boolean... goBackToAdmin) {
 		this.bookID = bookID;
 		setMinimumSize(changeBooking.dimension);
 		setSize(changeBooking.dimension);
 		changeBooking.setBookID(bookID);
+		if (goBackToAdmin.length == 1) {
+			changeBooking.goBackToAdmin = goBackToAdmin[0];
+		}
 		cardLayout.show(cardPanel, "changeBooking");
 	}
 	
