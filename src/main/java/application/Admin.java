@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -71,14 +72,7 @@ public class Admin extends JPanel {
 
 	private void setupPanel() {
 		
-        contextMenu = new JPopupMenu();
-        JMenuItem changeMenuItem = new JMenuItem("Change Booking");
-        JMenuItem deleteMenuItem = new JMenuItem("Delete Booking");
-        contextMenu.add(changeMenuItem);
-        contextMenu.add(deleteMenuItem);
-
-        // Add mouse listener for right-click events
-        addMouseListener(new BookingMouseListener());
+		
 		
 		lblWelcome = new JLabel("Welcome, Admin!");
 		lblWelcome.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
@@ -119,6 +113,15 @@ public class Admin extends JPanel {
         
         bookingStack = new JXTable();
         scrllPaneUpcomingBookings.setViewportView(bookingStack);
+        
+        contextMenu = new JPopupMenu();
+        JMenuItem changeMenuItem = new JMenuItem("Change Booking");
+        JMenuItem deleteMenuItem = new JMenuItem("Delete Booking");
+        contextMenu.add(changeMenuItem);
+        contextMenu.add(deleteMenuItem);
+        
+        // Add mouse listener for right-click events
+        bookingStack.addMouseListener(new BookingMouseListener());
 		
 	}
 	
@@ -132,7 +135,8 @@ public class Admin extends JPanel {
     }
 
     private void showContextMenu(MouseEvent e) {
-        contextMenu.show(this, e.getX(), e.getY());
+    	Point point = e.getComponent().getLocationOnScreen();
+        contextMenu.show(this, e.getX(), e.getY() + point.y - vortex.getY());
     }
 	
 	private void showSidePanel(JFrame parentFrame, Component parentComponent) {
