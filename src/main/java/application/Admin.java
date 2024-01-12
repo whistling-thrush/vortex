@@ -38,7 +38,7 @@ public class Admin extends JPanel {
 
 	/*
 	 * TODO:
-	 * 1. Add ability to delete any booking
+	 * 1. Add ability to delete any booking √
 	 * 2. Add ability to delete any account
 	 * 3. Add ability to view most booked desk
 	 * 4. Add ability to view booking frequency on a weekly basis
@@ -62,6 +62,7 @@ public class Admin extends JPanel {
 	
 	//Variable declarations
 	private Map<String, Object> objects;
+	private ArrayList<Booking> bookings;
 	
 	public Admin(Vortex vortex) {
 		this.vortex = vortex;
@@ -72,8 +73,7 @@ public class Admin extends JPanel {
 
 	private void setupPanel() {
 		
-		
-		
+				
 		lblWelcome = new JLabel("Welcome, Admin!");
 		lblWelcome.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
 		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
@@ -120,23 +120,49 @@ public class Admin extends JPanel {
         contextMenu.add(changeMenuItem);
         contextMenu.add(deleteMenuItem);
         
+        // Add mouse listener to deselect selected rows when clicked outside
+        addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mousePressed(MouseEvent e) {
+        		int rows = bookingStack.getRowCount();
+        		if (!bookingStack.contains(getMousePosition())) {
+        			bookingStack.removeRowSelectionInterval(0, rows - 1);
+        		}
+        	}
+        });
+        
         // Add mouse listener for right-click events
         bookingStack.addMouseListener(new BookingMouseListener());
+        deleteMenuItem.addActionListener(actionEvent -> deleteSelectedRows());
 		
+	}
+	
+	// Deletes selected rows from panel and database
+	private void deleteSelectedRows() {
+		int[] selectedRows = bookingStack.getSelectedRows();
+		
+		for (int i = selectedRows.length - 1; i >= 0; i--) {
+			model.removeRow(selectedRows[i]);
+			DatabaseManager.sql_deleteBooking(bookings.get(selectedRows[i]).getBookID());
+		}
 	}
 	
 	private class BookingMouseListener extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e)) {
-                showContextMenu(e);
+            	Point point = e.getComponent().getLocationOnScreen();
+            	int row = bookingStack.rowAtPoint(e.getPoint());
+            	
+            	if (row != -1 && bookingStack.isRowSelected(row)) {
+            		showContextMenu(e, point);
+        		}
             }
         }
     }
 
-    private void showContextMenu(MouseEvent e) {
-    	Point point = e.getComponent().getLocationOnScreen();
-        contextMenu.show(this, e.getX(), e.getY() + point.y - vortex.getY());
+    private void showContextMenu(MouseEvent e, Point point) {
+    	contextMenu.show(this, e.getX(), e.getY() + point.y - vortex.getY());
     }
 	
 	private void showSidePanel(JFrame parentFrame, Component parentComponent) {
@@ -173,6 +199,7 @@ public class Admin extends JPanel {
 		vortex.showLogin();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void getBookings() {
 		
 		
@@ -194,8 +221,7 @@ public class Admin extends JPanel {
 		objects = DatabaseManager.sql_getAllBookings();
 		
 		String[] colNames = (String[]) objects.get("colNames");
-		@SuppressWarnings("unchecked")
-		ArrayList<Booking> bookings = (ArrayList<Booking>) objects.get("bookings");
+		bookings = (ArrayList<Booking>) objects.get("bookings");
 		
 		model.setColumnIdentifiers(colNames);
 		
