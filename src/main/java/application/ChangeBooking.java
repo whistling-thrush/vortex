@@ -39,13 +39,13 @@ public class ChangeBooking extends CreateBooking {
 			public void mousePressed(MouseEvent e) {
 				Booking booking;
 				if (chkbxAllDay.isSelected()) {
-					booking = new Booking(bookID, LoginScreen.currentEmployeeID, vortex.getFloorplan().selectedDesk, datePicker.getText(), minTime.format(DateTimeFormatter.ofPattern("hh:mm a")).toString(), maxTime.format(DateTimeFormatter.ofPattern("hh:mm a")).toString(), (int) Duration.between(minTime, maxTime).toMinutes());
+					booking = new Booking(bookID, LoginScreen.currentEmployeeID, vortex.getFloorplan().selectedDesk, datePicker.getText(), minTime.format(DateTimeFormatter.ofPattern("HH:mm")).toString(), maxTime.format(DateTimeFormatter.ofPattern("HH:mm")).toString(), (int) Duration.between(minTime, maxTime).toMinutes());
 				} else {
 					booking = new Booking(bookID, LoginScreen.currentEmployeeID, vortex.getFloorplan().selectedDesk, datePicker.getText(), timePickerFrom.getTime().format(DateTimeFormatter.ofPattern("HH:mm")), timePickerTo.getTime().format(DateTimeFormatter.ofPattern("HH:mm")), (int) Duration.between(timePickerFrom.getTime(), timePickerTo.getTime()).toMinutes());
 				}
 				
 				if (validateBooking(booking)) {
-					DatabaseManager.sql_createBooking(booking.getEmpID(), booking.getDesk(), booking.getDate(), booking.getTimeStart(), booking.getTimeEnd(), booking.getDuration(), vortex);
+					DatabaseManager.sql_changeBooking(booking.getBookID(), booking.getDesk(), booking.getDate(), booking.getTimeStart(), booking.getTimeEnd(), booking.getDuration());
 				} else {
 					GlobalErrorBox.showError(vortex, "Error: Booking not valid for these timings (change timings)");
 				}
