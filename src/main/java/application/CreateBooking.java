@@ -170,8 +170,6 @@ public class CreateBooking extends JPanel {
 					GlobalErrorBox.showError(vortex, "Error: Booking not valid for these timings (change timings)");
 				}
 				
-				Vortex.bookings.add(booking);
-				
 				vortex.showDash();
 			}
 		};

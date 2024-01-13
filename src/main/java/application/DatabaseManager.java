@@ -41,8 +41,6 @@ public class DatabaseManager {
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
-		Vortex.bookings = (ArrayList<Booking>) sql_getAllBookings().get("bookings");
 			
 	}
 
@@ -209,7 +207,6 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 		
-		
 	}
 	
 	public static Map<String, Object> sql_upcomingBookings() {
@@ -303,18 +300,22 @@ public class DatabaseManager {
 	//Checks if a booking already exists
 	public static boolean sql_checkBookingExistance(Booking booking) {
 		boolean bookingExists = false;
+		@SuppressWarnings("unchecked")
+		ArrayList<Booking> bookings = (ArrayList<Booking>) DatabaseManager.sql_getAllBookings().get("bookings");
 
-		for (Booking existingBooking : Vortex.bookings) {
-			//Checks if it is on the same day and for the same desk
-			if ((booking.getDate().equals(existingBooking.getDate())) && (booking.getDesk() == existingBooking.getDesk())) {
-				LocalTime existingBookingStart = LocalTime.parse(existingBooking.getTimeStart());
-				LocalTime existingBookingEnd = LocalTime.parse(existingBooking.getTimeEnd());
-				LocalTime bookingStart = LocalTime.parse(booking.getTimeStart());
-				
-				//Checks if a booking exists at that time
-				if ((bookingStart.compareTo(existingBookingEnd) < 0 && bookingStart.compareTo(existingBookingStart) > 0)) {
-					bookingExists = true;
-					break;
+		if (bookings != null) {
+			for (Booking existingBooking : bookings) {
+				//Checks if it is on the same day and for the same desk
+				if ((booking.getDate().equals(existingBooking.getDate())) && (booking.getDesk() == existingBooking.getDesk())) {
+					LocalTime existingBookingStart = LocalTime.parse(existingBooking.getTimeStart());
+					LocalTime existingBookingEnd = LocalTime.parse(existingBooking.getTimeEnd());
+					LocalTime bookingStart = LocalTime.parse(booking.getTimeStart());
+					
+					//Checks if a booking exists at that time
+					if ((bookingStart.compareTo(existingBookingEnd) < 0 && bookingStart.compareTo(existingBookingStart) > 0)) {
+						bookingExists = true;
+						break;
+					}
 				}
 			}
 		}

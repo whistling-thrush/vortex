@@ -213,7 +213,6 @@ public class Admin extends JPanel {
 	@SuppressWarnings("unchecked")
 	public void getBookings() {
 		
-		
 		bookingStack.setModel(new DefaultTableModel() {
 			
 			private static final long serialVersionUID = 6471753810214881709L;
@@ -236,17 +235,19 @@ public class Admin extends JPanel {
 		
 		model.setColumnIdentifiers(colNames);
 		
-		for (Booking booking : bookings) {
-			String deskID = String.valueOf(booking.getDesk());
-			String empID = String.valueOf(booking.getEmpID());
-			String date = booking.getDate();
-			String timeStart = booking.getTimeStart();
-			String timeEnd = booking.getTimeEnd();
-			String duration = String.valueOf(booking.getDuration());
-			
-			String[] row = {deskID, empID, date, timeStart, timeEnd, duration};
-			
-			model.addRow(row);
+		if (bookings != null) {
+			for (Booking booking : bookings) {
+				String deskID = String.valueOf(booking.getDesk());
+				String empID = String.valueOf(booking.getEmpID());
+				String date = booking.getDate();
+				String timeStart = booking.getTimeStart();
+				String timeEnd = booking.getTimeEnd();
+				String duration = String.valueOf(booking.getDuration());
+				
+				String[] row = {deskID, empID, date, timeStart, timeEnd, duration};
+				
+				model.addRow(row);
+			}
 		}
 		
 		bookingStack.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);

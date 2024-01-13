@@ -265,26 +265,30 @@ public class Floorplan extends JPanel {
 	}
 
 	public void blockBookedDesks(boolean chkbxAllDay, String date, String timeStart, String timeEnd) {
-		final ArrayList<Booking> bookings = Vortex.bookings;		
-
-		for (Booking booking : bookings) {
-			//Checks if it is on the same day and for the same desk
-			if (date.equals(booking.getDate())) {
-				LocalTime bookingStart = LocalTime.parse(timeStart);
-				LocalTime bookingEnd = LocalTime.parse(timeEnd);
-				LocalTime existingBookingStart = LocalTime.parse(booking.getTimeStart());
-				LocalTime existingBookingEnd = LocalTime.parse(booking.getTimeEnd());
-				
-				//Checks if a booking exists at that time
-				if ((bookingStart.compareTo(existingBookingEnd) < 0 && bookingStart.compareTo(existingBookingStart) >= 0) ||
-				(bookingEnd.compareTo(existingBookingEnd) <= 0 && bookingEnd.compareTo(existingBookingStart) > 0) ||
-				(bookingStart.compareTo(existingBookingStart) <= 0 && bookingEnd.compareTo(existingBookingEnd) >= 0)) {
-					if (booking.getFloor() == (int)spnnrFloorSelect.getValue()) {
-						changeColourOfDesk(bookedDeskColor, desks.get(48 - desk2Position(booking.getDesk())));
+		@SuppressWarnings("unchecked")
+		final ArrayList<Booking> bookings = (ArrayList<Booking>) DatabaseManager.sql_getAllBookings().get("bookings");
+		
+		if (bookings != null) {
+			for (Booking booking : bookings) {
+				//Checks if it is on the same day and for the same desk
+				if (date.equals(booking.getDate())) {
+					LocalTime bookingStart = LocalTime.parse(timeStart);
+					LocalTime bookingEnd = LocalTime.parse(timeEnd);
+					LocalTime existingBookingStart = LocalTime.parse(booking.getTimeStart());
+					LocalTime existingBookingEnd = LocalTime.parse(booking.getTimeEnd());
+					
+					//Checks if a booking exists at that time
+					if ((bookingStart.compareTo(existingBookingEnd) < 0 && bookingStart.compareTo(existingBookingStart) >= 0) ||
+							(bookingEnd.compareTo(existingBookingEnd) <= 0 && bookingEnd.compareTo(existingBookingStart) > 0) ||
+							(bookingStart.compareTo(existingBookingStart) <= 0 && bookingEnd.compareTo(existingBookingEnd) >= 0)) {
+						if (booking.getFloor() == (int)spnnrFloorSelect.getValue()) {
+							changeColourOfDesk(bookedDeskColor, desks.get(48 - desk2Position(booking.getDesk())));
+						}
 					}
 				}
 			}
 		}
+
 	}
 	
 	private int desk2Position(int deskNum) {

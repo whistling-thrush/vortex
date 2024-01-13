@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class Vortex extends JFrame {
 	
 	private static final long serialVersionUID = -5620007751101260104L;
-	public static ArrayList<Booking> bookings;
 	
 	
 	//Component declarations
@@ -58,7 +57,6 @@ public class Vortex extends JFrame {
 			}
 		});
 	}
-
 
 	/**
 	 * Create the frame.
