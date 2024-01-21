@@ -29,7 +29,6 @@ public class DatabaseManager {
 	//Variable declarations
 	public static Connection connection;
 	
-	@SuppressWarnings("unchecked")
 	public static void initialiseDBMS() {
 		String url = "jdbc:mysql://localhost:3306/deskbook";
 		String username = info.getUsername();
