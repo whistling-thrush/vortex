@@ -158,7 +158,7 @@ public class Vortex extends JFrame {
 	public void showAdmin() {
 		setMinimumSize(admin.dimension);
 		setSize(admin.dimension);
-		admin.getBookings();
+		admin.getData();
 		cardLayout.show(cardPanel, "admin");
 	}
 	

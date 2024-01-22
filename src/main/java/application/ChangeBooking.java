@@ -57,7 +57,6 @@ public class ChangeBooking extends CreateBooking {
 		btnGoBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				System.out.println(goBackToAdmin);
 				if (goBackToAdmin) {
 					vortex.showAdmin();
 				} else {

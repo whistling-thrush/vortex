@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.SecureCacheResponse;
 
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -58,8 +57,9 @@ public class Admin extends JPanel {
 	private JPanel cardPanel;
 	private JSeparator separator;
 	private JScrollPane scrllPaneBookings;
-	private JPanel employees;
-	private JXTable bookingStack;
+	private JScrollPane scrllPaneEmployees;
+	private JXTable tblBooking;
+	private JXTable tblEmployee;
 	private DefaultTableModel model;
 	private JButton btnHamburgerPanel;
 	private JButton btnLogOut;
@@ -69,6 +69,7 @@ public class Admin extends JPanel {
 	//Variable declarations
 	private Map<String, Object> objects;
 	private ArrayList<Booking> bookings;
+	private ArrayList<String[]> employees;
 	private enum AdminViews {bookings, employees};
 	private AdminViews currentView;
 	
@@ -128,9 +129,9 @@ public class Admin extends JPanel {
 			
 			if (SwingUtilities.isRightMouseButton(e)) {
 				Point point = e.getComponent().getLocationOnScreen();
-				int row = bookingStack.rowAtPoint(e.getPoint());
+				int row = tblBooking.rowAtPoint(e.getPoint());
 				
-				if (row != -1 && bookingStack.isRowSelected(row)) {
+				if (row != -1 && tblBooking.isRowSelected(row)) {
 					showContextMenu(e, point);
 				}
 			}
@@ -138,20 +139,14 @@ public class Admin extends JPanel {
 	}
 	
 	private void setupEmployeeView() {
-		employees = new JPanel();
-		employees.setBounds(0, 0, 740, 420);
-		cardPanel.add(employees, "employees");
-	}
-	
-	private void setupBookingView() {
 		
-		scrllPaneBookings = new JScrollPane();
-		scrllPaneBookings.setBounds(0, 0, 740, 420);
-		scrllPaneBookings.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		cardPanel.add(scrllPaneBookings, "bookings");
+		scrllPaneEmployees = new JScrollPane();
+		scrllPaneEmployees.setBounds(0, 0, 740, 420);
+		scrllPaneEmployees.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		cardPanel.add(scrllPaneEmployees, "scrllPaneEmployees");
 		
-		bookingStack = new JXTable();
-		scrllPaneBookings.setViewportView(bookingStack);
+		tblEmployee = new JXTable();
+		scrllPaneEmployees.setViewportView(tblEmployee);
 		
 		contextMenu = new JPopupMenu();
 		JMenuItem changeMenuItem = new JMenuItem("Change Booking");
@@ -163,22 +158,55 @@ public class Admin extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				int rows = bookingStack.getRowCount();
-				if (!bookingStack.contains(getMousePosition())) {
-					bookingStack.removeRowSelectionInterval(0, rows - 1);
+				int rows = tblEmployee.getRowCount();
+				if (!tblEmployee.contains(getMousePosition())) {
+					tblEmployee.removeRowSelectionInterval(0, rows - 1);
 				}
 			}
 		});
 		
 		// Add mouse listener for right-click events
-		bookingStack.addMouseListener(new BookingMouseListener());
+		tblEmployee.addMouseListener(new BookingMouseListener());
+		deleteMenuItem.addActionListener(ActionEvent -> deleteSelectedRows());
+		changeMenuItem.addActionListener(ActionEvent -> changeBooking());
+	}
+	
+	private void setupBookingView() {
+		
+		scrllPaneBookings = new JScrollPane();
+		scrllPaneBookings.setBounds(0, 0, 740, 420);
+		scrllPaneBookings.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		cardPanel.add(scrllPaneBookings, "bookings");
+		
+		tblBooking = new JXTable();
+		scrllPaneBookings.setViewportView(tblBooking);
+		
+		contextMenu = new JPopupMenu();
+		JMenuItem changeMenuItem = new JMenuItem("Change Booking");
+		JMenuItem deleteMenuItem = new JMenuItem("Delete Booking");
+		contextMenu.add(changeMenuItem);
+		contextMenu.add(deleteMenuItem);
+		
+		// Add mouse listener to deselect selected rows when clicked outside
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int rows = tblBooking.getRowCount();
+				if (!tblBooking.contains(getMousePosition())) {
+					tblBooking.removeRowSelectionInterval(0, rows - 1);
+				}
+			}
+		});
+		
+		// Add mouse listener for right-click events
+		tblBooking.addMouseListener(new BookingMouseListener());
 		deleteMenuItem.addActionListener(ActionEvent -> deleteSelectedRows());
 		changeMenuItem.addActionListener(ActionEvent -> changeBooking());
 	}
 	
 	// Deletes selected rows from panel and database
 	private void deleteSelectedRows() {
-		int[] selectedRows = bookingStack.getSelectedRows();
+		int[] selectedRows = tblBooking.getSelectedRows();
 		
 		for (int i = selectedRows.length - 1; i >= 0; i--) {
 			model.removeRow(selectedRows[i]);
@@ -188,9 +216,9 @@ public class Admin extends JPanel {
 	
 	// Opens the ChangeBooking panel for the selected row
 	private void changeBooking() {
-		int index = bookingStack.getSelectedRows().length;
+		int index = tblBooking.getSelectedRows().length;
 		if (index == 1) {
-			vortex.showChangeBooking(bookings.get(bookingStack.getSelectedRow()).getBookID(), true);
+			vortex.showChangeBooking(bookings.get(tblBooking.getSelectedRow()).getBookID(), true);
 		}
 	}
 	
@@ -238,7 +266,7 @@ public class Admin extends JPanel {
 			btnEmployees.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					cardLayout.show(cardPanel, "employees");
+					cardLayout.show(cardPanel, "scrllPaneEmployees");
 					currentView = AdminViews.employees;
 					sidePanelDialog.dispose();
 				}
@@ -264,9 +292,9 @@ public class Admin extends JPanel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void getBookings() {
+	private void getBookings() {
 		
-		bookingStack.setModel(new DefaultTableModel() {
+		tblBooking.setModel(new DefaultTableModel() {
 			
 			private static final long serialVersionUID = 6471753810214881709L;
 
@@ -277,10 +305,10 @@ public class Admin extends JPanel {
 			}
 			
 		});
-		bookingStack.setColumnControlVisible(true);
-        bookingStack.setColumnModel(new DefaultTableColumnModelExt());
+		tblBooking.setColumnControlVisible(true);
+        tblBooking.setColumnModel(new DefaultTableColumnModelExt());
 
-		model = (DefaultTableModel) bookingStack.getModel();
+		model = (DefaultTableModel) tblBooking.getModel();
 		objects = DatabaseManager.sql_getAllBookings();
 		
 		String[] colNames = (String[]) objects.get("colNames");
@@ -303,11 +331,49 @@ public class Admin extends JPanel {
 			}
 		}
 		
-		bookingStack.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		tblBooking.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	private void getEmployees() {
+		tblEmployee.setModel(new DefaultTableModel() {
+			
+			private static final long serialVersionUID = 942783462783647142L;
+
+			@Override
+			// Makes all cells un-changeable
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+			
+		});
+		tblEmployee.setColumnControlVisible(true);
+        tblEmployee.setColumnModel(new DefaultTableColumnModelExt());
+
+		model = (DefaultTableModel) tblEmployee.getModel();
+		objects = DatabaseManager.sql_getAllEmployees();
+		
+		String[] colNames = (String[]) objects.get("colNames");
+		employees = (ArrayList<String[]>) objects.get("employees");
+		
+		model.setColumnIdentifiers(colNames);
+		
+		if (employees != null) {
+			for (String[] employee : employees) {
+				model.addRow(employee);
+			}
+		}
+		
+		tblEmployee.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	}
+	
+	public void getData() {
+		getBookings();
+		getEmployees();
+	}
+	
 	public void clearBookings() {
-		bookingStack.removeAll();
+		tblBooking.removeAll();
 	}
 }

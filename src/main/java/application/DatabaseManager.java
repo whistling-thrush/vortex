@@ -322,4 +322,43 @@ public class DatabaseManager {
 		return bookingExists;
 	}
 
+	public static Map<String, Object> sql_getAllEmployees() {
+		Map<String, Object> map = new HashMap<>();
+
+		try {
+			String query = new String(Files.readAllBytes(Paths.get("src/main/resources/queries/get_all_employees.sql")), StandardCharsets.UTF_8);
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
+			
+			ArrayList<String[]> employees = new ArrayList<String[]>();
+
+			while (resultSet.next()) {
+				
+				String[] row = new String[3];
+				
+				int empID = resultSet.getInt("emp_id");
+				String name = resultSet.getString("name");
+				String email = resultSet.getString("email");
+				
+				row[0] = Integer.toString(empID);
+				row[1] = name;
+				row[2] = email;
+				
+				employees.add(row);
+			}
+				
+			String[] colNames = {"Employee ID", "Name", "Email"};
+			map.put("employees", employees);
+			map.put("colNames", colNames);
+			
+			resultSet.close();
+			statement.close();
+			
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return map;
+	}
+
 }
