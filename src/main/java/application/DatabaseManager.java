@@ -360,5 +360,22 @@ public class DatabaseManager {
 		
 		return map;
 	}
+	
+	public static void sql_deleteAccount (int empID) {
+		
+		try {
+			
+			String query = new String(Files.readAllBytes(Paths.get("src/main/resources/queries/delete_account.sql")), StandardCharsets.UTF_8);
+			PreparedStatement deletionStatement = connection.prepareStatement(query);
+			deletionStatement.setInt(1, empID);
+			deletionStatement.execute();
+			
+			System.out.println("Emp ID " + empID + " deleted.");
+			
+			deletionStatement.close();
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

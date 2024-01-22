@@ -1,4 +1,5 @@
 .DS_Store
+src/.DS_Store
 batik-1.16/
 bin/
 .settings/

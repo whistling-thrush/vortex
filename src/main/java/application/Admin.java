@@ -40,7 +40,7 @@ public class Admin extends JPanel {
 	 * TODO:
 	 * 1. Add ability to delete any booking √
 	 * 2. Add ability to change any booking √
-	 * 3. Add ability to delete any account
+	 * 3. Add ability to delete any account √
 	 * 4. Add ability to view most booked desk
 	 * 5. Add ability to view booking frequency on a weekly basis
 	 */
@@ -122,17 +122,26 @@ public class Admin extends JPanel {
 		
 	}
 	
-	private class BookingMouseListener extends MouseAdapter {
+	private class TableMouseListener extends MouseAdapter {
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
 			
 			if (SwingUtilities.isRightMouseButton(e)) {
 				Point point = e.getComponent().getLocationOnScreen();
-				int row = tblBooking.rowAtPoint(e.getPoint());
 				
-				if (row != -1 && tblBooking.isRowSelected(row)) {
-					showContextMenu(e, point);
+				if (currentView.equals(AdminViews.bookings)) {
+					int row = tblBooking.rowAtPoint(e.getPoint());
+					
+					if (row != -1 && tblBooking.isRowSelected(row)) {
+						showContextMenu(e, point);
+					}
+				} else if(currentView.equals(AdminViews.employees)) {
+					int row = tblEmployee.rowAtPoint(e.getPoint());
+					
+					if (row != -1 && tblEmployee.isRowSelected(row)) {
+						showContextMenu(e, point);
+					}
 				}
 			}
 		}
@@ -148,12 +157,6 @@ public class Admin extends JPanel {
 		tblEmployee = new JXTable();
 		scrllPaneEmployees.setViewportView(tblEmployee);
 		
-		contextMenu = new JPopupMenu();
-		JMenuItem changeMenuItem = new JMenuItem("Change Booking");
-		JMenuItem deleteMenuItem = new JMenuItem("Delete Booking");
-		contextMenu.add(changeMenuItem);
-		contextMenu.add(deleteMenuItem);
-		
 		// Add mouse listener to deselect selected rows when clicked outside
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -166,9 +169,7 @@ public class Admin extends JPanel {
 		});
 		
 		// Add mouse listener for right-click events
-		tblEmployee.addMouseListener(new BookingMouseListener());
-		deleteMenuItem.addActionListener(ActionEvent -> deleteSelectedRows());
-		changeMenuItem.addActionListener(ActionEvent -> changeBooking());
+		tblEmployee.addMouseListener(new TableMouseListener());
 	}
 	
 	private void setupBookingView() {
@@ -180,12 +181,6 @@ public class Admin extends JPanel {
 		
 		tblBooking = new JXTable();
 		scrllPaneBookings.setViewportView(tblBooking);
-		
-		contextMenu = new JPopupMenu();
-		JMenuItem changeMenuItem = new JMenuItem("Change Booking");
-		JMenuItem deleteMenuItem = new JMenuItem("Delete Booking");
-		contextMenu.add(changeMenuItem);
-		contextMenu.add(deleteMenuItem);
 		
 		// Add mouse listener to deselect selected rows when clicked outside
 		addMouseListener(new MouseAdapter() {
@@ -199,18 +194,28 @@ public class Admin extends JPanel {
 		});
 		
 		// Add mouse listener for right-click events
-		tblBooking.addMouseListener(new BookingMouseListener());
-		deleteMenuItem.addActionListener(ActionEvent -> deleteSelectedRows());
-		changeMenuItem.addActionListener(ActionEvent -> changeBooking());
+		tblBooking.addMouseListener(new TableMouseListener());
 	}
 	
 	// Deletes selected rows from panel and database
 	private void deleteSelectedRows() {
-		int[] selectedRows = tblBooking.getSelectedRows();
 		
-		for (int i = selectedRows.length - 1; i >= 0; i--) {
-			model.removeRow(selectedRows[i]);
-			DatabaseManager.sql_deleteBooking(bookings.get(selectedRows[i]).getBookID());
+		if (currentView.equals(AdminViews.bookings)) {
+			int[] selectedRows = tblBooking.getSelectedRows();
+			model = (DefaultTableModel) tblBooking.getModel();
+			
+			for (int i = selectedRows.length - 1; i >= 0; i--) {
+				model.removeRow(selectedRows[i]);
+				DatabaseManager.sql_deleteBooking(bookings.get(selectedRows[i]).getBookID());
+			}
+		} else if (currentView.equals(AdminViews.employees)) {
+			int[] selectedRows = tblEmployee.getSelectedRows();
+			model = (DefaultTableModel) tblEmployee.getModel();
+			
+			for (int i = selectedRows.length - 1; i >= 0; i--) {
+				model.removeRow(selectedRows[i]);
+				DatabaseManager.sql_deleteAccount(Integer.valueOf(employees.get(selectedRows[i])[0]));
+			}
 		}
 	}
 	
@@ -223,7 +228,31 @@ public class Admin extends JPanel {
 	}
 	
     private void showContextMenu(MouseEvent e, Point point) {
+    	
+		contextMenu = new JPopupMenu();
+		
+		if (currentView.equals(AdminViews.employees)) {
+			
+			JMenuItem deleteMenuItem = new JMenuItem("Delete Account");
+			contextMenu.add(deleteMenuItem);
+			
+			deleteMenuItem.addActionListener(ActionEvent -> deleteSelectedRows());
+			
+		} else if (currentView.equals(AdminViews.bookings)) {
+			
+			JMenuItem changeMenuItem = new JMenuItem("Change Booking");
+			JMenuItem deleteMenuItem = new JMenuItem("Delete Booking");
+			
+			contextMenu.add(changeMenuItem);
+			contextMenu.add(deleteMenuItem);
+			
+			deleteMenuItem.addActionListener(ActionEvent -> deleteSelectedRows());
+			changeMenuItem.addActionListener(ActionEvent -> changeBooking());
+			
+		}
+		
     	contextMenu.show(this, e.getX(), e.getY() + point.y - vortex.getY());
+    	
     }
 	
 	private void showSidePanel(JFrame parentFrame, Component parentComponent) {
@@ -268,6 +297,7 @@ public class Admin extends JPanel {
 				public void mousePressed(MouseEvent e) {
 					cardLayout.show(cardPanel, "scrllPaneEmployees");
 					currentView = AdminViews.employees;
+					
 					sidePanelDialog.dispose();
 				}
 			});
