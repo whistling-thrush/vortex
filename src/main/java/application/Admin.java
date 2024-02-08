@@ -42,7 +42,7 @@ public class Admin extends JPanel {
 	 * 2. Add ability to change any booking √
 	 * 3. Add ability to delete any account √
 	 * 4. Add ability to view most booked desk
-	 * 5. Add ability to view booking frequency on a weekly basis
+	 * 5. Add ability to view booking frequency on a weekly basis √
 	 */
 
 	public Dimension dimension = new Dimension(800, 600);
