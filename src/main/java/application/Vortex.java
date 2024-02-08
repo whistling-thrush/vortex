@@ -90,7 +90,6 @@ public class Vortex extends JFrame {
 		floorplan = new Floorplan(this, createBooking, changeBooking);
 		admin = new Admin(this);
 		
-		
 		//Setup the objects
 		cardPanel.setLayout(cardLayout);
 		cardPanel.add(loginScreen, "login");

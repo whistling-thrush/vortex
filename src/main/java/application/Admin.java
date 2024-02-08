@@ -61,16 +61,18 @@ public class Admin extends JPanel {
 	private JXTable tblBooking;
 	private JXTable tblEmployee;
 	private DefaultTableModel model;
+	private StatisticsPage pnlStatistics;
 	private JButton btnHamburgerPanel;
 	private JButton btnLogOut;
 	private JButton btnBookings;
 	private JButton btnEmployees;
+	private JButton btnStatistics;
 	
 	//Variable declarations
 	private Map<String, Object> objects;
 	private ArrayList<Booking> bookings;
 	private ArrayList<String[]> employees;
-	private enum AdminViews {bookings, employees};
+	private enum AdminViews {bookings, employees, statistics};
 	private AdminViews currentView;
 	
 	public Admin(Vortex vortex) {
@@ -80,6 +82,7 @@ public class Admin extends JPanel {
 		setupPanel();
         setupBookingView();
         setupEmployeeView();
+        setupStatisticsView();
 	}
 
 	private void setupPanel() {
@@ -152,7 +155,7 @@ public class Admin extends JPanel {
 		scrllPaneEmployees = new JScrollPane();
 		scrllPaneEmployees.setBounds(0, 0, 740, 420);
 		scrllPaneEmployees.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		cardPanel.add(scrllPaneEmployees, "scrllPaneEmployees");
+		cardPanel.add(scrllPaneEmployees, "employees");
 		
 		tblEmployee = new JXTable();
 		scrllPaneEmployees.setViewportView(tblEmployee);
@@ -195,6 +198,13 @@ public class Admin extends JPanel {
 		
 		// Add mouse listener for right-click events
 		tblBooking.addMouseListener(new TableMouseListener());
+	}
+	
+	private void setupStatisticsView() {
+		
+		pnlStatistics = new StatisticsPage();
+		cardPanel.add(pnlStatistics, "statistics");
+		
 	}
 	
 	// Deletes selected rows from panel and database
@@ -275,7 +285,42 @@ public class Admin extends JPanel {
 		btnLogOut.setBounds(30, 29, 83, 29);
 		sidePanelContent.add(btnLogOut);
 		
-		if (!currentView.equals(AdminViews.bookings)) {
+		if (currentView.equals(AdminViews.bookings)) {
+			
+			//Employee button
+			btnEmployees = new JButton("View Employee data");
+			btnEmployees.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					cardLayout.show(cardPanel, "employees");
+					currentView = AdminViews.employees;
+					
+					sidePanelDialog.dispose();
+				}
+			});
+			btnEmployees.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+			btnEmployees.setBounds(30, 29, 83, 29);
+			sidePanelContent.add(btnEmployees);
+			
+			// Statistics button
+			btnStatistics = new JButton("View Statistics");
+			btnStatistics.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					cardLayout.show(cardPanel, "statistics");
+					currentView = AdminViews.statistics;
+					sidePanelDialog.dispose();
+				}
+			});
+			btnStatistics.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+			btnStatistics.setBounds(30, 29, 83, 29);
+			sidePanelContent.add(btnStatistics);
+			
+		}
+		
+		if (currentView.equals(AdminViews.employees)) {
+			
+			// Booking button
 			btnBookings = new JButton("View Booking data");
 			btnBookings.addMouseListener(new MouseAdapter() {
 				@Override
@@ -288,14 +333,44 @@ public class Admin extends JPanel {
 			btnBookings.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 			btnBookings.setBounds(30, 29, 83, 29);
 			sidePanelContent.add(btnBookings);
+			
+			// Statistics button
+			btnStatistics = new JButton("View Statistics");
+			btnStatistics.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					cardLayout.show(cardPanel, "statistics");
+					currentView = AdminViews.statistics;
+					sidePanelDialog.dispose();
+				}
+			});
+			btnStatistics.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+			btnStatistics.setBounds(1, 2, 83, 29);
+			sidePanelContent.add(btnStatistics);
 		}
 		
-		if (!currentView.equals(AdminViews.employees)) {
+		if (currentView.equals(AdminViews.statistics)) {
+			
+			// Booking button
+			btnBookings = new JButton("View Booking data");
+			btnBookings.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					cardLayout.show(cardPanel, "bookings");
+					currentView = AdminViews.bookings;
+					sidePanelDialog.dispose();
+				}
+			});
+			btnBookings.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+			btnBookings.setBounds(30, 29, 83, 29);
+			sidePanelContent.add(btnBookings);
+			
+			// Employee button
 			btnEmployees = new JButton("View Employee data");
 			btnEmployees.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					cardLayout.show(cardPanel, "scrllPaneEmployees");
+					cardLayout.show(cardPanel, "employees");
 					currentView = AdminViews.employees;
 					
 					sidePanelDialog.dispose();
@@ -304,6 +379,7 @@ public class Admin extends JPanel {
 			btnEmployees.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 			btnEmployees.setBounds(30, 29, 83, 29);
 			sidePanelContent.add(btnEmployees);
+			
 		}
 
         sidePanelDialog.getContentPane().add(sidePanelContent, BorderLayout.CENTER);
@@ -406,4 +482,5 @@ public class Admin extends JPanel {
 	public void clearBookings() {
 		tblBooking.removeAll();
 	}
+
 }
