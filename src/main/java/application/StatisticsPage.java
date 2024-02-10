@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -20,14 +20,15 @@ import javax.swing.SpinnerListModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.jdesktop.swingx.JXPanel;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-public class StatisticsPage extends JXPanel {
+public class StatisticsPage extends JPanel {
 
 	private static final long serialVersionUID = 17812638762893712L;
 	
@@ -41,7 +42,6 @@ public class StatisticsPage extends JXPanel {
 	private ChartPanel chartPanelTop;
 	private ArrayList<String> deskList;
 	private ArrayList<String> parameterList;
-	//private enum Parameters {Desk, Employee, Day};
 	private JSpinner spnnrDeskFrequency;
 	private JSpinner spnnrDeskTop;
 	private JLabel lblDeskNumber;
@@ -51,7 +51,7 @@ public class StatisticsPage extends JXPanel {
 	private final String[] daysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 	public StatisticsPage() {
-		this.setSize(dimension);
+		setSize(dimension);
 		initializeComponents();
 		setupLayout();
 	}
@@ -96,10 +96,7 @@ public class StatisticsPage extends JXPanel {
     	
         // Create the datasets
         datasetFrequency = new DefaultCategoryDataset();
-        updateFrequencyChart("Desk 1");
-        
         datasetTop = new DefaultCategoryDataset();
-        updateTopChart("Desk");
 
         // Create the charts
         chartFrequency = ChartFactory.createBarChart(
@@ -129,6 +126,10 @@ public class StatisticsPage extends JXPanel {
         
         chartPanelTop = new ChartPanel(chartTop);
         chartPanelTop.setSize(new Dimension(400, 400));
+        
+        // Initialise the charts
+        updateTopChart("Desk");
+        updateFrequencyChart("Desk 1");
     }
     
     @SuppressWarnings("unchecked")
@@ -140,6 +141,16 @@ public class StatisticsPage extends JXPanel {
     	ArrayList<String[]> employees = (ArrayList<String[]>) DatabaseManager.sql_getAllEmployees().get("employees");
     	
     	if (parameterValue.equals("Desk")) {
+    		
+    		// Change chart values
+    		CategoryPlot plot = (CategoryPlot) chartTop.getPlot();
+	        CategoryAxis xAxis = (CategoryAxis) plot.getDomainAxis();
+	        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+	        
+	        xAxis.setLabel("Desk Number");
+	        yAxis.setLabel("Frequency");
+	        
+	        chartTop.setTitle("Top 10 Desks booked");
     		
     		// 0 - desk number; 1 - number of times desk has been booked
     		int[][] desksBooked = new int[192][2];
@@ -161,6 +172,16 @@ public class StatisticsPage extends JXPanel {
     		
 		} else if (parameterValue.equals("Employee")) {
 			
+			// Change chart values
+			CategoryPlot plot = chartTop.getCategoryPlot();
+	        CategoryAxis xAxis = (CategoryAxis) plot.getDomainAxis();
+	        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+	        
+	        xAxis.setLabel("Employee name");
+	        yAxis.setLabel("Desks booked");
+	        
+	        chartTop.setTitle("Top 10 Desk bookers");
+			
 			// 0 - employee number; 1 - desks booked by employee
 			int[][] employeeBooked = new int[employees.size()][2];
 			
@@ -178,7 +199,6 @@ public class StatisticsPage extends JXPanel {
     				
     				for (String[] employee : employees) {
     					if (employee[0].equals(Integer.toString(employeeBooked[i][0]))) {
-    						System.out.println(employee[0]);
     						datasetTop.addValue(employeeBooked[i][1], employee[1], parameterValue);
     					}
     				}
@@ -188,10 +208,77 @@ public class StatisticsPage extends JXPanel {
 			
 		} else if (parameterValue.equals("Day")) {
 			
+			// Change chart values
+			CategoryPlot plot = chartTop.getCategoryPlot();
+	        CategoryAxis xAxis = (CategoryAxis) plot.getDomainAxis();
+	        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+	        
+	        xAxis.setLabel("Day");
+	        yAxis.setLabel("Desks booked");
+	        
+	        chartTop.setTitle("Most frequent days");
+			
+			int mon = 0, tue = 0, wed = 0, thu = 0, fri = 0, sat = 0, sun = 0;
 			
 			
+			for (Booking booking : bookings) {
+				try {
+					
+					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(booking.getDate());
+	    			Calendar calendar = Calendar.getInstance();
+	    	        calendar.setTime(date);
+	    	        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+	    	        
+	    	        String day = daysOfWeek[dayOfWeek - 1];
+	    	        
+	    	        switch (day) {
+					case "Monday":
+						mon++;
+						break;
+						
+					case "Tuesday":
+						tue++;
+						break;
+						
+					case "Wednesday":
+						wed++;
+						break;
+						
+					case "Thursday":
+						thu++;
+						break;
+						
+					case "Friday":
+						fri++;
+						break;
+						
+					case "Saturday":
+						sat++;
+						break;
+						
+					case "Sunday":
+						sun++;
+						break;
+	
+					default:
+						break;
+					}
+	    	        
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				
+			}
+			
+	        datasetTop.addValue(mon, "Monday", parameterValue);
+	        datasetTop.addValue(tue, "Tuesday", parameterValue);
+	        datasetTop.addValue(wed, "Wednesday", parameterValue);
+	        datasetTop.addValue(thu, "Thursday", parameterValue);
+	        datasetTop.addValue(fri, "Friday", parameterValue);
+	        datasetTop.addValue(sat, "Saturday", parameterValue);
+	        datasetTop.addValue(sun, "Sunday", parameterValue);
 		}
-		
     }
     
     private void updateFrequencyChart (String deskValue) {
@@ -263,17 +350,8 @@ public class StatisticsPage extends JXPanel {
     }
 
     private void setupLayout() {
-//        // Add the chart panel to this JPanel
-//    	JPanel spinnerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-//    	spinnerPanel.add(lblDeskNumber);
-//    	spinnerPanel.add(spnnrDeskFrequency);
-//    	add(spinnerPanel, BorderLayout.NORTH);
-//        setLayout(new BorderLayout());
-//        add(chartPanelFrequency, BorderLayout.CENTER);
-//        
-//        
-        // Add components to this JPanel using a grid layout
-        setLayout(new GridLayout(2, 1));
+
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Frequency Chart
         JPanel panelFrequency = new JPanel(new BorderLayout());
@@ -282,6 +360,7 @@ public class StatisticsPage extends JXPanel {
         spinnerPanelFrequency.add(spnnrDeskFrequency);
         panelFrequency.add(spinnerPanelFrequency, BorderLayout.NORTH);
         panelFrequency.add(chartPanelFrequency, BorderLayout.CENTER);
+        panelFrequency.setPreferredSize(new Dimension(400, 400));
         add(panelFrequency);
 
         // "Top" Chart
@@ -291,6 +370,7 @@ public class StatisticsPage extends JXPanel {
         spinnerPanelTop.add(spnnrDeskTop);
         panelTop.add(spinnerPanelTop, BorderLayout.NORTH);
         panelTop.add(chartPanelTop, BorderLayout.CENTER);
+        panelTop.setPreferredSize(new Dimension(400, 400));
         add(panelTop);
         
     }

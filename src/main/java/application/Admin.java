@@ -28,6 +28,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
+import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 
@@ -35,15 +36,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Admin extends JPanel {
-
-	/*
-	 * TODO:
-	 * 1. Add ability to delete any booking √
-	 * 2. Add ability to change any booking √
-	 * 3. Add ability to delete any account √
-	 * 4. Add ability to view most booked desk
-	 * 5. Add ability to view booking frequency on a weekly basis √
-	 */
 
 	public Dimension dimension = new Dimension(800, 600);
 	
@@ -54,10 +46,11 @@ public class Admin extends JPanel {
 	private Vortex vortex;
 	private JLabel lblWelcome;
 	private CardLayout cardLayout;
-	private JPanel cardPanel;
+	private JXPanel cardPanel;
 	private JSeparator separator;
 	private JScrollPane scrllPaneBookings;
 	private JScrollPane scrllPaneEmployees;
+	private JScrollPane scrllPaneStatistics;
 	private JXTable tblBooking;
 	private JXTable tblEmployee;
 	private DefaultTableModel model;
@@ -118,7 +111,7 @@ public class Admin extends JPanel {
         });
         
         cardLayout = new CardLayout();
-        cardPanel = new JPanel();
+        cardPanel = new JXPanel();
         cardPanel.setLayout(cardLayout);
         cardPanel.setBounds(30, 124, 740, 420);
         add(cardPanel);
@@ -203,7 +196,11 @@ public class Admin extends JPanel {
 	private void setupStatisticsView() {
 		
 		pnlStatistics = new StatisticsPage();
-		cardPanel.add(pnlStatistics, "statistics");
+		scrllPaneStatistics = new JScrollPane();
+		scrllPaneStatistics.setBounds(0, 0, 740, 420);
+		scrllPaneStatistics.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrllPaneStatistics.setViewportView(pnlStatistics);
+		cardPanel.add(scrllPaneStatistics, "statistics");
 		
 	}
 	
