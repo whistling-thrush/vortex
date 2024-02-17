@@ -1,5 +1,4 @@
-.DS_Store
-src/.DS_Store
+*/.DS_Store
 batik-1.16/
 bin/
 .settings/
@@ -9,3 +8,5 @@ bin/
 target/
 info.java
 Flowcharts/
+*/test/
+.idea/

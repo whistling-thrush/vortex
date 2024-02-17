@@ -14,7 +14,6 @@ public class Vortex extends JFrame {
 	
 	private static final long serialVersionUID = -5620007751101260104L;
 	
-	
 	//Component declarations
 	private CardLayout cardLayout;
 	private JPanel cardPanel;

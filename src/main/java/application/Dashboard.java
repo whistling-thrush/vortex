@@ -46,10 +46,10 @@ public class Dashboard extends JPanel {
 	private JScrollPane scrllPaneUpcomingBookings;
 	private JLabel lblUpcomingBookings;
 	private JXTable bookingStack;
-	private DefaultTableModel model;
 	private JButton btnLogOut;
 	
 	//Variable declarations
+	private DefaultTableModel model;
 	private Map<String, Object> objects;
 
 	public Dashboard(Vortex vortex) {

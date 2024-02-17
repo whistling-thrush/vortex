@@ -254,10 +254,11 @@ public class DatabaseManager {
 		return map;
 	}
 
-	public static ArrayList<Booking> sql_bookingHistory() {
+	public static Map<String, Object> sql_bookingHistory() {
 		
 		final int empID = LoginScreen.currentEmployeeID;
 		
+		Map<String, Object> map = new HashMap<>();
 		ArrayList<Booking> bookingHistory = new ArrayList<Booking>();
 		
 		try {
@@ -292,7 +293,13 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 		
-		return bookingHistory;
+		map.put("bookings", bookingHistory);
+		
+		String[] colNames = {"Desk number", "Date (yyyy-mm-dd)", "From", "To", "Duration"};
+		
+		map.put("colNames", colNames);
+		
+		return map;
 		
 	}
 
