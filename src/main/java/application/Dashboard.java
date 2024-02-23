@@ -1,12 +1,15 @@
 package main.java.application;
 
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXTable;
@@ -18,6 +21,7 @@ import javax.swing.JScrollPane;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,6 +41,7 @@ public class Dashboard extends JPanel {
 	private static final long serialVersionUID = 1936925262291800888L;
 	
 	//Component declarations
+	private JPopupMenu contextMenu;
 	private Vortex vortex;
 	private JLabel lblWelcome;
 	private JSeparator separator;
@@ -51,6 +56,7 @@ public class Dashboard extends JPanel {
 	//Variable declarations
 	private DefaultTableModel model;
 	private Map<String, Object> objects;
+	private ArrayList<Booking> bookings;
 
 	public Dashboard(Vortex vortex) {
 		this.vortex = vortex;
@@ -127,7 +133,7 @@ public class Dashboard extends JPanel {
 		btnCreateBooking.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				vortex.showCreate();
+				vortex.showCreate(true);
 				sidePanelDialog.dispose();
 			}
 		});
@@ -167,7 +173,37 @@ public class Dashboard extends JPanel {
 
         // Show the side panel
         sidePanelDialog.setVisible(true);
+
+		// Add mouse listener to deselect selected rows when clicked outside
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int rows = bookingStack.getRowCount();
+				if (!bookingStack.contains(getMousePosition())) {
+					bookingStack.removeRowSelectionInterval(0, rows - 1);
+				}
+			}
+		});
+		
+		// Add mouse listener for right-click events
+		bookingStack.addMouseListener(new TableMouseListener());
     }
+
+	private class TableMouseListener extends MouseAdapter {
+	
+		@Override
+		public void mousePressed(MouseEvent e) {
+			
+			if (SwingUtilities.isRightMouseButton(e)) {
+				Point point = e.getComponent().getLocationOnScreen();
+				int row = bookingStack.rowAtPoint(e.getPoint());
+				
+				if (row != -1 && bookingStack.isRowSelected(row)) {
+					showContextMenu(e, point);
+				}
+			}
+		}
+	}
 	
 	private void logout() {
 		vortex.showLogin();
@@ -177,6 +213,7 @@ public class Dashboard extends JPanel {
 		lblWelcome.setText("Welcome, " + name + "!");
 	}
 
+	@SuppressWarnings("unchecked")
 	public void getUpcomingBookings() {
 
 		bookingStack.setModel(new DefaultTableModel() {
@@ -197,8 +234,7 @@ public class Dashboard extends JPanel {
 		objects = DatabaseManager.sql_upcomingBookings();
 		
 		String[] colNames = (String[]) objects.get("colNames");
-		@SuppressWarnings("unchecked")
-		ArrayList<Booking> bookings = (ArrayList<Booking>) objects.get("bookings");
+		bookings = (ArrayList<Booking>) objects.get("bookings");
 		
 		model.setColumnIdentifiers(colNames);
 		
@@ -216,5 +252,51 @@ public class Dashboard extends JPanel {
 		
 		bookingStack.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
+	}
+
+	private void showContextMenu(MouseEvent e, Point point) {
+    	
+		contextMenu = new JPopupMenu();
+		
+		if (bookingStack.getSelectedRows().length == 1) {
+			JMenuItem changeMenuItem = new JMenuItem("Change Booking");
+			JMenuItem deleteMenuItem = new JMenuItem("Delete Booking");
+			
+			contextMenu.add(changeMenuItem);
+			contextMenu.add(deleteMenuItem);
+			
+			deleteMenuItem.addActionListener(ActionEvent -> deleteSelectedRows());
+			changeMenuItem.addActionListener(ActionEvent -> changeBooking());
+			
+			contextMenu.show(this, e.getX(), e.getY() + point.y - vortex.getY());
+		} else if (bookingStack.getSelectedRows().length > 1) {
+			JMenuItem deleteMenuItem = new JMenuItem("Delete Bookings");
+			
+			contextMenu.add(deleteMenuItem);
+			
+			deleteMenuItem.addActionListener(ActionEvent -> deleteSelectedRows());
+			
+			contextMenu.show(this, e.getX(), e.getY() + point.y - vortex.getY());
+		}
+    	
+    }
+
+	// Opens the ChangeBooking panel for the selected row
+	private void changeBooking() {
+		int index = bookingStack.getSelectedRows().length;
+		if (index == 1) {
+			vortex.showChangeBooking(bookings.get(bookingStack.getSelectedRow()).getBookID(), true);
+		}
+	}
+
+	// Deletes selected rows from panel and database
+	private void deleteSelectedRows() {
+		int[] selectedRows = bookingStack.getSelectedRows();
+		model = (DefaultTableModel) bookingStack.getModel();
+		
+		for (int i = selectedRows.length - 1; i >= 0; i--) {
+			model.removeRow(selectedRows[i]);
+			DatabaseManager.sql_deleteBooking(bookings.get(selectedRows[i]).getBookID());
+		}
 	}
 }

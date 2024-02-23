@@ -27,6 +27,7 @@ public class ChangeBooking extends CreateBooking {
 	}
 	
 	private void setupPanel() {
+
 		lblNewBooking.setText("Change booking");
 		btnCreate.setText("Update booking");
 		btnCreate.removeMouseListener(mouseAdapterCreate);

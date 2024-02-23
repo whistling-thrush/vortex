@@ -131,10 +131,11 @@ public class Vortex extends JFrame {
 		setSize(signUp.dimension);
 	}
 	
-	public void showCreate() {
+	public void showCreate(boolean resetBooking) {
 		cardLayout.show(cardPanel, "create");
 		setMinimumSize(createBooking.dimension);
 		setSize(createBooking.dimension);
+		if (resetBooking) {createBooking.resetCreateBooking();}
 	}
 	
 	public void showHistory() {

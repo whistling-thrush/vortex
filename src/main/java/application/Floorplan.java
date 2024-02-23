@@ -131,7 +131,7 @@ public class Floorplan extends JPanel {
 					public void run() {
 						selectedDesk += (((int) spnnrFloorSelect.getValue()) - 1) * 48;
 						if (showCreateBooking) {	
-							vortex.showCreate();
+							vortex.showCreate(false);
 						} else { 
 							vortex.showChangeBooking(bookID); 
 						}
@@ -152,7 +152,7 @@ public class Floorplan extends JPanel {
 					public void run() {
 						deskSelectedElement = null;
 						if (showCreateBooking) {	
-							vortex.showCreate();
+							vortex.showCreate(false);
 						} else { 
 							vortex.showChangeBooking(bookID); 
 						}

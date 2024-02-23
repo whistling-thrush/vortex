@@ -186,14 +186,18 @@ public class CreateBooking extends JPanel {
 	}
 
 	protected boolean validateBooking(Booking booking) {
-		boolean flag = true;
+
+		LocalTime timeFrom = LocalTime.parse(booking.getTimeStart());
+		LocalTime timeTo = LocalTime.parse(booking.getTimeEnd());
 		
 		//Validates booking and checks if the booking passed in the function already exists
 		if (DatabaseManager.sql_checkBookingExistance(booking)) {
-			flag = false;
+			return false;
+		} else if (timeFrom.isAfter(timeTo)) {
+			return false;
+		} else {
+			return true;
 		}
-
-		return flag;
 	}
 
 	public void setupFloorplan() {
@@ -213,6 +217,8 @@ public class CreateBooking extends JPanel {
 	
 	//Resets the Create Booking Panel
 	public void resetCreateBooking() {
-		 
+		datePicker.clear();
+		timePickerFrom.clear();
+		timePickerTo.clear();
 	}
 }
