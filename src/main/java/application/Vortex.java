@@ -155,14 +155,13 @@ public class Vortex extends JFrame {
 	
 	public void showFloorplan(boolean showCreateBooking) {
 		setMinimumSize(floorplan.dimension);
-		setSize(floorplan.dimension);
 		floorplan.resetFloorplan();
 		floorplan.addFloorplan(showCreateBooking, bookID);
 		cardLayout.show(cardPanel, "floorplan");
 	}
 	
 	public void showAdmin() {
-		setMinimumSize(admin.dimension);
+		setMaximumSize(admin.dimension);
 		setSize(admin.dimension);
 		admin.getData();
 		cardLayout.show(cardPanel, "admin");

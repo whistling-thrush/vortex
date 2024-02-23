@@ -285,7 +285,7 @@ public class Dashboard extends JPanel {
 	private void changeBooking() {
 		int index = bookingStack.getSelectedRows().length;
 		if (index == 1) {
-			vortex.showChangeBooking(bookings.get(bookingStack.getSelectedRow()).getBookID(), true);
+			vortex.showChangeBooking(bookings.get(bookingStack.getSelectedRow()).getBookID(), false);
 		}
 	}
 

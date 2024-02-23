@@ -52,6 +52,7 @@ public class CreateBooking extends JPanel {
 	protected JCheckBox chkbxAllDay;
 	protected JButton btnCreate;
 	protected MouseAdapter mouseAdapterCreate;
+	protected boolean showCreateBooking;
 
 	/**
 	 * Create the panel.
@@ -64,6 +65,8 @@ public class CreateBooking extends JPanel {
 	}
 	
 	private void setupPanel () {
+
+		showCreateBooking = true;
 		
 		lblNewBooking = new JLabel("Create new booking");
 		lblNewBooking.setSize(260, 70);
@@ -137,7 +140,7 @@ public class CreateBooking extends JPanel {
 		btnFloorplan.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				vortex.showFloorplan(true);
+				vortex.showFloorplan(showCreateBooking);
 				setupFloorplan();
 			}
 		});

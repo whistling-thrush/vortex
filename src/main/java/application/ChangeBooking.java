@@ -28,6 +28,8 @@ public class ChangeBooking extends CreateBooking {
 	
 	private void setupPanel() {
 
+		showCreateBooking = false;
+
 		lblNewBooking.setText("Change booking");
 		btnCreate.setText("Update booking");
 		btnCreate.removeMouseListener(mouseAdapterCreate);
@@ -63,14 +65,6 @@ public class ChangeBooking extends CreateBooking {
 				} else {
 					vortex.showDash();
 				}
-			}
-		});
-		
-		btnFloorplan.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				vortex.showFloorplan(false);
-				setupFloorplan();
 			}
 		});
 	}
