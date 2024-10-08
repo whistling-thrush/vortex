@@ -1,2 +1,2 @@
 SELECT *
-FROM booking;
+FROM deskbook.booking;

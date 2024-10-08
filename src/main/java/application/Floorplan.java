@@ -78,7 +78,7 @@ public class Floorplan extends JPanel {
 	
 		svgCanvas = new JSVGCanvas();
 		svgCanvas.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
-		svgCanvas.setURI("src/main/resources/assets/Floorplan.svg");
+		svgCanvas.setURI(getClass().getResource("/assets/Floorplan.svg").toExternalForm());
 		svgCanvas.setSize(dimension);
 		svgCanvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
             @Override

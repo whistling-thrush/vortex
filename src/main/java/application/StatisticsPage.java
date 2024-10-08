@@ -185,7 +185,7 @@ public class StatisticsPage extends JPanel {
 			// 0 - employee number; 1 - desks booked by employee
 			int[][] employeeBooked = new int[employees.size()][2];
 			
-			for (int i = 0; i < bookings.size(); i++) {
+			for (int i = 0; i < employeeBooked[0].length; i++) {
 				employeeBooked[bookings.get(i).getEmpID() - 1][1]++;
 				employeeBooked[bookings.get(i).getEmpID() - 1][0] = bookings.get(i).getEmpID();
 			}
